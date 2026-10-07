@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Kirish{% endblock %}
+{% block heading_sub %}Xush kelibsiz{% endblock %}{% block heading %}Kirish{% endblock %}
+{% block content %}
+<section class="page"><div class="container" style="max-width:520px">
+  <form method="post" class="b-card b-form" novalidate>{% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.GET.next }}">
+    {% include "partials/field.html" with field=form.phone %}
+    {% include "partials/field.html" with field=form.password %}
+    <button class="btn-main btn-block" type="submit">Kirish</button>
+    <p class="text-center mt-3">Hisobingiz yo‘qmi? <a href="{% url 'accounts:register' %}"><b>Ro‘yxatdan o‘ting</b></a></p>
+  </form>
+</div></section>
+{% endblock %}

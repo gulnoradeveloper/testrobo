@@ -1,0 +1,17 @@
+{% load begoyim %}
+<div class="service-card">
+  <a href="{{ s.get_absolute_url }}" class="cover" aria-hidden="true" tabindex="-1">
+    {% if s.cover %}<img src="{{ s.cover }}" alt="">{% else %}{{ s.category.icon }}{% endif %}
+    <span class="price-tag">{{ s.price_label }}</span>
+  </a>
+  <div class="body">
+    <div class="meta">{{ s.category.name }} · {{ s.get_service_mode_display }}</div>
+    <h4><a href="{{ s.get_absolute_url }}">{{ s.title }}</a></h4>
+    <div class="meta"><i class="fa fa-map-marker"></i> {{ s.district.name }}</div>
+    <div class="meta"><i class="fa fa-user"></i> {{ s.provider.display_name }}</div>
+    <div class="foot">
+      <span>{% if s.provider.profile.reviews_count %}<span class="stars">★</span> <b>{{ s.provider.profile.rating|floatformat:1 }}</b> <span class="small-note">({{ s.provider.profile.reviews_count }})</span>{% else %}<span class="small-note">Yangi ijrochi</span>{% endif %}</span>
+      {% if s.provider.profile.is_verified %}<span class="badge-verified">✓ Tasdiqlangan</span>{% endif %}
+    </div>
+  </div>
+</div>

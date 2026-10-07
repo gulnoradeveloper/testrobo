@@ -1,0 +1,1 @@
+{% if p.avatar %}<img class="avatar{% if small %} avatar-sm{% endif %}" src="{{ p.avatar.url }}" alt="{{ p.full_name }}">{% else %}<span class="avatar{% if small %} avatar-sm{% endif %}">{{ p.first_name|first|default:"B" }}</span>{% endif %}

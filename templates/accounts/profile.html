@@ -1,0 +1,83 @@
+{% extends "base.html" %}{% load begoyim %}
+{% block title %}{{ p.full_name|default:owner.phone }}{% endblock %}
+{% block heading_sub %}{% if is_me %}Mening profilim{% else %}Ijrochi profili{% endif %}{% endblock %}
+{% block heading %}{{ p.full_name|default:"Profil" }}{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="b-card text-center">
+        {% include "partials/avatar.html" %}
+        <h3 class="mt-3 mb-1">{{ p.full_name|default:owner.phone }}</h3>
+        <div class="small-note mb-2">{{ owner.get_role_display }}{% if p.location_label %} · <i class="fa fa-map-marker"></i> {{ p.location_label }}{% endif %}</div>
+        {% if p.is_verified %}<span class="badge-verified">✓ Mahalla tomonidan tasdiqlangan</span>
+        {% elif owner.is_provider %}<span class="pill {{ p.verification_status|status_class }}">{{ p.get_verification_status_display }}</span>{% endif %}
+        {% if owner.is_provider %}
+        <div class="stat-grid mt-3" style="grid-template-columns:1fr 1fr">
+          <div class="stat"><div class="label">Reyting</div><div class="value">{% if p.reviews_count %}{{ p.rating|floatformat:1 }}<span class="stars" style="font-size:20px"> ★</span>{% else %}—{% endif %}</div></div>
+          <div class="stat"><div class="label">Bajarilgan</div><div class="value">{{ completed_orders }}</div></div>
+        </div>
+        {% endif %}
+        {% if is_me %}
+          <a class="btn-ghost btn-block" href="{% url 'accounts:profile_edit' %}"><i class="fa fa-pencil"></i> Profilni tahrirlash</a>
+        {% elif user.is_authenticated %}
+          <details class="mt-3 text-start"><summary class="small-note">Shikoyat qilish</summary>
+            <form method="post" action="{% url 'core:report_create' %}" class="b-form mt-2">{% csrf_token %}<input type="hidden" name="user" value="{{ owner.pk }}">
+              {{ report_form.reason }}{{ report_form.comment }}<button class="btn-danger-soft btn-sm mt-2">Yuborish</button></form>
+          </details>
+        {% endif %}
+      </div>
+
+      {% if is_me and owner.is_provider %}
+      <div class="b-card">
+        <h5>Mahalla verifikatsiyasi</h5>
+        <p>Holat: <span class="pill {{ p.verification_status|status_class }}">{{ p.get_verification_status_display }}</span></p>
+        {% if last_request and last_request.reviewer_comment %}<p class="small-note">Mahalla vakili izohi: “{{ last_request.reviewer_comment }}”</p>{% endif %}
+        {% if p.verification_status == 'unverified' or p.verification_status == 'rejected' %}
+          {% if p.is_complete %}
+            <form method="post" action="{% url 'accounts:verification_submit' %}" class="b-form">{% csrf_token %}
+              {{ verification_form.note }}
+              <button class="btn-main btn-block mt-2" type="submit">Mahalla verifikatsiyasiga yuborish</button>
+            </form>
+          {% else %}
+            <p class="small-note">Ariza yuborish uchun avval profilingizni (ism, familiya, viloyat, tuman, mahalla) to‘ldiring.</p>
+          {% endif %}
+        {% elif p.verification_status == 'pending' %}
+          <p class="small-note">Arizangiz {{ p.mahalla }} vakiliga yuborilgan. Natija bildirishnomada keladi.</p>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="col-lg-8">
+      {% if p.bio or p.experience %}
+      <div class="b-card">
+        {% if p.bio %}<h5>Qisqacha ma’lumot</h5><p>{{ p.bio|linebreaksbr }}</p>{% endif %}
+        {% if p.experience %}<h5 class="mt-3">Ish tajribasi</h5><p>{{ p.experience|linebreaksbr }}</p>{% endif %}
+      </div>
+      {% endif %}
+      {% if owner.is_provider %}
+      <div class="b-card">
+        <h5>Ko‘nikmalar</h5>
+        <div class="skill-tags">{% for us in skills %}<span class="badge-soft">{{ us.skill.name }}</span>{% empty %}<span class="small-note">Ko‘nikmalar kiritilmagan.</span>{% endfor %}</div>
+      </div>
+      {% if portfolio %}
+      <div class="b-card"><h5>Portfolio</h5><div class="portfolio-grid">{% for img in portfolio %}<a href="{{ img.image.url }}" target="_blank" rel="noopener"><img src="{{ img.image.url }}" alt="{{ img.caption }}"></a>{% endfor %}</div></div>
+      {% endif %}
+      <h3 class="mb-3">Xizmatlar</h3>
+      <div class="row g-4 mb-4">
+        {% for s in services %}<div class="col-md-6">{% include "partials/service_card.html" %}</div>
+        {% empty %}<div class="col-12"><div class="b-card empty">Hozircha xizmatlar yo‘q.{% if is_me %} <a href="{% url 'catalog:service_create' %}">Birinchi xizmatni yarating</a>{% endif %}</div></div>{% endfor %}
+      </div>
+      <div class="b-card">
+        <h5>Mijozlar baholari</h5>
+        {% for r in reviews %}
+          <div class="mb-3 pb-3 border-bottom"><span class="stars">{{ r.rating|stars }}</span> <b>{{ r.customer.display_name }}</b> <span class="small-note">· {{ r.order.service.title }} · {{ r.created_at|date:"d.m.Y" }}</span>
+            {% if r.comment %}<p class="mb-0">{{ r.comment }}</p>{% endif %}</div>
+        {% empty %}<p class="small-note">Hali baholar yo‘q.</p>{% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div></section>
+{% endblock %}

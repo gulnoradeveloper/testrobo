@@ -1,0 +1,27 @@
+{% extends "base.html" %}{% load begoyim %}
+{% block title %}Daromad{% endblock %}
+{% block heading_sub %}Bu oy{% endblock %}{% block heading %}Daromad dashboardi{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  {% if stats.new_orders %}<div class="flash flash-info">{{ stats.new_orders }} ta yangi buyurtma javobingizni kutmoqda. <a href="{% url 'catalog:order_list' %}?tab=received&status=NEW">Ko‘rish →</a></div>{% endif %}
+  <div class="stat-grid">
+    <div class="stat"><div class="label">Buyurtmalar (bu oy)</div><div class="value">{{ stats.month_orders }}</div></div>
+    <div class="stat"><div class="label">Bajarilgan (bu oy)</div><div class="value">{{ stats.month_completed }}</div></div>
+    <div class="stat accent"><div class="label">Hisoblangan daromad (bu oy)</div><div class="value" style="font-size:24px">{{ stats.month_income|som }}</div></div>
+    <div class="stat"><div class="label">O‘rtacha reyting</div><div class="value">{% if stats.reviews_count %}{{ stats.rating|floatformat:1 }} <span class="stars">★</span>{% else %}—{% endif %}</div></div>
+  </div>
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="b-card"><h3>Oylik daromad (so‘m)</h3>{% include "partials/bars.html" with series=stats.income_series money=1 aria="Oylik daromad grafigi" %}
+        <p class="small-note mt-3 mb-0">* Platforma orqali hisoblangan daromad — faqat platformadagi yakunlangan (COMPLETED) buyurtmalarning kelishilgan narxlari yig‘indisi. Jami: <b>{{ stats.total_income|som }}</b>, {{ stats.total_completed }} ta buyurtma.</p>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="b-card"><h3>So‘nggi buyurtmalar</h3>
+        {% for o in recent %}<a class="notif" href="{{ o.get_absolute_url }}"><span class="flex-grow-1">{{ o.service.title }}<div class="small-note">{{ o.customer.display_name }} · {{ o.price_label }}</div></span><span class="pill {{ o.status|status_class }}">{{ o.get_status_display }}</span></a>
+        {% empty %}<p class="small-note">Buyurtmalar yo‘q.</p>{% endfor %}
+      </div>
+    </div>
+  </div>
+</div></section>
+{% endblock %}

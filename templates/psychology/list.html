@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Psixologik yordam{% endblock %}
+{% block heading_sub %}Tasdiqlangan mutaxassislar{% endblock %}{% block heading %}Psixologik yordam{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  <p class="privacy-note"><i class="fa fa-lock"></i> Murojaatingiz va konsultatsiya mazmuni faqat siz va psixologga ko‘rinadi. U mahalla vakiliga, administratorga yoki statistikaga chiqmaydi.</p>
+  <div class="row g-4 mt-1">
+    {% for p in items %}
+      <div class="col-md-6 col-lg-4">
+        <div class="b-card h-100 text-center">
+          {% include "partials/avatar.html" with p=p.user.profile %}
+          <h5 class="mt-3 mb-1">{{ p.user.display_name }}</h5>
+          <div class="badge-verified mb-2">✓ Tasdiqlangan mutaxassis</div>
+          <p class="mb-1"><b>Yo‘nalish:</b> {{ p.specialization }}</p>
+          <p class="mb-1"><b>Tajriba:</b> {{ p.experience_years }} yil</p>
+          <p class="mb-1"><b>Shakl:</b> {{ p.get_consultation_format_display }}</p>
+          <p class="small-note">Eng yaqin bo‘sh vaqt: {% if p.next_slot %}{{ p.next_slot.start_at|date:"d.m.Y H:i" }}{% else %}hozircha yo‘q{% endif %}</p>
+          <a class="btn-main btn-block" href="{% url 'psychology:detail' p.pk %}">Qabulga yozilish</a>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12"><div class="b-card empty">Hozircha tasdiqlangan mutaxassislar yo‘q.</div></div>
+    {% endfor %}
+  </div>
+</div></section>
+{% endblock %}

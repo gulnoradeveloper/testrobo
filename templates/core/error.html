@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block heading_sub %}Xatolik {{ code }}{% endblock %}{% block heading %}{{ title }}{% endblock %}
+{% block content %}
+<section class="page"><div class="container text-center">
+  <p class="lead">{{ text }}</p>
+  <a class="btn-main" href="{% url 'core:home' %}">Bosh sahifaga qaytish</a>
+</div></section>
+{% endblock %}

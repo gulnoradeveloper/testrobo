@@ -1,0 +1,43 @@
+{% extends "base.html" %}{% load begoyim %}
+{% block title %}Xizmatlar{% endblock %}
+{% block heading_sub %}Qidiruv va filtrlash{% endblock %}{% block heading %}Xizmatlar katalogi{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  <div class="cat-chips">
+    <a href="{% url 'catalog:service_list' %}" class="{% if not active_category %}active{% endif %}">Barchasi</a>
+    {% for c in categories %}<a href="?{% qs_replace category=c.slug page=1 %}" class="{% if active_category == c.slug %}active{% endif %}">{{ c.icon }} {{ c.name }}</a>{% endfor %}
+  </div>
+  <div class="row g-4">
+    <div class="col-lg-3">
+      <form method="get" class="b-card b-form filter-box">
+        {% if active_category %}<input type="hidden" name="category" value="{{ active_category }}">{% endif %}
+        <div class="field"><label for="id_q">Qanday xizmat izlayapsiz?</label>{{ form.q }}</div>
+        <div class="field"><label>Hudud</label>{{ form.region }}</div>
+        <div class="field">{{ form.district }}</div>
+        <div class="field"><label>Narx (so‘m)</label><div class="price-row">{{ form.price_min }}{{ form.price_max }}</div></div>
+        <div class="field"><label>Reyting</label>{{ form.min_rating }}</div>
+        <div class="field"><label>Xizmat shakli</label>{{ form.mode }}</div>
+        <div class="field"><label class="d-flex align-items-center">{{ form.verified }} Faqat tasdiqlangan</label></div>
+        <div class="field"><label>Saralash</label>{{ form.sort }}</div>
+        <button class="btn-main btn-block" type="submit"><i class="fa fa-search"></i> Qidirish</button>
+        <a class="small-note d-block text-center mt-2" href="{% url 'catalog:service_list' %}">Filtrlarni tozalash</a>
+      </form>
+      <div class="b-card text-center"><h5>🤖 AI tavsiya</h5><p class="small-note">So‘rovingizni oddiy tilda yozing — mos ijrochilarni topamiz.</p><a class="btn-soft btn-sm" href="{% url 'catalog:smart_match' %}">Sinab ko‘rish</a></div>
+    </div>
+    <div class="col-lg-9">
+      <p class="muted">Topildi: <b>{{ total }}</b> ta xizmat</p>
+      <div class="row g-4">
+        {% for s in page %}<div class="col-md-6 col-xl-4">{% include "partials/service_card.html" %}</div>
+        {% empty %}<div class="col-12"><div class="b-card empty"><span class="ico">🔍</span>Mos xizmat topilmadi. Filtrlarni o‘zgartiring yoki <a href="{% url 'catalog:smart_match' %}">AI tavsiyadan</a> foydalaning.</div></div>{% endfor %}
+      </div>
+      {% if page.has_other_pages %}
+      <div class="pagination-b">
+        {% if page.has_previous %}<a href="?{{ querystring }}&page={{ page.previous_page_number }}">← Oldingi</a>{% endif %}
+        <span>{{ page.number }} / {{ page.paginator.num_pages }}</span>
+        {% if page.has_next %}<a href="?{{ querystring }}&page={{ page.next_page_number }}">Keyingi →</a>{% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div></section>
+{% endblock %}

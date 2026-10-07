@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ p.user.display_name }}{% endblock %}
+{% block heading_sub %}Psixolog{% endblock %}{% block heading %}{{ p.user.display_name }}{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  <div class="row g-4">
+    <div class="col-lg-5">
+      <div class="b-card text-center">
+        {% include "partials/avatar.html" with p=p.user.profile %}
+        <div class="badge-verified mt-3">✓ Tasdiqlangan mutaxassis</div>
+        <table class="b-table text-start mt-3">
+          <tr><td class="muted">Yo‘nalish</td><td>{{ p.specialization }}</td></tr>
+          <tr><td class="muted">Tajriba</td><td>{{ p.experience_years }} yil</td></tr>
+          <tr><td class="muted">Konsultatsiya shakli</td><td>{{ p.get_consultation_format_display }}</td></tr>
+          {% if p.office_address %}<tr><td class="muted">Offline manzil</td><td>{{ p.office_address }}</td></tr>{% endif %}
+        </table>
+        {% if p.about %}<p class="text-start mt-3">{{ p.about|linebreaksbr }}</p>{% endif %}
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <form method="post" class="b-card b-form">{% csrf_token %}
+        <h3>Qabulga yozilish</h3>
+        {% if form.fields.slot.queryset.exists %}
+          {% include "partials/field.html" with field=form.slot extra_class="choice-cards" %}
+          {% include "partials/field.html" with field=form.format extra_class="choice-cards" %}
+          {% include "partials/field.html" with field=form.message %}
+          <p class="privacy-note"><i class="fa fa-lock"></i> Murojaat matni faqat psixologga ko‘rinadi.</p>
+          {% if user.is_authenticated %}<button class="btn-main btn-block" type="submit">Yozilish</button>
+          {% else %}<a class="btn-main btn-block" href="{% url 'accounts:login' %}?next={{ request.path }}">Yozilish uchun kiring</a>{% endif %}
+        {% else %}
+          <p class="empty">Hozircha bo‘sh vaqtlar yo‘q. Keyinroq qayta tekshiring.</p>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</div></section>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}{% load begoyim %}
+{% block title %}Admin panel{% endblock %}
+{% block heading_sub %}Administrator{% endblock %}{% block heading %}Boshqaruv paneli{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  <div class="stat-grid">
+    <div class="stat accent"><div class="label">Foydalanuvchilar</div><div class="value">{{ stats.users_total }}</div></div>
+    <div class="stat"><div class="label">Faol xizmatlar</div><div class="value">{{ stats.services_active }}</div></div>
+    <div class="stat"><div class="label">Buyurtmalar</div><div class="value">{{ stats.orders_total }}</div></div>
+    <div class="stat"><div class="label">Platforma orqali hisoblangan daromad</div><div class="value" style="font-size:22px">{{ stats.income_total|som }}</div></div>
+    <div class="stat"><div class="label">Kutilayotgan verifikatsiyalar</div><div class="value">{{ stats.verifications_pending }}</div></div>
+    <div class="stat"><div class="label">Ochiq shikoyatlar</div><div class="value">{{ stats.reports_open }}</div></div>
+  </div>
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="b-card"><h3>Oylik buyurtmalar</h3>{% include "partials/bars.html" with series=stats.orders_series %}</div>
+      <div class="b-card"><h3>Buyurtmalar holati</h3>
+        <div class="d-flex flex-wrap gap-2">{% for k, v in stats.orders_by_status.items %}<span class="pill">{{ k }}: {{ v }}</span>{% endfor %}</div>
+      </div>
+      <div class="b-card"><h3>Rollar bo‘yicha</h3>
+        <div class="d-flex flex-wrap gap-2">{% for k, v in stats.by_role.items %}<span class="pill">{{ k }}: {{ v }}</span>{% endfor %}</div>
+        <p class="small-note mt-3">Psixologik murojaatlar statistikasi maxfiylik talabi sababli bu yerda ko‘rsatilmaydi.</p>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="b-card">
+        <h3>Bo‘limlar</h3>
+        <ul class="timeline">
+          <li><a href="/admin/accounts/user/">Foydalanuvchilar</a> — <a href="/admin/accounts/provideruser/">ijrochilar</a>, <a href="/admin/accounts/customeruser/">buyurtmachilar</a>, <a href="/admin/accounts/mahallauser/">mahalla vakillari</a>, <a href="/admin/accounts/psychologistuser/">psixologlar</a></li>
+          <li>Xizmatlar — <a href="/admin/catalog/category/">kategoriyalar</a>, <a href="/admin/catalog/service/?status__exact=active">faol xizmatlar</a>, <a href="{% url 'core:panel_services' %}">moderatsiya</a></li>
+          <li><a href="/admin/accounts/verificationrequest/">Verifikatsiya</a></li>
+          <li><a href="/admin/catalog/order/">Buyurtmalar</a></li>
+          <li><a href="/admin/catalog/review/">Sharhlar</a></li>
+          <li>Psixologik yordam — <a href="/admin/psychology/psychologist/">psixologlar</a> ({{ stats.psychologists }} faol, {{ stats.psychologists_pending }} kutmoqda), <a href="/admin/psychology/psychologistschedule/">qabul jadvallari</a></li>
+          <li><a href="{% url 'core:panel_reports' %}">Shikoyatlar</a></li>
+          <li><a href="/admin/core/region/">Hududlar</a></li>
+          <li><a href="/admin/core/auditlog/">Audit log</a></li>
+          <li><a href="/admin/">Tizim sozlamalari (Django admin)</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div></section>
+{% endblock %}

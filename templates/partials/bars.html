@@ -1,0 +1,7 @@
+{% load begoyim %}
+<div class="bars" role="img" aria-label="{{ aria|default:'Oylik grafik' }}">
+  {% for b in series %}
+    <div class="bar"><span class="v">{% if money %}{% if b.value %}{{ b.value|num }}{% endif %}{% else %}{{ b.value }}{% endif %}</span><div class="fill" style="height: {{ b.pct }}%"></div></div>
+  {% endfor %}
+</div>
+<div class="bars-labels">{% for b in series %}<span>{{ b.label }}</span>{% endfor %}</div>

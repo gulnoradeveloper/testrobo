@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Konsultatsiyalarim{% endblock %}
+{% block heading_sub %}Maxfiy{% endblock %}{% block heading %}Konsultatsiyalarim{% endblock %}
+{% block content %}
+<section class="page"><div class="container" style="max-width:900px">
+  {% for c in items %}
+    <div class="b-card">
+      <div class="d-flex justify-content-between flex-wrap gap-2">
+        <div><b>{{ c.psychologist.user.display_name }}</b> · {{ c.get_format_display }}
+          <div class="small-note">{% if c.slot %}{{ c.slot.start_at|date:"d.m.Y H:i" }}{% endif %} · yuborilgan {{ c.created_at|date:"d.m.Y" }}</div></div>
+        <span class="pill st-{{ c.status|lower }}">{{ c.get_status_display }}</span>
+      </div>
+      {% if c.psychologist_note %}<p class="mt-2 mb-0"><b>Psixolog izohi:</b> {{ c.psychologist_note }}</p>{% endif %}
+      {% if c.status == 'CONFIRMED' and c.format == 'offline' and c.psychologist.office_address %}<p class="small-note mt-2 mb-0">Manzil: {{ c.psychologist.office_address }}</p>{% endif %}
+      {% if c.status == 'REQUESTED' or c.status == 'CONFIRMED' %}
+        <form method="post" action="{% url 'psychology:consultation_action' c.pk 'cancel' %}" class="mt-2" data-confirm="Konsultatsiyani bekor qilasizmi?">{% csrf_token %}<button class="btn-danger-soft btn-sm">Bekor qilish</button></form>
+      {% endif %}
+    </div>
+  {% empty %}
+    <div class="b-card empty"><span class="ico">💬</span>Konsultatsiyalar yo‘q. <a href="{% url 'psychology:list' %}">Mutaxassis tanlash</a></div>
+  {% endfor %}
+</div></section>
+{% endblock %}

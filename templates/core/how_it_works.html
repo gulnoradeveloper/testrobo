@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Qanday ishlaydi?{% endblock %}
+{% block heading_sub %}BEGOYIM{% endblock %}{% block heading %}Qanday ishlaydi?{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  <div class="b-card">
+    <h3>Xizmat ko‘rsatuvchi ayol uchun</h3>
+    <div class="flow">
+      <span class="step">Ro‘yxatdan o‘tish</span><span class="arrow">→</span><span class="step">Profil</span><span class="arrow">→</span>
+      <span class="step">Ko‘nikma</span><span class="arrow">→</span><span class="step">Verifikatsiya</span><span class="arrow">→</span>
+      <span class="step">Xizmat</span><span class="arrow">→</span><span class="step">Qidiruv / AI tavsiya</span><span class="arrow">→</span>
+      <span class="step">Buyurtma</span><span class="arrow">→</span><span class="step">Bajarish</span><span class="arrow">→</span>
+      <span class="step">Baho</span><span class="arrow">→</span><span class="step now">Daromad</span>
+    </div>
+  </div>
+  <div class="b-card">
+    <h3>Psixologik ko‘mak</h3>
+    <div class="flow"><span class="step">Ayol</span><span class="arrow">→</span><span class="step">Psixologik murojaat</span><span class="arrow">→</span><span class="step">Mutaxassis</span><span class="arrow">→</span><span class="step now">Konsultatsiya</span></div>
+    <p class="privacy-note mt-3"><i class="fa fa-lock"></i> Murojaatlar mazmuni mahalla vakiliga, administratorga va statistikaga chiqmaydi.</p>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-6"><div class="b-card h-100"><h5>✓ Mahalla verifikatsiyasi</h5><p>Mahalla vakili ariza va ma’lumotlarni tekshiradi: tasdiqlaydi, rad etadi yoki qayta ko‘rib chiqishga qaytaradi. Tasdiqlangan profilda “✓ Mahalla tomonidan tasdiqlangan” belgisi chiqadi.</p></div></div>
+    <div class="col-md-6"><div class="b-card h-100"><h5>🤖 AI Smart Matching</h5><p>So‘rovingizni oddiy tilda yozing. Tizim xizmat turi, hudud va vaqtni aniqlaydi, so‘ng bazadagi xizmatlarni tushunarli formula bilan saralaydi:</p><p><b>MatchScore = xizmat mosligi + hudud mosligi + reyting + verifikatsiya + mavjudlik</b></p><p class="small-note">AI faqat tavsiya beradi, qaror qabul qilmaydi va mavjud bo‘lmagan xizmatni “bor” deb ko‘rsatmaydi.</p></div></div>
+    <div class="col-md-6"><div class="b-card h-100"><h5>🛡️ BEGOYIM Safe (MVP)</h5><p>Mijoz manzilida bajariladigan buyurtmalarda “Ishni boshladim” va “Ishni yakunladim” tugmalari bor — tizim vaqtni qayd qiladi.</p><p class="small-note">SOS, ishonchli kontakt va geolokatsiya keyingi versiyada (BEGOYIM 2.0) rejalashtirilgan va hozircha ishlamaydi.</p></div></div>
+    <div class="col-md-6"><div class="b-card h-100"><h5>📊 Daromad</h5><p>Daromad faqat platformadagi yakunlangan buyurtmalar asosida hisoblanadi va “platforma orqali hisoblangan daromad” sifatida ko‘rsatiladi.</p></div></div>
+  </div>
+</div></section>
+{% endblock %}

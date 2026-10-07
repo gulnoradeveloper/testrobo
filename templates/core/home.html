@@ -1,0 +1,111 @@
+{% extends "base.html" %}{% load static begoyim %}
+{% block title %}Bosh sahifa{% endblock %}
+{% block body_class %}home{% endblock %}
+{% block page_heading %}{% endblock %}
+{% block content %}
+<section class="main-banner" id="top">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 align-self-center">
+        <div class="header-text">
+          <h6>Ayollar bandligi va farovonligi raqamli ekotizimi</h6>
+          <h2>Ayoldan ayolga — <em>imkoniyat va ko‘mak.</em></h2>
+          <p class="lead">Ko‘nikmangizni xizmatga aylantiring yoki ishonchli, mahalla tomonidan tasdiqlangan ijrochini toping.</p>
+          <div class="btn-row">
+            <a class="btn-main" href="{% url 'catalog:service_list' %}"><i class="fa fa-search"></i> Xizmat topish</a>
+            <a class="btn-ghost" href="{% if user.is_authenticated and user.is_provider %}{% url 'catalog:service_create' %}{% else %}{% url 'accounts:register' %}?role=provider{% endif %}"><i class="fa fa-plus"></i> Xizmat ko‘rsatish</a>
+          </div>
+          <form class="hero-search" action="{% url 'catalog:service_list' %}" method="get" role="search">
+            <input type="search" name="q" placeholder="Qanday xizmat kerak?" aria-label="Qanday xizmat kerak?">
+            <button type="submit" aria-label="Qidirish"><i class="fa fa-search"></i></button>
+          </form>
+          <p class="small-note mt-2">yoki <a href="{% url 'catalog:smart_match' %}"><b>AI tavsiyadan</b></a> foydalaning: “Ertaga Buxoroda 2 ta xonani tozalaydigan ayol kerak”</p>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="right-image">
+          <img src="{% static 'begoyim/img/logo.png' %}" alt="BEGOYIM logotipi">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="categories">
+  <div class="container">
+    <div class="section-heading">
+      <h6>Kategoriyalar</h6>
+      <h4>Qanday <em>xizmat</em> kerak?</h4>
+    </div>
+    <div class="cat-grid">
+      {% for c in categories %}
+        <a class="cat-tile" href="{% url 'catalog:service_list' %}?category={{ c.slug }}"><span class="ico">{{ c.icon }}</span><span class="name">{{ c.name }}</span></a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section id="recommended">
+  <div class="container">
+    <div class="section-heading">
+      <h6>Sizga tavsiya etiladi</h6>
+      <h4>Tasdiqlangan <em>ijrochilar</em></h4>
+    </div>
+    <div class="row g-4">
+      {% for s in recommended %}
+        <div class="col-md-6 col-lg-4">{% include "partials/service_card.html" %}</div>
+      {% empty %}
+        <div class="empty"><span class="ico">🌷</span>Hozircha xizmatlar yo‘q. Birinchi bo‘ling!</div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-4"><a class="btn-ghost" href="{% url 'catalog:service_list' %}">Barcha xizmatlar</a></div>
+  </div>
+</section>
+
+<section id="psychology">
+  <div class="container">
+    <div class="psy-band">
+      <div class="row align-items-center">
+        <div class="col-lg-5">
+          <div class="section-heading text-start mb-3">
+            <h6>Psixologik yordam</h6>
+            <h4>Siz <em>yolg‘iz</em> emassiz</h4>
+          </div>
+          <p>Tasdiqlangan, tajribali psixologlar bilan ONLINE yoki OFFLINE konsultatsiyaga yoziling.</p>
+          <p class="privacy-note"><i class="fa fa-lock"></i> Murojaatingiz mazmuni faqat siz va psixologga ko‘rinadi.</p>
+          <a class="btn-main mt-2" href="{% url 'psychology:list' %}">Mutaxassisni tanlash</a>
+        </div>
+        <div class="col-lg-7 mt-4 mt-lg-0">
+          {% for p in psychologists %}
+            <div class="b-card mb-3 d-flex gap-3 align-items-center">
+              {% include "partials/avatar.html" with p=p.user.profile small=1 %}
+              <div class="flex-grow-1"><b>{{ p.user.display_name }}</b><div class="small-note">{{ p.specialization }} · {{ p.experience_years }} yil tajriba · {{ p.get_consultation_format_display }}</div></div>
+              <a class="btn-soft btn-sm" href="{% url 'psychology:detail' p.pk %}">Yozilish</a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <div class="section-heading">
+      <h6>BEGOYIM qanday ishlaydi?</h6>
+      <h4>4 ta <em>oddiy qadam</em></h4>
+    </div>
+    <div class="row g-4">
+      <div class="col-sm-6 col-lg-3"><div class="b-card step-card"><span class="num">1</span><h5>Ro‘yxatdan o‘ting</h5><p>Telefon raqami va parol bilan. Profil va ko‘nikmalaringizni kiriting.</p></div></div>
+      <div class="col-sm-6 col-lg-3"><div class="b-card step-card"><span class="num">2</span><h5>Mahalla tasdig‘i</h5><p>Mahalla vakili profilingizni tasdiqlaydi — mijozlar ishonchi oshadi.</p></div></div>
+      <div class="col-sm-6 col-lg-3"><div class="b-card step-card"><span class="num">3</span><h5>Xizmat va buyurtma</h5><p>Xizmat joylang, AI tavsiya orqali mijozlar sizni topadi.</p></div></div>
+      <div class="col-sm-6 col-lg-3"><div class="b-card step-card"><span class="num">4</span><h5>Baho va daromad</h5><p>Bajarilgan ishlar uchun baho oling, daromadingizni kuzating.</p></div></div>
+    </div>
+    <div class="stat-grid mt-4">
+      <div class="stat"><div class="label">Xizmat ko‘rsatuvchi ayollar</div><div class="value">{{ stats.providers }}</div></div>
+      <div class="stat"><div class="label">Faol xizmatlar</div><div class="value">{{ stats.services }}</div></div>
+      <div class="stat accent"><div class="label">Yakunlangan buyurtmalar</div><div class="value">{{ stats.completed }}</div></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

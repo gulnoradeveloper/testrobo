@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Mahalla dashboardi{% endblock %}
+{% block heading_sub %}{{ mahalla }}{% endblock %}{% block heading %}Mahalla dashboardi{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  {% if stats.pending_verifications %}<div class="flash flash-info">Sizda {{ stats.pending_verifications }} ta ko‘rib chiqilmagan verifikatsiya arizasi bor. <a href="{% url 'accounts:mahalla_verifications' %}">Ko‘rish →</a></div>{% endif %}
+  <div class="stat-grid">
+    <div class="stat"><div class="label">Hududdagi foydalanuvchilar</div><div class="value">{{ stats.users }}</div></div>
+    <div class="stat"><div class="label">Xizmat ko‘rsatuvchilar</div><div class="value">{{ stats.providers }}</div></div>
+    <div class="stat"><div class="label">Tasdiqlangan</div><div class="value">{{ stats.verified }}</div></div>
+    <div class="stat"><div class="label">Faol xizmatlar</div><div class="value">{{ stats.active_services }}</div></div>
+    <div class="stat"><div class="label">Buyurtma olgan ayollar</div><div class="value">{{ stats.women_with_orders }}</div></div>
+    <div class="stat accent"><div class="label">Yakunlangan buyurtmalar</div><div class="value">{{ stats.completed_orders }}</div></div>
+  </div>
+  <div class="row g-4">
+    <div class="col-lg-7"><div class="b-card"><h3>Oylik buyurtmalar dinamikasi</h3>{% include "partials/bars.html" with series=stats.orders_series %}</div></div>
+    <div class="col-lg-5">
+      <div class="b-card"><h3>Eng talabgir xizmatlar</h3>
+        {% for t in stats.top_categories %}<div class="d-flex justify-content-between py-2 border-bottom"><span>{{ t.service__category__icon }} {{ t.service__category__name }}</span><b>{{ t.n }}</b></div>
+        {% empty %}<p class="small-note">Hozircha buyurtmalar yo‘q.</p>{% endfor %}
+        <p class="mt-3 mb-0">Faol xizmat ko‘rsatuvchilar soni: <b>{{ stats.active_providers }}</b></p>
+      </div>
+      <p class="privacy-note"><i class="fa fa-lock"></i> Dashboard faqat agregat ko‘rsatkichlarni ko‘rsatadi. Psixologik murojaatlar bu yerda aks etmaydi.</p>
+    </div>
+  </div>
+</div></section>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Psixolog kabineti{% endblock %}
+{% block heading_sub %}Psixolog{% endblock %}{% block heading %}Kabinet{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  {% if not p.is_approved %}<div class="flash flash-info">Profilingiz administrator tasdig‘ini kutmoqda. Tasdiqlangach mutaxassislar ro‘yxatida ko‘rinasiz.</div>{% endif %}
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="b-card"><h3>Kelgan so‘rovlar</h3>
+        {% for c in requests %}
+          <div class="border-bottom pb-3 mb-3">
+            <div class="d-flex justify-content-between flex-wrap gap-2"><div><b>{{ c.client.display_name }}</b> · {{ c.get_format_display }}<div class="small-note">{% if c.slot %}{{ c.slot.start_at|date:"d.m.Y H:i" }}{% endif %}</div></div><span class="pill st-{{ c.status|lower }}">{{ c.get_status_display }}</span></div>
+            {% if c.message %}<p class="mt-2 mb-1">“{{ c.message }}”</p>{% endif %}
+            {% if c.status == 'REQUESTED' %}
+              <div class="btn-row mt-2">
+                <form method="post" action="{% url 'psychology:consultation_action' c.pk 'confirm' %}">{% csrf_token %}<button class="btn-main btn-sm">Tasdiqlash</button></form>
+                <form method="post" action="{% url 'psychology:consultation_action' c.pk 'reject' %}">{% csrf_token %}<button class="btn-danger-soft btn-sm">Rad etish</button></form>
+              </div>
+            {% elif c.status == 'CONFIRMED' %}
+              <form method="post" action="{% url 'psychology:consultation_action' c.pk 'complete' %}" class="b-form mt-2">{% csrf_token %}
+                <input type="text" name="note" placeholder="Mijozga izoh (ixtiyoriy, maxfiy)"><button class="btn-soft btn-sm mt-2">Yakunlangan deb belgilash</button></form>
+            {% endif %}
+          </div>
+        {% empty %}<p class="small-note">So‘rovlar yo‘q.</p>{% endfor %}
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <form method="post" class="b-card b-form">{% csrf_token %}
+        <h3>Qabul vaqtlari</h3>
+        <div class="row"><div class="col-6">{% include "partials/field.html" with field=slot_form.start_at %}</div><div class="col-6">{% include "partials/field.html" with field=slot_form.end_at %}</div></div>
+        <button class="btn-main btn-block" name="add_slot" type="submit">Vaqt qo‘shish</button>
+        <div class="mt-3">{% for s in slots %}<div class="d-flex justify-content-between align-items-center py-2 border-bottom"><span>{{ s }}</span>{% if s.is_booked %}<span class="pill st-confirmed">Band</span>{% else %}<button form="slot-del-{{ s.pk }}" class="btn-danger-soft btn-sm">O‘chirish</button>{% endif %}</div>{% empty %}<p class="small-note">Kelgusi bo‘sh vaqtlar yo‘q.</p>{% endfor %}</div>
+      </form>
+      {% for s in slots %}{% if not s.is_booked %}<form id="slot-del-{{ s.pk }}" method="post" action="{% url 'psychology:slot_delete' s.pk %}">{% csrf_token %}</form>{% endif %}{% endfor %}
+      <form method="post" class="b-card b-form">{% csrf_token %}
+        <h3>Mutaxassis profili</h3>
+        {% for f in profile_form %}{% include "partials/field.html" with field=f %}{% endfor %}
+        <button class="btn-main btn-block" name="save_profile" type="submit">Saqlash</button>
+      </form>
+    </div>
+  </div>
+</div></section>
+{% endblock %}

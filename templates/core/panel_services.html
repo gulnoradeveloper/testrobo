@@ -1,0 +1,28 @@
+{% extends "base.html" %}{% load begoyim %}
+{% block title %}Xizmatlar moderatsiyasi{% endblock %}
+{% block heading_sub %}Admin panel{% endblock %}{% block heading %}Xizmatlar moderatsiyasi{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  <div class="cat-chips">
+    <a href="?" class="{% if not status %}active{% endif %}">Barchasi</a>
+    {% for v, l in statuses %}<a href="?status={{ v }}" class="{% if status == v %}active{% endif %}">{{ l }}</a>{% endfor %}
+  </div>
+  <div class="b-card table-wrap">
+    <table class="b-table">
+      <thead><tr><th>Xizmat</th><th>Ijrochi</th><th>Kategoriya</th><th>Hudud</th><th>Holat</th><th></th></tr></thead>
+      <tbody>
+      {% for s in services %}
+        <tr>
+          <td><a href="{{ s.get_absolute_url }}">{{ s.title }}</a><div class="small-note">{{ s.price_label }}</div></td>
+          <td>{{ s.provider.display_name }}</td><td>{{ s.category.name }}</td><td>{{ s.district.name }}</td>
+          <td><span class="pill {{ s.status|status_class }}">{{ s.get_status_display }}</span></td>
+          <td><form method="post" action="{% url 'core:panel_service_moderate' s.pk %}">{% csrf_token %}<input type="hidden" name="back" value="{{ request.get_full_path }}">
+            {% if s.status == 'blocked' %}<button name="action" value="unblock" class="btn-soft btn-sm">Faollashtirish</button>{% else %}<button name="action" value="block" class="btn-danger-soft btn-sm">Bloklash</button>{% endif %}
+          </form></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div></section>
+{% endblock %}

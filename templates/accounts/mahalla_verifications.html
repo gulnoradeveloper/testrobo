@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Verifikatsiya arizalari{% endblock %}
+{% block heading_sub %}{{ mahalla }}{% endblock %}{% block heading %}Verifikatsiya arizalari{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  <div class="cat-chips">
+    <a href="?status=all" class="{% if status == 'all' %}active{% endif %}">Barchasi</a>
+    {% for v, l in statuses %}<a href="?status={{ v }}" class="{% if status == v %}active{% endif %}">{{ l }}</a>{% endfor %}
+  </div>
+  <div class="b-card table-wrap">
+    <table class="b-table">
+      <thead><tr><th>Ariza beruvchi</th><th>Telefon</th><th>Yuborilgan</th><th>Holat</th><th></th></tr></thead>
+      <tbody>
+      {% for vr in requests %}
+        <tr><td><b>{{ vr.user.display_name }}</b></td><td>{{ vr.user.phone }}</td><td>{{ vr.created_at|date:"d.m.Y H:i" }}</td>
+          <td><span class="pill st-{{ vr.status }}">{{ vr.get_status_display }}</span></td>
+          <td><a class="btn-soft btn-sm" href="{% url 'accounts:mahalla_verification_detail' vr.pk %}">Ko‘rish</a></td></tr>
+      {% empty %}<tr><td colspan="5" class="empty">Arizalar yo‘q.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div></section>
+{% endblock %}

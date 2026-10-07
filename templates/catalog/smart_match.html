@@ -1,0 +1,40 @@
+{% extends "base.html" %}{% load begoyim %}
+{% block title %}AI tavsiya{% endblock %}
+{% block heading_sub %}AI Smart Matching{% endblock %}{% block heading %}Sizga kim yordam bera oladi?{% endblock %}
+{% block content %}
+<section class="page"><div class="container" style="max-width:960px">
+  <form method="get" class="b-card b-form">
+    <label for="id_text">So‘rovingizni oddiy tilda yozing</label>
+    {{ form.text }}{{ form.text.errors }}
+    <div class="d-flex flex-wrap gap-2 mt-2">{% for e in examples %}<a class="badge-soft" href="?text={{ e|urlencode }}">{{ e }}</a>{% endfor %}</div>
+    <button class="btn-main btn-block mt-3" type="submit">🤖 Mos ijrochilarni topish</button>
+  </form>
+  {% if result %}
+    <div class="b-card">
+      <h5>So‘rovdan aniqlangan parametrlar</h5>
+      <div class="parsed-chips">
+        <span>xizmat = {{ result.parsed.xizmat|default:"aniqlanmadi" }}</span>
+        <span>hudud = {{ result.parsed.hudud|default:"ko‘rsatilmagan" }}</span>
+        <span>vaqt = {{ result.parsed.vaqt|default:"ko‘rsatilmagan" }}</span>
+        {% if result.parsed.shakl %}<span>shakl = {{ result.parsed.shakl }}</span>{% endif %}
+      </div>
+      <p class="small-note mb-0">MatchScore = xizmat mosligi (40) + hudud mosligi (25) + reyting (15) + verifikatsiya (10) + mavjudlik (10). AI faqat tavsiya beradi — tanlov sizda.</p>
+    </div>
+    {% for m in result.matches %}
+      <div class="b-card match-card">
+        <div class="match-score" style="--p: {{ m.score }}"><b>{{ m.score }}%</b></div>
+        <div class="flex-grow-1">
+          <h5 class="mb-1">{{ forloop.counter }}. {{ m.service.provider.display_name }} — {{ m.score }}% mos</h5>
+          <div><a href="{{ m.service.get_absolute_url }}"><b>{{ m.service.title }}</b></a> · {{ m.service.price_label }} · {{ m.service.district.name }}</div>
+          <div class="mt-1">{% if m.service.provider.profile.reviews_count %}<span class="stars">★</span> {{ m.service.provider.profile.rating|floatformat:1 }}{% else %}<span class="small-note">Yangi ijrochi</span>{% endif %}{% if m.service.provider.profile.is_verified %} • <span class="badge-verified">✓ Tasdiqlangan</span>{% endif %}</div>
+          <div class="breakdown">{% for k, v in m.breakdown.items %}<span>{{ k }}: {{ v }}</span>{% endfor %}</div>
+          <div class="small-note mt-1">{{ m.reasons|join:" · " }}</div>
+        </div>
+        <a class="btn-main btn-sm" href="{{ m.service.get_absolute_url }}">Ko‘rish</a>
+      </div>
+    {% empty %}
+      <div class="b-card empty"><span class="ico">🔎</span>{{ result.message }}</div>
+    {% endfor %}
+  {% endif %}
+</div></section>
+{% endblock %}

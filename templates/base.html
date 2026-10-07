@@ -1,0 +1,132 @@
+{% load static %}<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="BEGOYIM — ayollar bandligi va farovonligi raqamli ekotizimi. {{ SLOGAN }}">
+  <meta name="theme-color" content="#8e1238">
+  <title>{% block title %}BEGOYIM{% endblock %} — {{ SLOGAN }}</title>
+  <link rel="icon" type="image/png" href="{% static 'begoyim/img/favicon.png' %}">
+  <link rel="apple-touch-icon" href="{% static 'begoyim/img/icon-192.png' %}">
+  <link rel="manifest" href="{% url 'core:manifest' %}">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,500,600,700,800&display=swap" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'eduwell/css/fontawesome.css' %}">
+  <link rel="stylesheet" href="{% static 'eduwell/css/templatemo-eduwell-style.css' %}">
+  <link rel="stylesheet" href="{% static 'begoyim/css/begoyim.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}inner{% endblock %}">
+
+<header class="header-area header-sticky">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="main-nav">
+          <a href="{% url 'core:home' %}" class="logo" aria-label="BEGOYIM bosh sahifa">
+            <img src="{% static 'begoyim/img/logo-header.png' %}" alt="BEGOYIM">
+          </a>
+          <ul class="nav">
+            <li><a href="{% url 'core:home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Bosh sahifa</a></li>
+            <li><a href="{% url 'catalog:service_list' %}" class="{% if request.resolver_match.url_name == 'service_list' %}active{% endif %}">Xizmatlar</a></li>
+            <li><a href="{% url 'catalog:smart_match' %}" class="{% if request.resolver_match.url_name == 'smart_match' %}active{% endif %}">AI tavsiya</a></li>
+            <li><a href="{% url 'psychology:list' %}" class="{% if request.resolver_match.app_name == 'psychology' %}active{% endif %}">Psixologik yordam</a></li>
+            {% if user.is_authenticated %}
+              <li class="has-sub">
+                <a href="javascript:void(0)">Kabinet</a>
+                <ul class="sub-menu">
+                  <li><a href="{% url 'accounts:profile' %}">Profilim</a></li>
+                  {% if user.is_provider %}
+                    <li><a href="{% url 'catalog:my_services' %}">Xizmatlarim</a></li>
+                    <li><a href="{% url 'catalog:order_list' %}?tab=received">Kelgan buyurtmalar</a></li>
+                    <li><a href="{% url 'catalog:income_dashboard' %}">Daromad</a></li>
+                  {% endif %}
+                  {% if user.can_order %}
+                    <li><a href="{% url 'catalog:order_list' %}?tab=made">Buyurtmalarim</a></li>
+                    <li><a href="{% url 'catalog:favorites' %}">Sevimlilar</a></li>
+                  {% endif %}
+                  {% if user.is_mahalla %}
+                    <li><a href="{% url 'accounts:mahalla_home' %}">Mahalla dashboardi</a></li>
+                    <li><a href="{% url 'accounts:mahalla_verifications' %}">Verifikatsiya arizalari</a></li>
+                  {% endif %}
+                  {% if user.is_psychologist %}
+                    <li><a href="{% url 'psychology:cabinet' %}">Psixolog kabineti</a></li>
+                  {% endif %}
+                  <li><a href="{% url 'psychology:my_consultations' %}">Konsultatsiyalarim</a></li>
+                  {% if user.is_admin_role %}
+                    <li><a href="{% url 'core:panel_home' %}">Admin panel</a></li>
+                  {% endif %}
+                  <li>
+                    <form method="post" action="{% url 'accounts:logout' %}" class="logout-form">{% csrf_token %}
+                      <button type="submit">Chiqish</button>
+                    </form>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a href="{% url 'core:notifications' %}" class="bell" aria-label="Bildirishnomalar">
+                  <i class="fa fa-bell"></i><span class="d-md-none"> Bildirishnomalar</span>
+                  {% if unread_count %}<span class="bell-count">{{ unread_count }}</span>{% endif %}
+                </a>
+              </li>
+            {% else %}
+              <li><a href="{% url 'accounts:login' %}">Kirish</a></li>
+              <li><a href="{% url 'accounts:register' %}" class="nav-cta">Ro‘yxatdan o‘tish</a></li>
+            {% endif %}
+          </ul>
+          <a class="menu-trigger" aria-label="Menyu"><span>Menu</span></a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% block page_heading %}
+<section class="page-heading">
+  <div class="container">
+    <div class="header-text">
+      <h4>{% block heading_sub %}BEGOYIM{% endblock %}</h4>
+      <h1>{% block heading %}{% endblock %}</h1>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% if messages %}
+<div class="container flash-wrap">
+  {% for m in messages %}
+    <div class="flash flash-{{ m.tags }}" role="status">{{ m }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<main>{% block content %}{% endblock %}</main>
+
+<section class="contact-us site-footer" id="contact-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-4 text-center text-lg-start">
+        <img class="footer-logo" src="{% static 'begoyim/img/logo-header.png' %}" alt="BEGOYIM">
+      </div>
+      <div class="col-lg-8">
+        <h4 class="footer-title">Ayollar bandligi va farovonligi raqamli ekotizimi</h4>
+        <p class="footer-slogan">{{ SLOGAN }}</p>
+        <ul class="footer-links">
+          <li><a href="{% url 'catalog:service_list' %}">Xizmat topish</a></li>
+          <li><a href="{% if user.is_authenticated and user.is_provider %}{% url 'catalog:service_create' %}{% else %}{% url 'accounts:register' %}?role=provider{% endif %}">Xizmat ko‘rsatish</a></li>
+          <li><a href="{% url 'psychology:list' %}">Psixologik yordam</a></li>
+          <li><a href="{% url 'core:how_it_works' %}">Qanday ishlaydi?</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-12">
+        <p class="copyright">© {% now "Y" %} BEGOYIM. Barcha huquqlar himoyalangan.<br>Dizayn asosi: TemplateMo EduWell.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'begoyim/js/app.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

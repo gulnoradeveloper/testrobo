@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{% if service.pk %}Xizmatni tahrirlash{% else %}Yangi xizmat{% endif %}{% endblock %}
+{% block heading_sub %}Xizmat ko‘rsatuvchi{% endblock %}{% block heading %}{% if service.pk %}Xizmatni tahrirlash{% else %}Yangi xizmat yaratish{% endif %}{% endblock %}
+{% block content %}
+<section class="page"><div class="container" style="max-width:860px">
+  {% if not user.profile.is_verified %}<div class="flash flash-info">Maslahat: <a href="{% url 'accounts:profile' %}">mahalla verifikatsiyasidan</a> o‘tsangiz, xizmatingiz “✓ Tasdiqlangan” belgisi bilan yuqoriroq ko‘rinadi.</div>{% endif %}
+  <form method="post" enctype="multipart/form-data" class="b-card b-form" novalidate>{% csrf_token %}
+    {{ form.non_field_errors }}
+    {% include "partials/field.html" with field=form.title %}
+    {% include "partials/field.html" with field=form.category %}
+    {% include "partials/field.html" with field=form.description %}
+    <div class="row">
+      <div class="col-md-6">{% include "partials/field.html" with field=form.price_type %}</div>
+      <div class="col-md-6">{% include "partials/field.html" with field=form.price %}</div>
+      <div class="col-md-6">{% include "partials/field.html" with field=form.service_mode %}</div>
+      <div class="col-md-6">{% include "partials/field.html" with field=form.duration %}</div>
+      <div class="col-md-6">{% include "partials/field.html" with field=form.region %}</div>
+      <div class="col-md-6">{% include "partials/field.html" with field=form.district %}</div>
+    </div>
+    {% include "partials/field.html" with field=form.images %}
+    {% if service.pk and service.images.all %}
+      <div class="portfolio-grid mb-3">{% for img in service.images.all %}<div><img src="{{ img.image.url }}" alt=""><button form="del-{{ img.pk }}" class="btn-danger-soft btn-sm btn-block mt-1">O‘chirish</button></div>{% endfor %}</div>
+    {% endif %}
+    {% if service.status == 'blocked' %}<p class="flash flash-error">Xizmat moderatsiya tomonidan bloklangan.</p>{% else %}{% include "partials/field.html" with field=form.status_choice %}{% endif %}
+    <button class="btn-main btn-block" type="submit">Saqlash</button>
+  </form>
+  {% if service.pk %}{% for img in service.images.all %}<form id="del-{{ img.pk }}" method="post" action="{% url 'catalog:service_image_delete' img.pk %}">{% csrf_token %}</form>{% endfor %}{% endif %}
+</div></section>
+{% endblock %}

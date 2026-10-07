@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Ro‘yxatdan o‘tish{% endblock %}
+{% block heading_sub %}1-qadam: hisob{% endblock %}{% block heading %}Ro‘yxatdan o‘tish{% endblock %}
+{% block content %}
+<section class="page"><div class="container" style="max-width:620px">
+  <form method="post" class="b-card b-form" novalidate>{% csrf_token %}
+    {{ form.non_field_errors }}
+    {% include "partials/field.html" with field=form.phone %}
+    {% include "partials/field.html" with field=form.password1 %}
+    {% include "partials/field.html" with field=form.password2 %}
+    {% include "partials/field.html" with field=form.role extra_class="choice-cards" %}
+    <p class="small-note">Parol kamida 8 belgidan iborat bo‘lsin va faqat raqamlardan iborat bo‘lmasin. Keyingi qadamda ism, familiya va hududingizni kiritasiz.</p>
+    <button class="btn-main btn-block" type="submit">Davom etish</button>
+    <p class="text-center mt-3">Hisobingiz bormi? <a href="{% url 'accounts:login' %}"><b>Kirish</b></a></p>
+  </form>
+</div></section>
+{% endblock %}

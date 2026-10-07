@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Profilni tahrirlash{% endblock %}
+{% block heading_sub %}2-qadam: ma’lumotlarim{% endblock %}{% block heading %}Profilni to‘ldirish{% endblock %}
+{% block content %}
+<section class="page"><div class="container" style="max-width:860px">
+  <form method="post" enctype="multipart/form-data" class="b-form" novalidate>{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="b-card">
+      <h3>Shaxsiy ma’lumotlar</h3>
+      <div class="row">
+        <div class="col-md-6">{% include "partials/field.html" with field=form.first_name %}</div>
+        <div class="col-md-6">{% include "partials/field.html" with field=form.last_name %}</div>
+        <div class="col-md-6">{% include "partials/field.html" with field=form.birth_year %}</div>
+        <div class="col-md-6">{% include "partials/field.html" with field=form.age_range %}</div>
+      </div>
+      <p class="small-note">Tug‘ilgan yil yoki yosh diapazonidan birini kiritish kifoya (minimal zarur ma’lumot).</p>
+    </div>
+    <div class="b-card">
+      <h3>Hudud</h3>
+      <div class="row">
+        <div class="col-md-4">{% include "partials/field.html" with field=form.region %}</div>
+        <div class="col-md-4">{% include "partials/field.html" with field=form.district %}</div>
+        <div class="col-md-4">{% include "partials/field.html" with field=form.mahalla %}</div>
+      </div>
+      {% if form.region.field.disabled %}<p class="small-note">Verifikatsiya jarayonida yoki tasdiqlangan profilda hududni o‘zgartirib bo‘lmaydi.</p>{% endif %}
+    </div>
+    <div class="b-card">
+      <h3>Profil</h3>
+      {% include "partials/field.html" with field=form.avatar %}
+      {% include "partials/field.html" with field=form.bio %}
+      {% if form.experience %}{% include "partials/field.html" with field=form.experience %}{% endif %}
+    </div>
+    {% if form.skills %}
+    <div class="b-card">
+      <h3>Ko‘nikmalar</h3>
+      {% include "partials/field.html" with field=form.skills extra_class="check-chips" %}
+      <div class="row">
+        <div class="col-md-6">{% include "partials/field.html" with field=form.new_skill %}</div>
+        <div class="col-md-6">{% include "partials/field.html" with field=form.new_skill_category %}</div>
+      </div>
+    </div>
+    <div class="b-card">
+      <h3>Portfolio</h3>
+      {% include "partials/field.html" with field=form.portfolio %}
+      {% if user.portfolio.exists %}
+        <div class="portfolio-grid">{% for img in user.portfolio.all %}<div><img src="{{ img.image.url }}" alt=""><button form="del-{{ img.pk }}" class="btn-danger-soft btn-sm btn-block mt-1">O‘chirish</button></div>{% endfor %}</div>
+      {% endif %}
+    </div>
+    {% endif %}
+    <button class="btn-main btn-block" type="submit">Saqlash</button>
+  </form>
+  {% for img in user.portfolio.all %}<form id="del-{{ img.pk }}" method="post" action="{% url 'accounts:portfolio_delete' img.pk %}">{% csrf_token %}</form>{% endfor %}
+</div></section>
+{% endblock %}

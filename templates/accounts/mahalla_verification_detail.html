@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Ariza #{{ vr.pk }}{% endblock %}
+{% block heading_sub %}Verifikatsiya arizasi #{{ vr.pk }}{% endblock %}{% block heading %}{{ applicant.display_name }}{% endblock %}
+{% block content %}
+{% with p=applicant.profile %}
+<section class="page"><div class="container">
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="b-card">
+        <h3>Ma’lumotlarni tekshirish</h3>
+        <table class="b-table">
+          <tr><td class="muted">F.I.Sh.</td><td><b>{{ p.full_name }}</b></td></tr>
+          <tr><td class="muted">Telefon</td><td>{{ applicant.phone }}</td></tr>
+          <tr><td class="muted">Yosh</td><td>{{ p.birth_year|default:"" }} {{ p.get_age_range_display }}</td></tr>
+          <tr><td class="muted">Hudud</td><td>{{ p.region }}, {{ p.district }}, {{ p.mahalla }}</td></tr>
+          <tr><td class="muted">Qisqacha</td><td>{{ p.bio|default:"—" }}</td></tr>
+          <tr><td class="muted">Tajriba</td><td>{{ p.experience|default:"—" }}</td></tr>
+          <tr><td class="muted">Ko‘nikmalar</td><td>{% for us in skills %}<span class="badge-soft me-1">{{ us.skill.name }}</span>{% empty %}—{% endfor %}</td></tr>
+          <tr><td class="muted">Xizmatlar soni</td><td>{{ services_count }}</td></tr>
+          <tr><td class="muted">Ariza izohi</td><td>{{ vr.note|default:"—" }}</td></tr>
+        </table>
+        {% if portfolio %}<h5 class="mt-3">Portfolio</h5><div class="portfolio-grid">{% for img in portfolio %}<img src="{{ img.image.url }}" alt="">{% endfor %}</div>{% endif %}
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="b-card">
+        <h3>Qaror</h3>
+        <p>Joriy holat: <span class="pill st-{{ vr.status }}">{{ vr.get_status_display }}</span></p>
+        {% if vr.status == 'pending' %}
+        <form method="post" class="b-form">{% csrf_token %}
+          <label for="id_comment">Izoh (rad etish yoki qaytarishda tavsiya etiladi)</label>{{ form.comment }}
+          <div class="d-grid gap-2 mt-3">
+            <button class="btn-main" name="decision" value="approve">✓ Tasdiqlash</button>
+            <button class="btn-soft" name="decision" value="revision">↺ Qayta ko‘rib chiqishga yuborish</button>
+            <button class="btn-danger-soft" name="decision" value="reject">✕ Rad etish</button>
+          </div>
+        </form>
+        {% else %}
+          <p class="small-note">Qaror: {{ vr.decided_at|date:"d.m.Y H:i" }}{% if vr.reviewer_comment %} — “{{ vr.reviewer_comment }}”{% endif %}</p>
+        {% endif %}
+      </div>
+      {% if history %}<div class="b-card"><h5>Avvalgi arizalar</h5>{% for h in history %}<div class="small-note">{{ h.created_at|date:"d.m.Y" }} — {{ h.get_status_display }}{% if h.reviewer_comment %}: {{ h.reviewer_comment }}{% endif %}</div>{% endfor %}</div>{% endif %}
+    </div>
+  </div>
+</div></section>
+{% endwith %}
+{% endblock %}

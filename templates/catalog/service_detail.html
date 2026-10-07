@@ -1,0 +1,71 @@
+{% extends "base.html" %}{% load begoyim %}
+{% block title %}{{ s.title }}{% endblock %}
+{% block heading_sub %}{{ s.category.icon }} {{ s.category.name }}{% endblock %}{% block heading %}{{ s.title }}{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  {% if s.status != 'active' %}<div class="flash flash-info">Bu xizmat holati: {{ s.get_status_display }}. U katalogda ko‘rinmaydi.</div>{% endif %}
+  <div class="row g-4">
+    <div class="col-lg-8 order-2 order-lg-1">
+      <div class="b-card">
+        {% if s.images.all %}
+          <div class="portfolio-grid mb-3" style="grid-template-columns:repeat(auto-fill,minmax(180px,1fr))">{% for img in s.images.all %}<a href="{{ img.image.url }}" target="_blank" rel="noopener"><img src="{{ img.image.url }}" alt="{{ s.title }}" style="height:180px"></a>{% endfor %}</div>
+        {% endif %}
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="badge-soft">{{ s.price_label }}</span>
+          <span class="pill">{{ s.get_service_mode_display }}</span>
+          <span class="pill"><i class="fa fa-map-marker"></i> {{ s.district.name }}, {{ s.region.name }}</span>
+          {% if s.duration %}<span class="pill"><i class="fa fa-clock-o"></i> {{ s.duration }}</span>{% endif %}
+        </div>
+        <p style="font-size:16px">{{ s.description|linebreaksbr }}</p>
+        {% if user.is_authenticated and not is_owner %}
+          <div class="btn-row mt-3">
+            <form method="post" action="{% url 'catalog:favorite_toggle' s.pk %}">{% csrf_token %}<button class="btn-soft btn-sm" type="submit">{% if is_fav %}♥ Sevimlilarda{% else %}♡ Sevimlilarga saqlash{% endif %}</button></form>
+          </div>
+        {% endif %}
+      </div>
+      <div class="b-card">
+        <h5>Mijozlar baholari</h5>
+        {% for r in reviews %}
+          <div class="mb-3 pb-3 border-bottom"><span class="stars">{{ r.rating|stars }}</span> <b>{{ r.customer.display_name }}</b> <span class="small-note">{{ r.created_at|date:"d.m.Y" }}</span>
+            <div class="small-note">Sifat {{ r.quality_rating }}/5 · Muomala {{ r.communication_rating }}/5 · Vaqtida {{ r.punctuality_rating }}/5</div>
+            {% if r.comment %}<p class="mb-0">{{ r.comment }}</p>{% endif %}</div>
+        {% empty %}<p class="small-note">Hali baholar yo‘q.</p>{% endfor %}
+      </div>
+      {% if similar %}
+      <h3 class="mb-3">O‘xshash xizmatlar</h3>
+      <div class="row g-4">{% for s in similar %}<div class="col-md-4">{% include "partials/service_card.html" %}</div>{% endfor %}</div>
+      {% endif %}
+    </div>
+    <div class="col-lg-4 order-1 order-lg-2">
+      <div class="b-card text-center">
+        {% include "partials/avatar.html" %}
+        <h5 class="mt-2 mb-1"><a href="{% url 'accounts:public_profile' s.provider_id %}">{{ p.full_name }}</a></h5>
+        <div class="mb-2">{% if p.reviews_count %}<span class="stars">★</span> <b>{{ p.rating|floatformat:1 }}</b> <span class="small-note">({{ p.reviews_count }} ta baho)</span>{% else %}<span class="small-note">Yangi ijrochi</span>{% endif %}</div>
+        {% if p.is_verified %}<span class="badge-verified">✓ Mahalla tomonidan tasdiqlangan</span>{% endif %}
+      </div>
+      {% if is_owner %}
+        <div class="b-card"><a class="btn-main btn-block" href="{% url 'catalog:service_edit' s.pk %}">Xizmatni tahrirlash</a></div>
+      {% elif user.is_authenticated and user.can_order %}
+        <form method="post" action="{% url 'catalog:order_create' s.pk %}" class="b-card b-form">{% csrf_token %}
+          <h3>Buyurtma berish</h3>
+          {% include "partials/field.html" with field=order_form.service_date %}
+          {% include "partials/field.html" with field=order_form.price %}
+          {% include "partials/field.html" with field=order_form.address_or_area %}
+          {% include "partials/field.html" with field=order_form.comment %}
+          <button class="btn-main btn-block" type="submit">Buyurtma berish</button>
+          <p class="small-note mt-2">To‘lov ijrochi bilan bevosita kelishiladi. Platforma bajarilgan buyurtmalarni hisobga oladi.</p>
+        </form>
+      {% elif not user.is_authenticated %}
+        <div class="b-card text-center"><p>Buyurtma berish uchun tizimga kiring.</p><a class="btn-main btn-block" href="{% url 'accounts:login' %}?next={{ request.path }}">Kirish</a></div>
+      {% endif %}
+      {% if user.is_authenticated and not is_owner %}
+      <details class="b-card"><summary><b>Shikoyat qilish</b></summary>
+        <form method="post" action="{% url 'core:report_create' %}" class="b-form mt-3">{% csrf_token %}<input type="hidden" name="service" value="{{ s.pk }}">
+          <div class="field">{{ report_form.reason }}</div><div class="field">{{ report_form.comment }}</div>
+          <button class="btn-danger-soft btn-sm" type="submit">Yuborish</button></form>
+      </details>
+      {% endif %}
+    </div>
+  </div>
+</div></section>
+{% endblock %}

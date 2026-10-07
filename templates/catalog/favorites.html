@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Sevimlilar{% endblock %}
+{% block heading_sub %}Saqlangan xizmatlar{% endblock %}{% block heading %}Sevimlilar{% endblock %}
+{% block content %}
+<section class="page"><div class="container"><div class="row g-4">
+  {% for f in favorites %}{% with s=f.service %}<div class="col-md-6 col-lg-4">{% include "partials/service_card.html" %}</div>{% endwith %}
+  {% empty %}<div class="col-12"><div class="b-card empty"><span class="ico">♡</span>Sevimli xizmatlar yo‘q.</div></div>{% endfor %}
+</div></div></section>
+{% endblock %}

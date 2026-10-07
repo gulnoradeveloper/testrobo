@@ -1,0 +1,69 @@
+{% extends "base.html" %}{% load begoyim %}
+{% block title %}Buyurtma #{{ o.pk }}{% endblock %}
+{% block heading_sub %}Buyurtma #{{ o.pk }}{% endblock %}{% block heading %}{{ o.service.title }}{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  <div class="b-card">
+    <div class="flow">
+      {% for label, done, now in flow %}<span class="step{% if now %} now{% elif done %} done{% endif %}">{{ label }}</span>{% if not forloop.last %}<span class="arrow">→</span>{% endif %}{% endfor %}
+      {% if o.status == 'CANCELLED' or o.status == 'REJECTED' %}<span class="arrow">·</span><span class="pill {{ o.status|status_class }}">{{ o.get_status_display }}</span>{% endif %}
+    </div>
+  </div>
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="b-card">
+        <h3>Buyurtma ma’lumotlari</h3>
+        <table class="b-table">
+          <tr><td class="muted">Buyurtmachi</td><td><b>{{ o.customer.display_name }}</b>{% if is_provider and o.status != 'NEW' %} · {{ o.customer.phone }}{% endif %}</td></tr>
+          <tr><td class="muted">Ijrochi</td><td><a href="{% url 'accounts:public_profile' o.provider_id %}"><b>{{ o.provider.display_name }}</b></a>{% if not is_provider and o.status == 'ACCEPTED' or not is_provider and o.status == 'IN_PROGRESS' %} · {{ o.provider.phone }}{% endif %}</td></tr>
+          <tr><td class="muted">Xizmat</td><td><a href="{{ o.service.get_absolute_url }}">{{ o.service.title }}</a> ({{ o.service.get_service_mode_display }})</td></tr>
+          <tr><td class="muted">Sana</td><td>{{ o.service_date|date:"d.m.Y" }}</td></tr>
+          <tr><td class="muted">Kelishilgan narx</td><td><b>{{ o.price_label }}</b></td></tr>
+          <tr><td class="muted">Manzil / hudud</td><td>{{ o.address_or_area|default:"—" }}</td></tr>
+          <tr><td class="muted">Izoh</td><td>{{ o.comment|default:"—" }}</td></tr>
+          <tr><td class="muted">Holat</td><td><span class="pill {{ o.status|status_class }}">{{ o.get_status_display }}</span></td></tr>
+          <tr><td class="muted">Yaratilgan</td><td>{{ o.created_at|date:"d.m.Y H:i" }}</td></tr>
+        </table>
+      </div>
+      {% if o.is_on_site %}
+      <div class="safe-box mb-4">
+        <h5>🛡️ BEGOYIM Safe</h5>
+        <p class="mb-1">Ish boshlangan: <b>{{ o.started_at|date:"d.m.Y H:i"|default:"—" }}</b></p>
+        <p class="mb-1">Ish yakunlangan: <b>{{ o.completed_at|date:"d.m.Y H:i"|default:"—" }}</b></p>
+        <p class="small-note mb-0">Mijoz manzilida bajariladigan ishda tizim boshlanish va yakunlanish vaqtini qayd qiladi. SOS va geolokatsiya funksiyalari keyingi versiyada.</p>
+      </div>
+      {% endif %}
+    </div>
+    <div class="col-lg-5">
+      {% if actions %}
+      <div class="b-card"><h3>Amallar</h3>
+        <div class="d-grid gap-2">
+          {% for st, label, css in actions %}
+            <form method="post" action="{% url 'catalog:order_status' o.pk %}" {% if st == 'REJECTED' or st == 'CANCELLED' %}data-confirm="Ishonchingiz komilmi?"{% endif %}>{% csrf_token %}
+              <input type="hidden" name="status" value="{{ st }}"><button class="{{ css }} btn-block" type="submit">{{ label }}</button></form>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      {% if review_form %}
+      <form method="post" action="{% url 'catalog:review_create' o.pk %}" class="b-card b-form">{% csrf_token %}
+        <h3>Baho qoldiring</h3>
+        {% include "partials/field.html" with field=review_form.rating extra_class="star-input" %}
+        {% include "partials/field.html" with field=review_form.quality_rating extra_class="star-input" %}
+        {% include "partials/field.html" with field=review_form.communication_rating extra_class="star-input" %}
+        {% include "partials/field.html" with field=review_form.punctuality_rating extra_class="star-input" %}
+        {% include "partials/field.html" with field=review_form.comment %}
+        <button class="btn-main btn-block" type="submit">Bahoni yuborish</button>
+      </form>
+      {% elif o.review %}
+      <div class="b-card"><h3>Baho</h3><span class="stars" style="font-size:22px">{{ o.review.rating|stars }}</span>
+        <div class="small-note">Sifat {{ o.review.quality_rating }}/5 · Muomala {{ o.review.communication_rating }}/5 · Vaqtida {{ o.review.punctuality_rating }}/5</div>
+        {% if o.review.comment %}<p class="mt-2">{{ o.review.comment }}</p>{% endif %}</div>
+      {% endif %}
+      <div class="b-card"><h5>Holatlar tarixi</h5>
+        <ul class="timeline">{% for h in history %}<li><b>{{ h.to_label }}</b><div class="small-note">{{ h.created_at|date:"d.m.Y H:i" }} · {{ h.changed_by.display_name }}</div></li>{% endfor %}</ul>
+      </div>
+    </div>
+  </div>
+</div></section>
+{% endblock %}

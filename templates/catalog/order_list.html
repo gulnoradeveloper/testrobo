@@ -1,0 +1,28 @@
+{% extends "base.html" %}{% load begoyim %}
+{% block title %}Buyurtmalar{% endblock %}
+{% block heading_sub %}Buyurtmalar{% endblock %}{% block heading %}{% if tab == 'received' %}Kelgan buyurtmalar{% else %}Mening buyurtmalarim{% endif %}{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  <div class="cat-chips">
+    {% if user.is_provider %}<a href="?tab=received" class="{% if tab == 'received' %}active{% endif %}">Kelgan</a>{% endif %}
+    <a href="?tab=made" class="{% if tab == 'made' %}active{% endif %}">Men bergan</a>
+    <span class="mx-2 muted">|</span>
+    <a href="?tab={{ tab }}" class="{% if not status %}active{% endif %}">Barcha holatlar</a>
+    {% for v, l in statuses %}<a href="?tab={{ tab }}&status={{ v }}" class="{% if status == v %}active{% endif %}">{{ l }}</a>{% endfor %}
+  </div>
+  <div class="b-card table-wrap">
+    <table class="b-table">
+      <thead><tr><th>#</th><th>Xizmat</th><th>{% if tab == 'received' %}Buyurtmachi{% else %}Ijrochi{% endif %}</th><th>Sana</th><th>Narx</th><th>Holat</th><th></th></tr></thead>
+      <tbody>
+      {% for o in orders %}
+        <tr><td>{{ o.pk }}</td><td><b>{{ o.service.title }}</b></td>
+          <td>{% if tab == 'received' %}{{ o.customer.display_name }}{% else %}{{ o.provider.display_name }}{% endif %}</td>
+          <td>{{ o.service_date|date:"d.m.Y" }}</td><td>{{ o.price_label }}</td>
+          <td><span class="pill {{ o.status|status_class }}">{{ o.get_status_display }}</span></td>
+          <td><a class="btn-soft btn-sm" href="{{ o.get_absolute_url }}">Ochish</a></td></tr>
+      {% empty %}<tr><td colspan="7" class="empty">Buyurtmalar yo‘q.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div></section>
+{% endblock %}

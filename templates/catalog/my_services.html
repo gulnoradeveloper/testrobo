@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% load begoyim %}
+{% block title %}Xizmatlarim{% endblock %}
+{% block heading_sub %}Xizmat ko‘rsatuvchi{% endblock %}{% block heading %}Xizmatlarim{% endblock %}
+{% block content %}
+<section class="page"><div class="container">
+  <div class="text-end mb-3"><a class="btn-main" href="{% url 'catalog:service_create' %}"><i class="fa fa-plus"></i> Yangi xizmat</a></div>
+  <div class="row g-4">
+    {% for s in services %}
+      <div class="col-md-6 col-lg-4">
+        {% include "partials/service_card.html" %}
+        <div class="d-flex justify-content-between align-items-center mt-2"><span class="pill {{ s.status|status_class }}">{{ s.get_status_display }}</span><a class="btn-soft btn-sm" href="{% url 'catalog:service_edit' s.pk %}">Tahrirlash</a></div>
+      </div>
+    {% empty %}
+      <div class="col-12"><div class="b-card empty"><span class="ico">🧺</span>Hali xizmat yaratmagansiz.</div></div>
+    {% endfor %}
+  </div>
+</div></section>
+{% endblock %}
