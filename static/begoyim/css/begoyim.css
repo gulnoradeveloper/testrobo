@@ -281,3 +281,13 @@ section.contact-us.site-footer { background: linear-gradient(135deg, #7a0f30 0%,
 .cat-tile span.name { padding: 12px 14px 14px; font-size: 15px; line-height: 1.3; }
 @media (max-width: 575px) { .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } .cat-tile span.name { font-size: 14px; padding: 10px; } }
 .main-banner .header-text::after { display: none; }
+
+/* Header: logotip shaffof PNG holatida, oq quti yo'q — fon bilan uyg'un */
+.header-area .main-nav .logo img {
+  height: 96px; background: transparent; border-radius: 0; padding: 4px 0; box-shadow: none;
+  filter: drop-shadow(0 2px 3px rgba(255, 250, 240, .85)) drop-shadow(0 6px 12px rgba(122, 15, 48, .22));
+}
+.background-header .main-nav .logo img { height: 72px; padding: 2px 0; }
+@media (max-width: 767px) {
+  .header-area .main-nav .logo img { height: 72px; filter: none; }
+}
