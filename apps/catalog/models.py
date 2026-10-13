@@ -1,4 +1,8 @@
+from functools import lru_cache
+
 from django.conf import settings
+from django.contrib.staticfiles import finders
+from django.templatetags.static import static
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
@@ -6,10 +10,20 @@ from django.urls import reverse
 from apps.core.validators import IMAGE_VALIDATORS
 
 
+@lru_cache(maxsize=64)
+def _default_category_photo(slug):
+    path = f"begoyim/img/categories/{slug}.jpg"
+    return static(path) if finders.find(path) else None
+
+
 class Category(models.Model):
     name = models.CharField("Nomi", max_length=80, unique=True)
     slug = models.SlugField(max_length=80, unique=True)
     icon = models.CharField("Ikonka (emoji)", max_length=8, blank=True, default="✨")
+    image = models.ImageField(
+        "Rasm", upload_to="categories/", blank=True, validators=IMAGE_VALIDATORS,
+        help_text="Kategoriya kartochkasi va rasmsiz xizmatlar uchun foto (jpg, png, webp; 4:3 tavsiya etiladi).",
+    )
     keywords = models.TextField(
         "AI kalit so‘zlari", blank=True,
         help_text="Vergul bilan ajratilgan so‘z o‘zaklari. Smart Matching shu so‘zlar orqali kategoriyani aniqlaydi.",
@@ -25,6 +39,13 @@ class Category(models.Model):
 
     def __str__(self):
         return f"{self.icon} {self.name}".strip()
+
+    @property
+    def cover_url(self):
+        """Admin yuklagan rasm yoki static/begoyim/img/categories/<slug>.jpg; bo'lmasa None (emoji ko'rsatiladi)."""
+        if self.image:
+            return self.image.url
+        return _default_category_photo(self.slug)
 
     def keyword_list(self):
         return [k.strip().lower() for k in self.keywords.split(",") if k.strip()]
@@ -90,7 +111,7 @@ class Service(models.Model):
     @property
     def cover(self):
         img = self.images.first()
-        return img.image.url if img else None
+        return img.image.url if img else self.category.cover_url
 
 
 class ServiceImage(models.Model):

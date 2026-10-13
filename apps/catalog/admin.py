@@ -9,7 +9,7 @@ from .services import recalc_provider_rating
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ["icon", "name", "slug", "order", "is_active"]
+    list_display = ["icon", "name", "slug", "image", "order", "is_active"]
     list_editable = ["order", "is_active"]
     list_display_links = ["name"]
     prepopulated_fields = {"slug": ["name"]}

@@ -131,3 +131,4 @@ SOS/geolokatsiya MVP’da ishlaydigan funksiya sifatida ko‘rsatilmaydi (BEGOYI
 - SMS OTP integratsiyasi qilinmagan (TT talabiga ko‘ra soxta “SMS yuborildi” yaratilmagan) — keyingi integratsiya.
 - To‘lov tizimi, native mobil ilova, GPS tracking, video konsultatsiya — BEGOYIM 2.0 roadmap.
 - Bildirishnomalar — ichki web notification center (SMS/Telegram/push keyinroq).
+- Kategoriya rasmlari: `static/begoyim/img/categories/<slug>.jpg`; admin paneldan (Kategoriyalar → Rasm) yangisini yuklash mumkin.

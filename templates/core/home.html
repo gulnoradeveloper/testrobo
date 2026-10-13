@@ -39,7 +39,10 @@
     </div>
     <div class="cat-grid">
       {% for c in categories %}
-        <a class="cat-tile" href="{% url 'catalog:service_list' %}?category={{ c.slug }}"><span class="ico">{{ c.icon }}</span><span class="name">{{ c.name }}</span></a>
+        <a class="cat-tile{% if c.cover_url %} has-photo{% endif %}" href="{% url 'catalog:service_list' %}?category={{ c.slug }}">
+          <span class="ph">{% if c.cover_url %}<img src="{{ c.cover_url }}" alt="{{ c.name }}" loading="lazy">{% else %}<span class="ico">{{ c.icon }}</span>{% endif %}</span>
+          <span class="name">{{ c.name }}</span>
+        </a>
       {% endfor %}
     </div>
   </div>

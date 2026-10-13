@@ -98,6 +98,10 @@ PROVIDERS = [
      "12 yildan beri parda tikaman.",
      [("parda-tikish", "Zamonaviy parda tikish va o‘rnatish", 200000, "from", "client_address", "3–5 kun",
        "O‘lchov olish, mato tanlashda yordam, parda tikish va o‘rnatish.")]),
+    ("+998901000010", "Barno", "Usmonova", ("Buxoro shahri", "Bahoriston"), True, ["Enagalik", "Maktabgacha tarbiya"],
+     "Pedagog-tarbiyachi, 9 yillik bog‘cha tajribasi.",
+     [("bolalarga-qarash", "Bolalarga qarash (enagalik) — kunlik yoki soatbay", 50000, "from", "client_address", "soatbay",
+       "1–6 yoshli bolalarga mehr bilan qarayman: o‘yinlar, ovqatlantirish, rivojlantiruvchi mashg‘ulotlar.")]),
 ]
 
 CUSTOMERS = [
