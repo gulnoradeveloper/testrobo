@@ -291,3 +291,9 @@ section.contact-us.site-footer { background: linear-gradient(135deg, #7a0f30 0%,
 @media (max-width: 767px) {
   .header-area .main-nav .logo img { height: 72px; filter: none; }
 }
+
+/* Footer: logotip shaffof PNG; bordo fonda ajralib turishi uchun yengil oq kontur va nur */
+.footer-logo {
+  height: 120px; background: transparent; border-radius: 0; padding: 0;
+  filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff) drop-shadow(0 0 2px rgba(255,255,255,.9)) drop-shadow(0 0 14px rgba(255,240,220,.55));
+}
