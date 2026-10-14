@@ -152,7 +152,9 @@ def render_full(music_src=None):
     if music_src:
         prepare_music(music_src, duration, music)
     else:
-        synth_music(duration, music)
+        from music import compose, write_wav  # original kompozitsiya (music.py)
+
+        write_wav(compose(duration), music)
     subprocess.run(
         [ff, "-y", "-loglevel", "error", "-i", str(silent), "-i", str(music), "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
          "-shortest", "-movflags", "+faststart", str(final)],

@@ -1,6 +1,6 @@
 # BEGOYIM taqdimot videosi (kod orqali)
 
-~150 soniya, 1920×1080, 30 fps, o‘zbek tilida, sintez qilingan fon musiqasi bilan.
+~150 soniya, 1920×1080, 30 fps, o‘zbek tilida. Fon musiqasi — `music.py` da kod bilan yaratilgan original kompozitsiya (dutor, nay, doira; Re minor, 96 BPM), tashqi namunalarsiz.
 
 Auditoriya: mahalla raislari, Oila va xotin-qizlar bo‘limi vakillari va qaror qabul qiluvchi rahbarlar. Urg‘u — ayollarning
 mavjud imkoniyatlarini daromadga aylantirish; video uchta savolga javob beradi:
@@ -48,4 +48,4 @@ python video/render.py --music minus.wav
 ```
 
 Qo‘shiq va minus fayllari repozitoriyaga qo‘shilmaydi. Videoni ommaga tarqatishda qo‘shiq mualliflik
-huquqi egasining ruxsatini olish tavsiya etiladi; `--music` berilmasa, sintez qilingan fon musiqasi ishlatiladi.
+huquqi egasining ruxsatini olish tavsiya etiladi; `--music` berilmasa, `music.py` dagi original kompozitsiya ishlatiladi.
