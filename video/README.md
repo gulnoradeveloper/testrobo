@@ -2,7 +2,7 @@
 
 ~150 soniya, 1920×1080, 30 fps, o‘zbek tilida, sintez qilingan fon musiqasi bilan.
 
-Auditoriya: mahalla raislari, hokimlik vakillari va qaror qabul qiluvchi rahbarlar. Urg‘u — ayollarning
+Auditoriya: mahalla raislari, Oila va xotin-qizlar bo‘limi vakillari va qaror qabul qiluvchi rahbarlar. Urg‘u — ayollarning
 mavjud imkoniyatlarini daromadga aylantirish; video uchta savolga javob beradi:
 1) qanday muammoni hal qiladi, 2) hududga qanday natija beradi, 3) nega qo‘llab-quvvatlash kerak.
 
@@ -17,11 +17,11 @@ mavjud imkoniyatlarini daromadga aylantirish; video uchta savolga javob beradi:
 | 47–75 s | Platformadagi yo‘l: 7 qadam, haqiqiy skrinshotlar |
 | 75–83 s | Sun’iy intellekt moslashtiruvi (haqiqiy natija) |
 | 83–91 s | Ishonch va farovonlik: tasdiqlash, baholash, psixolog |
-| 91–100 s | ② Hokimlik uchun o‘lchanadigan natija |
+| 91–100 s | ② Oila va xotin-qizlar bo‘limi uchun o‘lchanadigan natija |
 | 100–110 s | Pilot bosqich maqsadli ko‘rsatkichlari (5 / 500 / 200 / 100) — erishilgan natija emas |
 | 110–120 s | ③ Aniq hamkorlik modeli (5 hamkor) |
-| 120–128 s | Mahalla va hokimlik vakillariga murojaat |
-| 128–140 s | Final: Mahalla + Hokimlik + Raqamli texnologiya = Ayollar bandligi va farovonligi |
+| 120–128 s | Mahalla hamda Oila va xotin-qizlar bo‘limi vakillariga murojaat |
+| 128–140 s | Final: Mahalla + Oila va xotin-qizlar bo‘limi + Raqamli texnologiya = Ayollar bandligi va farovonligi |
 | 140–150 s | Loyiha muallifi: Bo‘ronova Gulnora Yodgorovna, mualliflik huquqi |
 
 ## Qayta yaratish
