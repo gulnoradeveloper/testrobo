@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>BEGOYIM — taqdimot videosi</title>
-<!-- Har bir kadr render(t) chaqiruvi bilan aniqlanadi (t — soniyalarda). CSS transition ishlatilmaydi. -->
+<!-- Har bir kadr render(t) bilan aniqlanadi (t — soniyalarda). Elementlardagi data-in — paydo bo'lish vaqti. -->
 <style>
 @font-face { font-family: "Playfair"; src: url(fonts/PlayfairDisplay-700.ttf); font-weight: 700; }
 @font-face { font-family: "Playfair"; src: url(fonts/PlayfairDisplay-900.ttf); font-weight: 900; }
@@ -86,61 +86,127 @@ img.photo { object-fit: cover; border-radius: 26px; box-shadow: 0 24px 60px rgba
 .avatar-ring img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 10px solid #fff; display: block; }
 #fade { position: absolute; inset: 0; background: var(--cream); pointer-events: none; }
 </style>
+
 </head>
 <body>
+<style>
+/* --- 2-versiya qo'shimchalari --- */
+.q { display: inline-flex; align-items: center; gap: 14px; background: rgba(214,162,76,.16); border: 2px solid rgba(214,162,76,.6); color: var(--crimson); border-radius: 40px; padding: 10px 26px; font-size: 24px; font-weight: 800; }
+.bg-crimson .q { color: var(--gold-soft); background: rgba(255,233,207,.10); border-color: rgba(255,233,207,.45); }
+.q b { width: 34px; height: 34px; border-radius: 50%; background: var(--gold); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 20px; }
+.quote { font-family: "Playfair"; font-weight: 700; font-style: italic; }
+.qbox { border-left: 8px solid var(--gold); background: #fff; border-radius: 0 22px 22px 0; padding: 26px 34px; box-shadow: 0 16px 40px rgba(142,18,56,.12); }
+.bg-crimson .qbox { background: rgba(255,255,255,.08); box-shadow: none; }
+.row-ic { display: flex; align-items: center; gap: 26px; margin-bottom: 26px; }
+.row-ic .ic { width: 84px; height: 84px; border-radius: 50%; background: linear-gradient(-145deg, #a3123f, #d6a24c); display: flex; align-items: center; justify-content: center; font-size: 40px; flex: none; box-shadow: 0 10px 24px rgba(163,18,63,.3); }
+.row-ic .tx { font-size: 34px; font-weight: 700; line-height: 1.3; }
+.row-ic .tx em { font-style: normal; color: var(--crimson2); font-weight: 800; }
+.bg-crimson .row-ic .tx em { color: var(--gold-soft); }
+.bridge-card { position: absolute; width: 400px; height: 440px; border-radius: 30px; overflow: hidden; background: #fff; box-shadow: 0 24px 60px rgba(94,11,37,.22); }
+.bridge-card img { width: 100%; height: 300px; object-fit: cover; display: block; }
+.bridge-card .lb { padding: 22px 26px; }
+.bridge-card .lb b { display: block; font-family: "Playfair"; font-size: 40px; color: var(--crimson2); }
+.bridge-card .lb span { font-size: 22px; color: var(--muted); font-weight: 600; }
+.big-stat { width: 380px; text-align: center; }
+.big-stat b { display: block; font-family: "Playfair"; font-weight: 900; font-size: 130px; line-height: 1; color: var(--gold-soft); }
+.big-stat small { display: block; font-size: 34px; font-weight: 800; color: #fff; margin-top: 4px; }
+.big-stat span { display: block; font-size: 25px; font-weight: 600; color: #ffe0c7; margin-top: 10px; line-height: 1.35; }
+.pcard { position: absolute; width: 540px; height: 300px; padding: 30px 34px; }
+.pcard .ic { font-size: 50px; }
+.pcard h3 { font-size: 32px; font-weight: 800; margin: 12px 0 10px; color: var(--crimson2); }
+.pcard p { font-size: 24px; line-height: 1.42; color: var(--muted); font-weight: 600; }
+.eq { display: inline-block; background: #fff; border: 3px solid var(--gold); border-radius: 18px; padding: 12px 20px; font-size: 25px; font-weight: 800; color: var(--crimson2); }
+.eq.res { background: linear-gradient(-145deg, #a3123f, #d6a24c); color: #fff; border: 0; }
+.op { display: inline-block; font-size: 36px; font-weight: 800; color: var(--gold); margin: 0 10px; }
+.collage img { position: absolute; width: 290px; height: 218px; object-fit: cover; border-radius: 22px; box-shadow: 0 16px 40px rgba(94,11,37,.2); }
+</style>
 
 <!-- 1. INTRO -->
-<section class="scene bg-cream" id="s1" data-from="0" data-to="6.2">
-  <img class="rosette" id="ros1" src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20400%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23d6a24c%22%20stroke-width%3D%222.4%22%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%280%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2830%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2860%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2890%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28120%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28150%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28180%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28210%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28240%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28270%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28300%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28330%20200%20200%29%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%22190%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%22150%22%20stroke-dasharray%3D%224%2010%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%2258%22/%3E%3C/g%3E%3Cg%20fill%3D%22%23a3123f%22%20fill-opacity%3D%22.28%22%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2815%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2845%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2875%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28105%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28135%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28165%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28195%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28225%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28255%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28285%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28315%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28345%20200%20200%29%22/%3E%3C/g%3E%3C/svg%3E" style="left:560px; top:20px; width:800px; height:800px;">
-  <img class="abs" id="s1logo" src="assets/logo.png" style="left:560px; top:110px; width:800px;">
-  <div class="abs center script" id="s1slogan" style="top:770px; font-size:86px;">Ayoldan ayolga — imkoniyat va ko‘mak.</div>
-  <div class="abs center" id="s1tag" style="top:900px; font-size:30px; font-weight:700; color:var(--muted); letter-spacing:2px;">AYOLLAR BANDLIGI VA FAROVONLIGI RAQAMLI EKOTIZIMI</div>
+<section class="scene bg-cream" id="s1" data-from="0" data-to="7">
+  <img class="rosette" id="ros1" src="assets/rosette.svg" style="left:620px; top:-20px; width:680px; height:680px;">
+  <img class="abs" id="s1logo" src="assets/logo.png" style="left:665px; top:50px; width:590px;">
+  <div class="abs center h2" data-in="2" style="top:610px; font-size:70px; color:var(--crimson2);">Har bir ayol imkoniyatga loyiq!</div>
+  <div class="abs center script" data-in="3.2" style="top:730px; font-size:66px;">Ayoldan ayolga — imkoniyat va ko‘mak.</div>
+  <div class="abs center" data-in="4" style="top:860px; font-size:26px; font-weight:700; color:var(--muted); letter-spacing:3px;">AYOLLAR BANDLIGI VA FAROVONLIGI RAQAMLI EKOTIZIMI</div>
 </section>
 
-<!-- 2. MUAMMO -->
-<section class="scene bg-cream" id="s2" data-from="6" data-to="15.2">
-  <img class="abs photo" id="p1" src="assets/photos/osh_big.jpg" style="left:900px; top:70px; width:520px; height:390px;">
-  <img class="abs photo" id="p2" src="assets/photos/parda_big.jpg" style="left:1450px; top:70px; width:390px; height:520px;">
-  <img class="abs photo" id="p3" src="assets/photos/korpacha_big.jpg" style="left:900px; top:490px; width:300px; height:520px;">
-  <img class="abs photo" id="p4" src="assets/photos/bola_big.jpg" style="left:1230px; top:490px; width:190px; height:520px;">
-  <img class="abs photo" id="p5" src="assets/photos/pishiriq_big.jpg" style="left:1450px; top:620px; width:390px; height:390px;">
+<!-- 2. ISTE'DOD -->
+<section class="scene bg-cream" id="s2" data-from="7" data-to="17">
+  <img class="abs photo kb" data-in="7.3" src="assets/photos/tikuvchilik.jpg" style="left:900px; top:70px; width:520px; height:390px;">
+  <img class="abs photo kb" data-in="7.6" src="assets/photos/parda_big.jpg" style="left:1450px; top:70px; width:390px; height:520px;">
+  <img class="abs photo kb" data-in="7.9" src="assets/photos/osh_big.jpg" style="left:900px; top:490px; width:520px; height:300px;">
+  <img class="abs photo kb" data-in="8.2" src="assets/photos/repetitorlik.jpg" style="left:900px; top:820px; width:250px; height:190px;">
+  <img class="abs photo kb" data-in="8.4" src="assets/photos/masofaviy.jpg" style="left:1170px; top:820px; width:250px; height:190px;">
+  <img class="abs photo kb" data-in="8.6" src="assets/photos/hunar_big.jpg" style="left:1450px; top:620px; width:390px; height:390px;">
   <div class="shine" id="shine2"></div>
-  <div class="abs" id="s2a" style="left:110px; top:250px; width:740px;">
+  <div class="abs" data-in="7.5" style="left:110px; top:150px; width:740px;">
     <div class="kicker">Har bir mahallada</div>
-    <div class="h2" style="margin-top:22px;">mohir, mehnatkash<br>ayollar bor.</div>
+    <div class="h2" style="margin-top:20px;">iste’dod bor.<br><span class="crimson">Har bir xonadonda —<br>imkoniyat.</span></div>
   </div>
-  <div class="abs lead" id="s2b" style="left:110px; top:540px; width:720px; color:var(--muted);">Osh damlaydi, parda tikadi, ko‘rpacha qaviydi, bolaga mehr bilan qaraydi…</div>
-  <div class="abs" id="s2c" style="left:110px; top:760px; width:740px;">
-    <div class="h2 crimson" style="font-size:54px;">Ammo bu mahorat ko‘pincha daromadga aylanmaydi.</div>
-  </div>
-</section>
-
-<!-- 3. YECHIM -->
-<section class="scene bg-crimson" id="s3" data-from="15" data-to="22.2">
-  <div class="abs center" id="s3k" style="top:110px;"><span class="kicker" style="color:var(--gold-soft)">Yechim</span></div>
-  <div class="abs center h1" id="s3t" style="top:160px; color:#fff;">BEGOYIM</div>
-  <div class="abs center lead" id="s3s" style="top:290px; color:#ffe9cf;">ko‘nikmani — xizmatga, xizmatni — daromadga aylantiradi</div>
-  <div id="s3tiles"></div>
-  <div class="abs" id="s3stats" style="left:0; right:0; top:775px; display:flex; justify-content:center; gap:60px;">
-    <div class="stat"><b id="n1">0</b><span>xizmat yo‘nalishi</span></div>
-    <div class="stat"><b id="n2">0</b><span>viloyat va respublika</span></div>
-    <div class="stat"><b id="n3">0</b><span>foydalanuvchi roli</span></div>
+  <div class="abs lead" data-in="9.6" style="left:110px; top:520px; width:740px; color:var(--muted); font-size:32px;">Kimdir tikuvchilikni biladi. Kimdir mazali taomlar tayyorlaydi. Yana kimdir farzandlarga ta’lim beradi, hunarmandchilik yoki masofaviy xizmatlar bilan shug‘ullanadi.</div>
+  <div class="abs qbox" data-in="12.6" style="left:110px; top:790px; width:740px;">
+    <div class="quote" style="font-size:38px; color:var(--crimson2);">“Har bir mahalla — yangi daromad imkoniyatlari manbai.”</div>
   </div>
 </section>
 
-<!-- 4. QAHRAMON -->
-<section class="scene bg-cream" id="s4" data-from="22" data-to="26.4">
-  <img class="abs photo" id="s4p" src="assets/photos/korpacha_big.jpg" style="left:1060px; top:110px; width:640px; height:860px;">
-  <div class="abs" id="s4a" style="left:140px; top:300px; width:820px;">
-    <div class="kicker">Masalan</div>
-    <div class="h1" style="margin-top:18px;">Aziza opa</div>
-    <div class="lead" style="margin-top:26px; color:var(--muted);">Buxoro, Navbahor mahallasi.<br>10 yildan beri parda va ko‘rpacha tikadi.</div>
-  </div>
-  <div class="abs script" id="s4b" style="left:140px; top:700px; width:860px; font-size:74px; line-height:1.15;">Endi uning mahorati —<br>daromad manbai.</div>
+<!-- 3. NIMA YETISHMAYDI -->
+<section class="scene bg-crimson" id="s3" data-from="17" data-to="24">
+  <div class="abs center" data-in="17.2" style="top:150px;"><span class="q"><b>1</b>Qanday muammoni hal qiladi?</span></div>
+  <div class="abs center lead" data-in="17.8" style="top:280px; font-size:36px; color:#ffe0c7; padding:0 260px;">Minglab ayollarning bilim va hunari yetarli mijoz topilmagani sabab daromad manbaiga aylanmay qolishi mumkin.</div>
+  <div class="abs center h1" data-in="19.4" style="top:470px; font-size:78px; color:#fff; padding:0 160px;">Ularga yangi kasb emas —<br><span style="color:var(--gold-soft);">o‘z mehnatini qadrlaydigan mijoz kerak.</span></div>
 </section>
 
-<!-- 5. YO'L (skrinshotlar) -->
-<section class="scene bg-cream" id="s5" data-from="26" data-to="56.3">
+<!-- 4. RAQAMLI KO'PRIK -->
+<section class="scene bg-cream" id="s4" data-from="24" data-to="33">
+  <div class="abs center" data-in="24.2" style="top:80px;"><span class="kicker">Yechim</span></div>
+  <div class="abs center h2" data-in="24.4" style="top:120px; font-size:60px;">BEGOYIM — hunar va mijoz o‘rtasidagi <span class="crimson">raqamli ko‘prik</span></div>
+  <div class="bridge-card" id="bc1" style="left:150px; top:300px;"><img src="assets/photos/tikuvchilik.jpg"><div class="lb"><b>Hunar</b><span>Ayol o‘z xizmatini joylashtiradi</span></div></div>
+  <div class="bridge-card" id="bc2" style="left:1370px; top:300px;"><img src="assets/photos/boshqa.jpg"><div class="lb"><b>Mijoz</b><span>Buyurtmachi kerakli mutaxassisni topadi</span></div></div>
+  <svg class="abs" id="bridge" style="left:540px; top:280px;" width="840" height="420" viewBox="0 0 840 420">
+    <defs><linearGradient id="bg" x1="0" x2="1"><stop offset="0" stop-color="#a3123f"/><stop offset="1" stop-color="#d6a24c"/></linearGradient></defs>
+    <path id="arc" d="M20 300 Q420 -40 820 300" fill="none" stroke="url(#bg)" stroke-width="10" stroke-linecap="round"/>
+    <path d="M20 300 Q420 -40 820 300" fill="none" stroke="#f6e7c8" stroke-width="2" stroke-dasharray="6 14"/>
+    <g id="dots"></g>
+  </svg>
+  <div class="abs" id="bmid" style="left:810px; top:420px; width:300px; text-align:center;">
+    <img src="assets/logo.png" style="width:220px;">
+    <div style="margin-top:6px;"><span class="pill" style="background:var(--gold-soft); color:var(--crimson); font-size:24px;">🤖 AI moslashtiradi</span></div>
+  </div>
+  <div class="abs center lead" data-in="29.6" style="top:830px; font-size:32px; color:var(--muted); padding:0 300px;">Ayol xizmatini joylaydi. Buyurtmachi mutaxassisni topadi.<br>Sun’iy intellekt ularni o‘zaro moslashtirishga yordam beradi.</div>
+</section>
+
+<!-- 5. UYDAN TURIB -->
+<section class="scene bg-cream" id="s5" data-from="33" data-to="40">
+  <img class="abs photo kb" data-in="33.3" src="assets/photos/pishiriq_big.jpg" style="left:1060px; top:90px; width:420px; height:420px;">
+  <img class="abs photo kb" data-in="33.6" src="assets/photos/milliy-kiyim.jpg" style="left:1500px; top:90px; width:320px; height:420px;">
+  <img class="abs photo kb" data-in="33.9" src="assets/photos/bola_big.jpg" style="left:1060px; top:540px; width:300px; height:450px;">
+  <img class="abs photo kb" data-in="34.1" src="assets/photos/masofaviy.jpg" style="left:1380px; top:540px; width:440px; height:450px;">
+  <div class="abs" data-in="33.4" style="left:110px; top:150px; width:880px;">
+    <div class="kicker">Ish o‘rni faqat korxonada yaratilmaydi</div>
+    <div class="h2" style="margin-top:20px; font-size:58px;">Uyidan chiqmagan holda&nbsp;ham&nbsp;—<br><span class="crimson">xizmat va daromad.</span></div>
+  </div>
+  <div class="abs" style="left:110px; top:500px; width:880px;">
+    <div class="row-ic" data-in="34.8"><div class="ic">🏠</div><div class="tx">O‘z uyidan <em>xizmat ko‘rsatadi</em></div></div>
+    <div class="row-ic" data-in="35.6"><div class="ic">📲</div><div class="tx">Platforma orqali <em>buyurtma oladi</em></div></div>
+    <div class="row-ic" data-in="36.4"><div class="ic">💰</div><div class="tx"><em>Oilaviy daromadini</em> oshiradi</div></div>
+  </div>
+</section>
+
+<!-- 6. MAHALLA + TEXNOLOGIYA -->
+<section class="scene bg-crimson" id="s6" data-from="40" data-to="47">
+  <div class="abs center" data-in="40.2" style="top:110px;"><span class="kicker" style="color:var(--gold-soft)">Mahalla — bandlikning eng yaqin hamkori</span></div>
+  <div class="abs" style="left:330px; top:230px; width:1300px;">
+    <div class="row-ic" data-in="40.6"><div class="ic">🤝</div><div class="tx" style="font-size:44px;">Mahalla — <em>ishonchni mustahkamlaydi.</em></div></div>
+    <div class="row-ic" data-in="41.6"><div class="ic">💡</div><div class="tx" style="font-size:44px;">Texnologiya — <em>imkoniyatlarni birlashtiradi.</em></div></div>
+    <div class="row-ic" data-in="42.6"><div class="ic">💰</div><div class="tx" style="font-size:44px;">Ayol — <em>o‘z mehnati bilan daromad topadi.</em></div></div>
+  </div>
+  <div class="abs qbox" data-in="43.8" style="left:330px; top:640px; width:1260px;">
+    <div style="font-size:30px; line-height:1.45; color:#ffe9cf; font-weight:600;">Mahalla imkoniyatga ega ayollarni aniqlaydi. BEGOYIM esa ularning xizmatlarini mijozlar bilan bog‘laydi — mahalla va raqamli texnologiya bir maqsad yo‘lida ishlaydi.</div>
+  </div>
+</section>
+
+<!-- 7. PLATFORMADAGI YO'L -->
+<section class="scene bg-cream" id="s7" data-from="47" data-to="75">
   <div class="abs kicker" style="left:110px; top:150px;">Platformadagi yo‘l</div>
   <div class="steps" id="steps"><div id="sline"><i id="slinef"></i></div></div>
   <div class="browser" id="br" style="left:650px; top:120px; width:1170px; height:740px;">
@@ -153,151 +219,180 @@ img.photo { object-fit: cover; border-radius: 26px; box-shadow: 0 24px 60px rgba
   </div>
 </section>
 
-<!-- 6. AI -->
-<section class="scene bg-crimson" id="s6" data-from="56" data-to="64.3">
-  <div class="abs" style="left:150px; top:90px;"><span class="kicker" style="color:var(--gold-soft)">🤖 AI Smart Matching</span></div>
-  <div class="abs h2" style="left:150px; top:140px; color:#fff;">Oddiy tilda yozing — mos ijrochini topamiz</div>
-  <div class="abs card" style="left:150px; top:290px; width:1620px; height:120px; display:flex; align-items:center; padding:0 40px;">
+<!-- 8. AI -->
+<section class="scene bg-crimson" id="s8" data-from="75" data-to="83">
+  <div class="abs" style="left:150px; top:90px;"><span class="kicker" style="color:var(--gold-soft)">🤖 Sun’iy intellekt</span></div>
+  <div class="abs h2" style="left:150px; top:140px; color:#fff; font-size:56px;">Har bir ayolga imkoniyat topishda ko‘maklashadi</div>
+  <div class="abs card" style="left:150px; top:280px; width:1620px; height:120px; display:flex; align-items:center; padding:0 40px;">
     <span style="font-size:40px; margin-right:24px;">💬</span><span id="typed" style="font-size:38px; font-weight:600;"></span><span id="caret" style="font-size:40px; color:var(--crimson2); font-weight:300;">|</span>
   </div>
-  <div class="abs" id="chips" style="left:150px; top:450px;">
+  <div class="abs" style="left:150px; top:440px;">
     <span class="chip" id="c1">xizmat = Uy tozalash</span><span class="chip" id="c2">hudud = Buxoro shahri</span><span class="chip" id="c3">vaqt = ertaga</span>
   </div>
-  <div class="abs card" id="m1" style="left:150px; top:560px; width:790px; height:250px; display:flex; align-items:center; gap:34px; padding:0 40px;">
+  <div class="abs card" id="m1" style="left:150px; top:550px; width:790px; height:230px; display:flex; align-items:center; gap:34px; padding:0 40px;">
     <div class="ring" id="r1"><b id="r1t">0%</b></div>
     <div><div style="font-size:34px; font-weight:800;">Mohira Saidova</div><div style="font-size:24px; color:var(--muted); margin:6px 0 12px;">Uy tozalash · Buxoro shahri · ★ 4,8</div><span class="badge">✓ Tasdiqlangan</span></div>
   </div>
-  <div class="abs card" id="m2" style="left:980px; top:560px; width:790px; height:250px; display:flex; align-items:center; gap:34px; padding:0 40px;">
+  <div class="abs card" id="m2" style="left:980px; top:550px; width:790px; height:230px; display:flex; align-items:center; gap:34px; padding:0 40px;">
     <div class="ring" id="r2"><b id="r2t">0%</b></div>
     <div><div style="font-size:34px; font-weight:800;">Dilnoza Rahimova</div><div style="font-size:24px; color:var(--muted); margin:6px 0 12px;">Uy tozalash · Buxoro shahri · ★ 4,6</div><span class="badge">✓ Tasdiqlangan</span></div>
   </div>
-  <div class="abs center" id="formula" style="top:870px; font-size:27px; color:#ffe9cf; font-weight:600;">MatchScore = xizmat mosligi + hudud + reyting + mahalla tasdig‘i + bo‘shlik<br><span style="color:var(--gold-soft); font-weight:800;">AI faqat tavsiya beradi — tanlov sizda.</span></div>
+  <div class="abs center" data-in="80.8" style="top:840px; font-size:28px; color:#ffe9cf; font-weight:600;">Ko‘nikma, hudud va xizmat turi hisobga olinadi — mos buyurtmachi bilan bog‘lanadi.<br><span style="color:var(--gold-soft); font-weight:800;">AI faqat tavsiya beradi — tanlov insonda.</span></div>
 </section>
 
-<!-- 7. ISHONCH VA XAVFSIZLIK -->
-<section class="scene bg-cream" id="s7" data-from="64" data-to="72.3">
-  <div class="abs kicker" style="left:130px; top:110px;">Ishonch va xavfsizlik</div>
-  <div class="abs h2" id="s7t" style="left:130px; top:160px; width:1100px;">Har bir qadam himoyalangan</div>
-  <div class="abs card feature" id="f1" style="left:130px; top:300px;"><div class="ic">✅</div><div><h3>Mahalla tasdig‘i</h3><p>Mahalla vakili ijrochini tekshiradi. Profilda “✓ Mahalla tomonidan tasdiqlangan” belgisi chiqadi.</p></div></div>
-  <div class="abs card feature" id="f2" style="left:130px; top:530px;"><div class="ic">🛡️</div><div><h3>BEGOYIM Safe</h3><p>Mijoz manzilidagi ishda “Ishni boshladim” va “Ishni yakunladim” vaqti qayd etiladi.</p></div></div>
-  <div class="abs card feature" id="f3" style="left:130px; top:760px;"><div class="ic">🔒</div><div><h3>Psixologik yordam</h3><p>Tajribali psixologlar bilan ONLINE yoki OFFLINE qabul. Murojaat mazmuni maxfiy qoladi.</p></div></div>
+<!-- 9. ISHONCH VA FAROVONLIK -->
+<section class="scene bg-cream" id="s9" data-from="83" data-to="91">
+  <div class="abs kicker" data-in="83.1" style="left:130px; top:110px;">Bandlik bilan birga</div>
+  <div class="abs h2" data-in="83.2" style="left:130px; top:160px; width:1200px;">ishonch va farovonlik</div>
+  <div class="abs card feature" data-in="83.8" style="left:130px; top:300px;"><div class="ic">✅</div><div><h3>Mahalla tomonidan tasdiqlash</h3><p>Mahalla vakili ijrochini tekshiradi — mijoz ishonch bilan buyurtma beradi.</p></div></div>
+  <div class="abs card feature" data-in="85" style="left:130px; top:530px;"><div class="ic">⭐</div><div><h3>Xizmatlarni baholash</h3><p>Har bir bajarilgan buyurtma baholanadi — sifat va obro‘ ko‘rinib turadi.</p></div></div>
+  <div class="abs card feature" data-in="86.2" style="left:130px; top:760px;"><div class="ic">💬</div><div><h3>Psixologik ko‘mak</h3><p>Tajribali psixologlar bilan ONLINE yoki OFFLINE maslahat. Murojaat mazmuni maxfiy.</p></div></div>
   <div class="phone" id="ph" style="left:1400px; top:150px;"><div class="screen"><img id="phimg" src="assets/shots/m_service.png"></div></div>
 </section>
 
-<!-- 8. MAHALLA -->
-<section class="scene bg-cream" id="s8" data-from="72" data-to="78.3">
-  <div class="browser" id="br2" style="left:110px; top:150px; width:1080px; height:700px;">
-    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">begoyim / mahalla</span></div>
+<!-- 10. O'LCHANADIGAN NATIJA -->
+<section class="scene bg-cream" id="s10" data-from="91" data-to="100">
+  <div class="browser" id="br2" style="left:100px; top:170px; width:960px; height:640px;">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">begoyim / mahalla dashboardi</span></div>
     <div class="vp"><img id="mh" src="assets/shots/mahalla.png"></div>
   </div>
-  <div class="abs" id="s8a" style="left:1260px; top:250px; width:560px;">
-    <div class="kicker">Mahalla uchun</div>
-    <div class="h2" style="font-size:56px; margin-top:16px;">Bandlik ko‘z oldida</div>
-    <div class="lead" style="font-size:30px; color:var(--muted); margin-top:26px;">Nechta ayol xizmat ko‘rsatyapti, nechtasi tasdiqlangan, qaysi xizmatlar talabgir — barchasi bitta dashboardda.</div>
-    <div class="sub" style="margin-top:26px; font-size:24px;">🔒 Faqat umumiy ko‘rsatkichlar, shaxsiy ma’lumotlarsiz.</div>
+  <div class="abs" data-in="91.3" style="left:1120px; top:120px;"><span class="q"><b>2</b>Hududimizga qanday natija beradi?</span></div>
+  <div class="abs h2" data-in="91.6" style="left:1120px; top:200px; width:720px; font-size:54px;">Hokimlik uchun — <span class="crimson">o‘lchanadigan natija</span></div>
+  <div class="abs" style="left:1120px; top:390px; width:720px;">
+    <div class="row-ic" data-in="92.6"><div class="ic">👩‍💼</div><div class="tx" style="font-size:28px;">Qancha ayol <em>xizmat taklif qilmoqda</em></div></div>
+    <div class="row-ic" data-in="93.3"><div class="ic">✅</div><div class="tx" style="font-size:28px;">Qancha <em>buyurtma bajarildi</em></div></div>
+    <div class="row-ic" data-in="94"><div class="ic">📈</div><div class="tx" style="font-size:28px;">Qancha ayol <em>daromad ola boshladi</em></div></div>
+  </div>
+  <div class="abs qbox" data-in="95.4" style="left:100px; top:860px; width:1740px;">
+    <div class="quote" style="font-size:36px; color:var(--crimson2);">“Bandlikni faqat hisobotlarda emas, real buyurtmalar va daromadlarda ko‘raylik.”</div>
   </div>
 </section>
 
-<!-- 9. FINAL -->
-<section class="scene bg-cream" id="s9" data-from="78" data-to="86.3">
-  <img class="rosette" id="ros9" src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20400%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23d6a24c%22%20stroke-width%3D%222.4%22%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%280%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2830%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2860%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2890%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28120%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28150%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28180%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28210%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28240%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28270%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28300%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28330%20200%20200%29%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%22190%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%22150%22%20stroke-dasharray%3D%224%2010%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%2258%22/%3E%3C/g%3E%3Cg%20fill%3D%22%23a3123f%22%20fill-opacity%3D%22.28%22%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2815%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2845%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2875%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28105%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28135%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28165%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28195%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28225%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28255%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28285%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28315%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28345%20200%20200%29%22/%3E%3C/g%3E%3C/svg%3E" style="left:700px; top:-10px; width:520px; height:520px;">
-  <img class="abs" id="s9logo" src="assets/logo.png" style="left:710px; top:70px; width:500px;">
-  <div class="abs center script" id="s9s" style="top:500px; font-size:80px;">Ayoldan ayolga — imkoniyat va ko‘mak.</div>
-  <div class="abs center lead" id="s9l" style="top:640px; font-size:34px; color:var(--muted);">O‘z ko‘nikmangizni daromadga aylantiring — yoki ishonchli ijrochini toping.</div>
-  <div class="abs center" id="s9b" style="top:760px;"><span class="btn main">Xizmat topish</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn ghost">Xizmat ko‘rsatish</span></div>
-  <div class="abs center" id="s9f" style="top:910px; font-size:24px; font-weight:700; letter-spacing:2px; color:var(--muted);">BEGOYIM · Ayollar bandligi va farovonligi raqamli ekotizimi</div>
+<!-- 11. PILOT KO'RSATKICHLAR -->
+<section class="scene bg-crimson" id="s11" data-from="100" data-to="110">
+  <div class="abs center" data-in="100.2" style="top:110px;"><span class="kicker" style="color:var(--gold-soft)">Pilot bosqich uchun taklif etilayotgan maqsadli ko‘rsatkichlar</span></div>
+  <div class="abs" style="left:0; right:0; top:260px; display:flex; justify-content:center; gap:40px;">
+    <div class="big-stat" data-in="100.7"><b id="k1">0</b><small>ta</small><span>pilot mahalla</span></div>
+    <div class="big-stat" data-in="101.1"><b id="k2">0</b><small>nafar</small><span>jalb etiladigan ayol</span></div>
+    <div class="big-stat" data-in="101.5"><b id="k3">0</b><small>nafar</small><span>xizmat joylashtiruvchi ayol</span></div>
+    <div class="big-stat" data-in="101.9"><b id="k4">0</b><small>nafar</small><span>birinchi buyurtmasini olishi maqsad qilingan ayol</span></div>
+  </div>
+  <div class="abs center" data-in="104" style="top:740px; font-size:26px; color:#ffe0c7; font-weight:600; padding:0 300px;">ⓘ Bu erishilgan natija emas — dastlabki pilot bosqich uchun maqsad. Yakuniy ko‘rsatkichlar pilot hududlar, byudjet va hamkorlar imkoniyatlari asosida belgilanadi.</div>
+  <div class="abs center quote" data-in="105.6" style="top:880px; font-size:42px; color:var(--gold-soft);">“Bir ayol — bir imkoniyat. Bir mahalla — yuzlab yangi istiqbollar.”</div>
 </section>
 
-<!-- 10. MUALLIF -->
-<section class="scene bg-cream" id="s10" data-from="86" data-to="97">
-  <img class="rosette" id="ros10" src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20400%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23d6a24c%22%20stroke-width%3D%222.4%22%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%280%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2830%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2860%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2890%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28120%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28150%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28180%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28210%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28240%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28270%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28300%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28330%20200%20200%29%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%22190%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%22150%22%20stroke-dasharray%3D%224%2010%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%2258%22/%3E%3C/g%3E%3Cg%20fill%3D%22%23a3123f%22%20fill-opacity%3D%22.28%22%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2815%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2845%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2875%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28105%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28135%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28165%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28195%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28225%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28255%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28285%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28315%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28345%20200%20200%29%22/%3E%3C/g%3E%3C/svg%3E" style="left:90px; top:110px; width:860px; height:860px;">
+<!-- 12. HAMKORLIK MODELI -->
+<section class="scene bg-cream" id="s12" data-from="110" data-to="120">
+  <div class="abs" data-in="110.2" style="left:110px; top:90px;"><span class="q"><b>3</b>Nima uchun qo‘llab-quvvatlashimiz kerak?</span></div>
+  <div class="abs h2" data-in="110.4" style="left:110px; top:160px; font-size:56px;">Aniq hamkorlik modeli</div>
+  <div class="abs card pcard" data-in="111" style="left:110px; top:290px;"><div class="ic">🏘️</div><h3>Mahalla</h3><p>Hunarli va ish izlayotgan ayollarni aniqlash, ularni platformaga jalb etish.</p></div>
+  <div class="abs card pcard" data-in="111.7" style="left:690px; top:290px;"><div class="ic">🏛️</div><h3>Tuman/shahar hokimligi</h3><p>Pilot hududni belgilash, tashkiliy ko‘mak va hamkorlarni birlashtirish.</p></div>
+  <div class="abs card pcard" data-in="112.4" style="left:1270px; top:290px;"><div class="ic">👩‍👩‍👧</div><h3>Xotin-qizlar faollari</h3><p>Ayollarga platformadan foydalanishda amaliy yordam berish.</p></div>
+  <div class="abs card pcard" data-in="113.1" style="left:400px; top:630px;"><div class="ic">💻</div><h3>BEGOYIM jamoasi</h3><p>Platformani ishlab chiqish, o‘qitish, texnik xizmat va tahlil.</p></div>
+  <div class="abs card pcard" data-in="113.8" style="left:980px; top:630px;"><div class="ic">🏪</div><h3>Mahalliy tadbirkorlar</h3><p>Xizmatlarga buyurtma berish, hamkorlik va mentorlik.</p></div>
+</section>
+
+<!-- 13. MUROJAAT -->
+<section class="scene bg-crimson" id="s13" data-from="120" data-to="128">
+  <div class="abs center h2" data-in="120.3" style="top:130px; color:var(--gold-soft); font-size:64px;">Hurmatli mahalla va hokimlik vakillari!</div>
+  <div class="abs center lead" data-in="121.3" style="top:270px; padding:0 230px; color:#fff; font-size:36px;">Keling, har bir mahallada o‘z hunari bilan daromad topishni istagan ayollarni aniqlaylik, ularni yagona raqamli platformada birlashtiraylik va bandlikni real natijaga aylantiraylik.</div>
+  <div class="abs center quote" data-in="123.4" style="top:560px; padding:0 200px; color:var(--gold-soft); font-size:50px; line-height:1.3;">“Ayolga imkoniyat yaratsak, bir oilaning iqtisodiy mustaqilligiga yo‘l ochamiz.”</div>
+  <div class="abs center lead" data-in="125" style="top:800px; color:#ffe0c7; font-size:32px;">Bugungi birinchi buyurtma — ertaga oila uchun barqaror daromad manbai.</div>
+</section>
+
+<!-- 14. FINAL -->
+<section class="scene bg-cream" id="s14" data-from="128" data-to="140">
+  <div class="collage" id="collage"></div>
+  <div class="abs" id="veil" style="left:0; top:0; width:1920px; height:1080px; background: radial-gradient(900px 560px at 50% 50%, rgba(255,250,244,.97) 0%, rgba(255,250,244,.92) 55%, rgba(255,250,244,.35) 100%);"></div>
+  <img class="rosette" id="ros14" src="assets/rosette.svg" style="left:735px; top:20px; width:450px; height:450px;">
+  <img class="abs" id="s14logo" src="assets/logo.png" style="left:770px; top:50px; width:380px;">
+  <div class="abs center h2" data-in="129.6" style="top:410px; font-size:50px; color:var(--crimson2);">Har bir mahallada imkoniyat,<br>har bir ayolga daromad sari yo‘l!</div>
+  <div class="abs center" data-in="131.4" style="top:590px;">
+    <span class="eq">Mahalla</span><span class="op">+</span><span class="eq">Hokimlik</span><span class="op">+</span><span class="eq">Raqamli texnologiya</span><span class="op">=</span><span class="eq res">Ayollar bandligi va farovonligi</span>
+  </div>
+  <div class="abs center h2" data-in="133.4" style="top:720px; font-size:40px;">BEGOYIM — har bir mahalladan boshlanadigan imkoniyat!</div>
+  <div class="abs center script" data-in="135" style="top:830px; font-size:64px;">Ayoldan ayolga — imkoniyat va ko‘mak!</div>
+</section>
+
+<!-- 15. MUALLIF -->
+<section class="scene bg-cream" id="s15" data-from="140" data-to="151">
+  <img class="rosette" id="ros15" src="assets/rosette.svg" style="left:90px; top:110px; width:860px; height:860px;">
   <div class="avatar-ring" id="aring" style="left:220px; top:240px;"><img src="assets/author.jpg" alt="Bo‘ronova Gulnora Yodgorovna"></div>
-  <div class="abs" id="s10a" style="left:1000px; top:250px; width:820px;">
+  <div class="abs" data-in="141" style="left:1000px; top:250px; width:820px;">
     <div class="kicker">Loyiha muallifi</div>
     <div class="h2" style="margin-top:18px; font-size:66px;">Bo‘ronova Gulnora<br>Yodgorovna</div>
     <div class="lead" style="font-size:30px; color:var(--muted); margin-top:24px;">BEGOYIM — ayollar bandligi va farovonligi raqamli ekotizimi g‘oyasi, konsepsiyasi va loyihasi muallifi.</div>
   </div>
-  <div class="abs" id="s10b" style="left:1000px; top:700px; width:820px;">
-    <div style="height:30px; background-image:url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2260%22%20height%3D%2230%22%20viewBox%3D%220%200%2060%2030%22%3E%3Crect%20width%3D%2260%22%20height%3D%2230%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M30%202%20L46%2015%20L30%2028%20L14%2015Z%22%20fill%3D%22%23a3123f%22/%3E%3Cpath%20d%3D%22M30%208%20L39%2015%20L30%2022%20L21%2015Z%22%20fill%3D%22%23d6a24c%22/%3E%3Cpath%20d%3D%22M30%2012%20L33%2015%20L30%2018%20L27%2015Z%22%20fill%3D%22%23fffaf4%22/%3E%3Cpath%20d%3D%22M0%2015%20L6%209%20L12%2015%20L6%2021Z%20M48%2015%20L54%209%20L60%2015%20L54%2021Z%22%20fill%3D%22%23d6a24c%22/%3E%3C/svg%3E'); background-size:60px 30px; opacity:.85; margin-bottom:26px;"></div>
+  <div class="abs" data-in="142.4" style="left:1000px; top:700px; width:820px;">
+    <div style="height:30px; background-image:url(assets/ikat.svg); background-size:60px 30px; opacity:.85; margin-bottom:26px;"></div>
     <div style="font-size:30px; font-weight:800; color:var(--crimson2);">© 2026 Bo‘ronova Gulnora Yodgorovna.<br>Barcha huquqlar himoyalangan.</div>
     <div class="sub" style="font-size:21px; margin-top:14px;">BEGOYIM nomi, logotipi, konsepsiyasi va platformasi muallifning intellektual mulki hisoblanadi. Muallif ruxsatisiz nusxa ko‘chirish va tarqatish taqiqlanadi.</div>
   </div>
 </section>
 
 <canvas id="fx" width="1920" height="1080"></canvas>
-<div class="orn" id="orn-top" style="background-image:url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2260%22%20height%3D%2230%22%20viewBox%3D%220%200%2060%2030%22%3E%3Crect%20width%3D%2260%22%20height%3D%2230%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M30%202%20L46%2015%20L30%2028%20L14%2015Z%22%20fill%3D%22%23a3123f%22/%3E%3Cpath%20d%3D%22M30%208%20L39%2015%20L30%2022%20L21%2015Z%22%20fill%3D%22%23d6a24c%22/%3E%3Cpath%20d%3D%22M30%2012%20L33%2015%20L30%2018%20L27%2015Z%22%20fill%3D%22%23fffaf4%22/%3E%3Cpath%20d%3D%22M0%2015%20L6%209%20L12%2015%20L6%2021Z%20M48%2015%20L54%209%20L60%2015%20L54%2021Z%22%20fill%3D%22%23d6a24c%22/%3E%3C/svg%3E')"></div>
-<div class="orn" id="orn-bot" style="background-image:url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2260%22%20height%3D%2230%22%20viewBox%3D%220%200%2060%2030%22%3E%3Crect%20width%3D%2260%22%20height%3D%2230%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M30%202%20L46%2015%20L30%2028%20L14%2015Z%22%20fill%3D%22%23a3123f%22/%3E%3Cpath%20d%3D%22M30%208%20L39%2015%20L30%2022%20L21%2015Z%22%20fill%3D%22%23d6a24c%22/%3E%3Cpath%20d%3D%22M30%2012%20L33%2015%20L30%2018%20L27%2015Z%22%20fill%3D%22%23fffaf4%22/%3E%3Cpath%20d%3D%22M0%2015%20L6%209%20L12%2015%20L6%2021Z%20M48%2015%20L54%209%20L60%2015%20L54%2021Z%22%20fill%3D%22%23d6a24c%22/%3E%3C/svg%3E')"></div>
+<div class="orn" id="orn-top" style="background-image:url(assets/ikat.svg)"></div>
+<div class="orn" id="orn-bot" style="background-image:url(assets/ikat.svg)"></div>
 <div id="copy">© 2026 Bo‘ronova Gulnora Yodgorovna · BEGOYIM</div>
 <div id="fade"></div>
 
 <script>
-const DURATION = 96;
+const DURATION = 150;
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const prog = (t, a, b) => clamp((t - a) / (b - a));
 const eOut = x => 1 - Math.pow(1 - x, 3);
 const eInOut = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 const $ = id => document.getElementById(id);
-// Kirish (a..b) va chiqish (c..d) bilan opacity
-const io = (t, a, b, c = 1e9, d = 1e9) => eOut(prog(t, a, b)) * (1 - eInOut(prog(t, c, d)));
-function put(el, o, x = 0, y = 0, s = 1) {
+function put(el, o, x = 0, y = 0, s = 1, extra = "") {
   if (typeof el === "string") el = $(el);
   el.style.opacity = o;
-  el.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+  el.style.transform = `translate(${x}px, ${y}px) scale(${s}) ${extra}`;
 }
-// Kirish animatsiyasi: pastdan suzib chiqish
-function rise(el, t, a, dur = .8, dist = 40, out = null) {
-  const p = eOut(prog(t, a, a + dur));
-  const o = out ? p * (1 - eInOut(prog(t, out[0], out[1]))) : p;
-  put(el, o, 0, (1 - p) * dist);
-}
+const scenes = [...document.querySelectorAll(".scene")];
+const DARK = new Set(["s3", "s6", "s8", "s11", "s13"]);
+const CUTS = scenes.slice(1).map(s => +s.dataset.from);
 
-// --- 3-sahna: kategoriyalar lentasi ---
-const CATS = [["pazandachilik","Pazandachilik"],["pishiriqlar","Pishiriqlar"],["tikuvchilik","Tikuvchilik"],["parda-tikish","Parda tikish"],
-  ["korpacha-uy-tekstili","Ko‘rpacha"],["milliy-kiyim","Milliy kiyim"],["hunarmandchilik","Hunarmandchilik"],["gozallik","Go‘zallik"],
-  ["repetitorlik","Repetitorlik"],["bolalarga-qarash","Bolalarga qarash"],["uy-tozalash","Uy tozalash"],["masofaviy","Masofaviy"],["boshqa","Boshqa xizmatlar"]];
-const tiles = $("s3tiles");
-CATS.concat(CATS).forEach(([slug, name], i) => {
-  const d = document.createElement("div");
-  d.className = "tile"; d.style.top = "470px";
-  d.innerHTML = `<img src="assets/photos/${slug}.jpg"><span>${name}</span>`;
-  tiles.appendChild(d);
-});
-
-// --- 5-sahna: qadamlar ---
+// --- Platformadagi yo'l ---
 const STEPS = [
   { t: "Ro‘yxatdan o‘tish", s: "Telefon raqami va parol — bir daqiqada.", img: "register", url: "begoyim / ro‘yxatdan o‘tish" },
-  { t: "Profil va ko‘nikmalar", s: "Parda tikish, ko‘rpacha tikish — tajriba va portfolio bilan.", img: "profile", url: "begoyim / profil" },
+  { t: "Profil va ko‘nikmalar", s: "Hunar, tajriba va portfolio — bir sahifada.", img: "profile", url: "begoyim / profil" },
   { t: "Mahalla tasdig‘i ✓", s: "Mahalla vakili arizani tekshiradi va tasdiqlaydi.", img: "verify", url: "begoyim / mahalla / arizalar" },
   { t: "Xizmat joylash", s: "Narx, hudud, xizmat shakli va rasmlar.", img: "service_new", url: "begoyim / xizmatlar / yangi" },
-  { t: "AI tavsiya", s: "Mijoz oddiy tilda yozadi — AI mos ijrochilarni topadi.", img: "ai", url: "begoyim / ai-tavsiya" },
+  { t: "AI tavsiya", s: "Buyurtmachi oddiy tilda yozadi — AI mos ijrochilarni topadi.", img: "ai", url: "begoyim / ai-tavsiya" },
   { t: "Buyurtma va baho", s: "Yangi → Qabul qilindi → Jarayonda → Bajarildi → ★ baho.", img: "order", url: "begoyim / buyurtmalar" },
-  { t: "Daromad", s: "Platforma orqali hisoblangan daromad oyma-oy ko‘rinadi.", img: "income", url: "begoyim / daromad" },
+  { t: "Daromad", s: "Bugun — birinchi buyurtma, ertaga — oila uchun barqaror daromad.", img: "income", url: "begoyim / daromad" },
 ];
-const S5_START = 26.6, STEP_LEN = 4.2;
+const S7 = 47.5, STEP_LEN = 3.85;
 const stepsEl = $("steps"), vp = $("brvp");
 STEPS.forEach((st, i) => {
   const row = document.createElement("div");
   row.className = "step"; row.innerHTML = `<span class="n">${i + 1}</span><span>${st.t}</span>`;
   stepsEl.appendChild(row);
-  const img = document.createElement("img");
-  img.src = `assets/shots/${st.img}.png`;
-  vp.appendChild(img);
+  const img = document.createElement("img"); img.src = `assets/shots/${st.img}.png`; vp.appendChild(img);
+});
+const stepRows = [...stepsEl.querySelectorAll(".step")];
+
+// --- Final kollaj ---
+const COL = ["pazandachilik", "tikuvchilik", "parda-tikish", "korpacha-uy-tekstili", "milliy-kiyim", "bolalarga-qarash", "masofaviy", "pishiriqlar"];
+const COLPOS = [[40, 50], [1590, 50], [30, 310], [1600, 310], [40, 570], [1590, 570], [30, 830], [1600, 830]];
+COL.forEach((slug, i) => {
+  const im = document.createElement("img"); im.src = `assets/photos/${slug}.jpg`;
+  im.style.left = COLPOS[i][0] + "px"; im.style.top = COLPOS[i][1] + "px";
+  im.style.transform = `rotate(${(i % 2 ? 1 : -1) * (2 + i % 3)}deg)`;
+  $("collage").appendChild(im);
 });
 
-const scenes = [...document.querySelectorAll(".scene")];
-const DARK = new Set(["s3", "s6"]);
-// Oltin zarrachalar (deterministik)
+// --- Oltin zarrachalar ---
 let seed = 7;
 const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
 const PARTS = Array.from({ length: 70 }, () => ({ x: rnd() * 1920, y: rnd() * 1080, r: 1.5 + rnd() * 4.5, vy: 14 + rnd() * 30, ph: rnd() * 6.28, sw: 10 + rnd() * 30, a: .25 + rnd() * .55 }));
 const fx = $("fx").getContext("2d");
 function drawFx(t, dark) {
   fx.clearRect(0, 0, 1920, 1080);
-  // Yumshoq yorug'lik dog'lari
   [[.25, .3, 520], [.78, .7, 640]].forEach(([cx, cy, R], i) => {
     const x = 1920 * cx + Math.sin(t * .23 + i * 2) * 120, y = 1080 * cy + Math.cos(t * .19 + i) * 80;
     const g = fx.createRadialGradient(x, y, 0, x, y, R);
-    g.addColorStop(0, dark ? "rgba(255,210,150,.16)" : "rgba(214,162,76,.13)");
+    g.addColorStop(0, dark ? "rgba(255,210,150,.16)" : "rgba(214,162,76,.12)");
     g.addColorStop(1, "rgba(255,255,255,0)");
     fx.fillStyle = g; fx.fillRect(0, 0, 1920, 1080);
   });
@@ -307,163 +402,153 @@ function drawFx(t, dark) {
     const tw = .55 + .45 * Math.sin(t * 2.2 + p.ph * 3);
     fx.beginPath(); fx.arc(x, y, p.r, 0, 6.283);
     fx.fillStyle = dark ? `rgba(255,226,170,${p.a * tw})` : `rgba(214,162,76,${p.a * tw * .8})`;
-    fx.shadowColor = "rgba(255,210,140,.9)"; fx.shadowBlur = 12;
-    fx.fill();
+    fx.shadowColor = "rgba(255,210,140,.9)"; fx.shadowBlur = 12; fx.fill();
   });
   fx.shadowBlur = 0;
 }
 
+// Umumiy kirish/chiqish animatsiyasi: data-in bo'lgan har bir element
+function animateGeneric(sc, t) {
+  const end = +sc.dataset.to;
+  sc.querySelectorAll("[data-in]").forEach(el => {
+    const a = +el.dataset.in, p = eOut(prog(t, a, a + .9));
+    const out = 1 - eInOut(prog(t, end - .75, end - .2));
+    if (el.classList.contains("kb")) {
+      // Ken Burns: sekin yaqinlashish
+      put(el, p * out, 0, (1 - p) * 50, 1 + .06 * prog(t, a, end));
+    } else {
+      put(el, p * out, 0, (1 - p) * 34);
+    }
+  });
+}
+
 function render(t) {
   scenes.forEach(s => { s.style.display = (t >= +s.dataset.from && t < +s.dataset.to) ? "block" : "none"; });
-  // Sahnalar orasidagi yumshoq o'tish (krem rangli parda)
-  const cuts = [6, 15, 22, 26, 56, 64, 72, 78, 86];
   let f = 0;
-  cuts.forEach(c => { f = Math.max(f, 1 - clamp(Math.abs(t - c) / .35)); });
+  CUTS.forEach(c => { f = Math.max(f, 1 - clamp(Math.abs(t - c) / .35)); });
   f = Math.max(f, prog(t, DURATION - 1.4, DURATION));
   $("fade").style.opacity = f;
-  const active = scenes.find(sc => sc.style.display === "block");
+  const active = scenes.filter(sc => sc.style.display === "block").pop();
   const dark = active && DARK.has(active.id);
   drawFx(t, dark);
   ["orn-top", "orn-bot"].forEach((id, i) => {
-    const el = $(id);
-    el.style.opacity = dark ? .45 : .7;
-    el.style.backgroundPosition = `${(i ? -1 : 1) * t * 18}px 0`;
+    $(id).style.opacity = dark ? .45 : .7;
+    $(id).style.backgroundPosition = `${(i ? -1 : 1) * t * 18}px 0`;
   });
   const cp = $("copy");
   cp.style.color = dark ? "rgba(255,240,225,.85)" : "rgba(142,18,56,.75)";
-  cp.style.opacity = t < 1.5 || t > 86 ? 0 : clamp((t - 1.5) / .8);
+  cp.style.opacity = t < 1.5 || t > 140 ? 0 : clamp((t - 1.5) / .8);
+  scenes.forEach(sc => { if (sc.style.display === "block") animateGeneric(sc, t); });
+  const outOf = (a, b) => 1 - prog(t, a, b);
 
   // 1. Intro
-  if (t < 6.2) {
+  if (t < 7) {
     const p = eOut(prog(t, .2, 1.8));
-    put("s1logo", p * (1 - prog(t, 5.4, 6)), 0, (1 - p) * 30, .9 + .1 * p + .02 * prog(t, 1.8, 6));
-    rise("s1slogan", t, 1.9, 1, 30, [5.4, 6]);
-    rise("s1tag", t, 2.7, .9, 20, [5.4, 6]);
-    const rp = eOut(prog(t, 0, 2));
-    put("ros1", rp * .5 * (1 - prog(t, 5.4, 6)), 0, 0, .8 + .2 * rp);
-    $("ros1").style.transform += ` rotate(${t * 6}deg)`;
+    put("s1logo", p * outOf(6.3, 6.8), 0, (1 - p) * 30, .9 + .1 * p + .02 * prog(t, 1.8, 7));
+    put("ros1", eOut(prog(t, 0, 2)) * .5 * outOf(6.3, 6.8), 0, 0, .8 + .2 * eOut(prog(t, 0, 2)), `rotate(${t * 6}deg)`);
   }
-  // 2. Muammo
-  if (t >= 6 && t < 15.2) {
-    ["p1", "p2", "p3", "p4", "p5"].forEach((id, i) => {
-      const a = 6.3 + i * .35, p = eOut(prog(t, a, a + 1));
-      put(id, p * (1 - prog(t, 14.4, 15)), 0, (1 - p) * 60, 1.0 + .05 * prog(t, a, 15));
-    });
-    rise("s2a", t, 6.5, .9, 40, [14.4, 15]);
-    rise("s2b", t, 8.3, .9, 30, [14.4, 15]);
-    rise("s2c", t, 11, .9, 30, [14.4, 15]);
-    const sh = $("shine2"), sp = prog(t, 9, 11.2);
+  // 2. Shine
+  if (t >= 7 && t < 17) {
+    const sh = $("shine2"), sp = prog(t, 10, 12.4);
     sh.style.left = (700 + sp * 1400) + "px"; sh.style.opacity = sp > 0 && sp < 1 ? 1 : 0;
   }
-  // 3. Yechim + kategoriyalar lentasi
-  if (t >= 15 && t < 22.2) {
-    rise("s3k", t, 15.2, .7, 20); rise("s3t", t, 15.4, .9, 30); rise("s3s", t, 16.1, .9, 20);
-    const shift = (t - 15) * 120, w = 280;
-    [...tiles.children].forEach((el, i) => {
-      el.style.left = (1920 - shift + i * w - 1300) + "px";
-      const a = 16.2 + i * .05;
-      el.style.opacity = eOut(prog(t, a, a + .8));
-      el.style.transform = `translateY(${(1 - eOut(prog(t, a, a + .8))) * 60}px)`;
-    });
-    tiles.style.opacity = 1 - prog(t, 21.6, 22.1);
-    rise("s3stats", t, 17.6, .9, 30, [21.6, 22.1]);
-    [["n1", 13], ["n2", 14], ["n3", 5]].forEach(([id, v], i) => { $(id).textContent = Math.round(v * eOut(prog(t, 17.8 + i * .2, 19.6 + i * .2))); });
+  // 4. Ko'prik
+  if (t >= 24 && t < 33) {
+    const o = outOf(32.3, 32.8);
+    const p1 = eOut(prog(t, 24.8, 25.8)), p2 = eOut(prog(t, 25.2, 26.2));
+    put("bc1", p1 * o, (1 - p1) * -80, 0);
+    put("bc2", p2 * o, (1 - p2) * 80, 0);
+    const arc = $("arc"), L = arc.getTotalLength(), ap = eInOut(prog(t, 26, 27.8));
+    arc.style.strokeDasharray = L; arc.style.strokeDashoffset = L * (1 - ap);
+    $("bridge").style.opacity = o;
+    const dots = $("dots"); dots.innerHTML = "";
+    if (t > 27.8) for (let k = 0; k < 6; k++) {
+      const u = ((t - 27.8) * .22 + k / 6) % 1, pt = arc.getPointAtLength(u * L);
+      dots.innerHTML += `<circle cx="${pt.x}" cy="${pt.y}" r="9" fill="#fff" stroke="#d6a24c" stroke-width="4" opacity="${Math.sin(u * Math.PI)}"/>`;
+    }
+    const pm = eOut(prog(t, 27.4, 28.4));
+    put("bmid", pm * o, 0, (1 - pm) * 30, .85 + .15 * pm);
   }
-  // 4. Qahramon
-  if (t >= 22 && t < 26.4) {
-    const p = eOut(prog(t, 22.1, 23.1));
-    put("s4p", p * (1 - prog(t, 25.8, 26.3)), (1 - p) * 60, 0, 1 + .04 * prog(t, 22, 26.4));
-    rise("s4a", t, 22.3, .9, 30, [25.8, 26.3]);
-    rise("s4b", t, 23.6, .9, 20, [25.8, 26.3]);
-  }
-  // 5. Platformadagi yo'l
-  if (t >= 26 && t < 56.3) {
-    const idx = clamp(Math.floor((t - S5_START) / STEP_LEN), 0, STEPS.length - 1);
-    const local = t - (S5_START + idx * STEP_LEN);
-    [...stepsEl.querySelectorAll(".step")].forEach((row, i) => {
+  // 7. Platformadagi yo'l
+  if (t >= 47 && t < 75) {
+    const idx = clamp(Math.floor((t - S7) / STEP_LEN), 0, STEPS.length - 1);
+    const local = t - (S7 + idx * STEP_LEN), o = outOf(74.3, 74.8);
+    stepRows.forEach((row, i) => {
       row.className = "step" + (i < idx ? " done" : i === idx ? " now" : "");
-      if (i < idx) row.querySelector(".n").textContent = "✓"; else row.querySelector(".n").textContent = i + 1;
-      const a = 26.2 + i * .12, p = eOut(prog(t, a, a + .6));
-      row.style.opacity = p * (1 - prog(t, 55.7, 56.2));
+      row.querySelector(".n").textContent = i < idx ? "✓" : i + 1;
+      const a = 47.2 + i * .12, p = eOut(prog(t, a, a + .6));
+      row.style.opacity = p * o;
       row.style.transform = `translateX(${(1 - p) * -40}px) scale(${i === idx ? 1.04 : 1})`;
     });
-    const brIn = eOut(prog(t, 26.2, 27.2)), brOut = prog(t, 55.7, 56.2);
-    put("br", brIn * (1 - brOut), 0, (1 - brIn) * 50);
+    $("slinef").style.height = (clamp((t - S7) / (STEP_LEN * (STEPS.length - 1))) * 492) + "px";
+    $("sline").style.opacity = eOut(prog(t, 47.4, 48.2)) * o;
+    const bi = eOut(prog(t, 47.2, 48.2));
+    put("br", bi * o, 0, (1 - bi) * 50);
     [...vp.children].forEach((img, i) => {
       if (i === idx) {
         const p = eOut(prog(local, 0, .6));
         img.style.opacity = p;
-        // Sekin pastga "skroll"
-        const pan = -70 * eInOut(prog(local, .8, STEP_LEN));
-        img.style.transform = `translateY(${pan + (1 - p) * 30}px) scale(${1.02 - .02 * p})`;
-      } else if (i === idx - 1) {
-        img.style.opacity = 1 - prog(local, 0, .5);
-      } else img.style.opacity = 0;
+        img.style.transform = `translateY(${-70 * eInOut(prog(local, .8, STEP_LEN)) + (1 - p) * 30}px) scale(${1.02 - .02 * p})`;
+      } else img.style.opacity = i === idx - 1 ? 1 - prog(local, 0, .5) : 0;
     });
     $("brurl").textContent = STEPS[idx].url;
-    const lineP = clamp((t - S5_START) / (STEP_LEN * (STEPS.length - 1)));
-    $("slinef").style.height = (lineP * 492) + "px";
-    $("sline").style.opacity = eOut(prog(t, 26.4, 27.2)) * (1 - prog(t, 55.7, 56.2));
     $("capt").textContent = STEPS[idx].t;
     $("caps").textContent = STEPS[idx].s;
-    const cp = eOut(prog(local, .15, .8));
-    put("cap", cp * (1 - brOut) * (idx < STEPS.length - 1 ? 1 - prog(local, STEP_LEN - .3, STEP_LEN) : 1), 0, (1 - cp) * 20);
+    const cpp = eOut(prog(local, .15, .8));
+    put("cap", cpp * o * (idx < STEPS.length - 1 ? 1 - prog(local, STEP_LEN - .3, STEP_LEN) : 1), 0, (1 - cpp) * 20);
   }
-  // 6. AI
-  if (t >= 56 && t < 64.3) {
+  // 8. AI
+  if (t >= 75 && t < 83) {
     const text = "Ertaga Buxoro shahrida 2 ta xonani tozalaydigan ayol kerak.";
-    const n = Math.floor(text.length * prog(t, 56.6, 59.2));
-    $("typed").textContent = text.slice(0, n);
-    $("caret").style.opacity = (Math.floor(t * 2.4) % 2 === 0 || t < 59.2) ? 1 : 0;
-    ["c1", "c2", "c3"].forEach((id, i) => rise(id, t, 59.4 + i * .25, .6, 20));
-    [["m1", "r1", 60.4], ["m2", "r2", 60.75]].forEach(([m, r, a]) => {
-      rise(m, t, a, .8, 40);
+    $("typed").textContent = text.slice(0, Math.floor(text.length * prog(t, 75.5, 77.8)));
+    $("caret").style.opacity = (Math.floor(t * 2.4) % 2 === 0 || t < 77.8) ? 1 : 0;
+    const o = outOf(82.3, 82.8);
+    ["c1", "c2", "c3"].forEach((id, i) => { const p = eOut(prog(t, 78 + i * .25, 78.6 + i * .25)); put(id, p * o, 0, (1 - p) * 20); });
+    [["m1", "r1", 78.9], ["m2", "r2", 79.25]].forEach(([m, r, a]) => {
+      const p = eOut(prog(t, a, a + .8)); put(m, p * o, 0, (1 - p) * 40);
       const v = Math.round(99 * eOut(prog(t, a + .3, a + 2)));
       $(r + "t").textContent = v + "%";
       $(r).style.background = `conic-gradient(#d6a24c 0%, #a3123f ${v}%, #f0e3e6 ${v}% 100%)`;
     });
-    rise("formula", t, 62, .8, 20);
   }
-  // 7. Ishonch
-  if (t >= 64 && t < 72.3) {
-    rise("s7t", t, 64.2, .8, 30, [71.6, 72.1]);
-    rise("f1", t, 64.8, .8, 40, [71.6, 72.1]);
-    rise("f2", t, 66.3, .8, 40, [71.6, 72.1]);
-    rise("f3", t, 67.8, .8, 40, [71.6, 72.1]);
-    const p = eOut(prog(t, 64.4, 65.4));
-    put("ph", p * (1 - prog(t, 71.6, 72.1)), (1 - p) * 80, 0);
+  // 9. Telefon
+  if (t >= 83 && t < 91) {
+    const p = eOut(prog(t, 83.4, 84.4));
+    put("ph", p * outOf(90.3, 90.8), (1 - p) * 80, 0);
     const ph = $("phimg"), maxPan = Math.min(1500, Math.max(0, ph.offsetHeight - 788));
-    ph.style.transform = `translateY(${-maxPan * eInOut(prog(t, 65.5, 71))}px)`;
+    ph.style.transform = `translateY(${-maxPan * eInOut(prog(t, 84.5, 90))}px)`;
   }
-  // 8. Mahalla
-  if (t >= 72 && t < 78.3) {
-    const p = eOut(prog(t, 72.1, 73.1));
-    put("br2", p * (1 - prog(t, 77.6, 78.1)), (1 - p) * -60, 0);
-    $("mh").style.transform = `translateY(${-160 * eInOut(prog(t, 73.4, 77.4))}px)`;
-    rise("s8a", t, 72.6, .9, 30, [77.6, 78.1]);
+  // 10. Mahalla dashboardi
+  if (t >= 91 && t < 100) {
+    const p = eOut(prog(t, 91.1, 92.1));
+    put("br2", p * outOf(99.3, 99.8), (1 - p) * -60, 0);
+    $("mh").style.transform = `translateY(${-150 * eInOut(prog(t, 92.5, 98))}px)`;
   }
-  // 9. Final
-  if (t >= 78) {
-    const p = eOut(prog(t, 78.2, 79.6));
-    put("s9logo", p, 0, (1 - p) * 30, .92 + .08 * p);
-    rise("s9s", t, 79.4, 1, 30);
-    rise("s9l", t, 80.4, .9, 20);
-    rise("s9b", t, 81.2, .9, 20);
-    rise("s9f", t, 82, .9, 10, [85.4, 86]);
-    ["s9logo", "s9s", "s9l", "s9b"].forEach(id => { $(id).style.opacity *= 1 - prog(t, 85.4, 86); });
-    const rp = eOut(prog(t, 78.2, 80));
-    put("ros9", rp * .45 * (1 - prog(t, 85.4, 86)), 0, 0, .85 + .15 * rp);
-    $("ros9").style.transform += ` rotate(${-t * 6}deg)`;
+  // 11. Pilot hisoblagichlar
+  if (t >= 100 && t < 110) {
+    [["k1", 5, 100.8], ["k2", 500, 101.2], ["k3", 200, 101.6], ["k4", 100, 102]].forEach(([id, v, a]) => {
+      $(id).textContent = Math.round(v * eOut(prog(t, a, a + 1.8)));
+    });
   }
-  // 10. Muallif
-  if (t >= 86) {
-    const p = eOut(prog(t, 86.2, 87.6));
+  // 14. Final
+  if (t >= 128 && t < 140) {
+    const o = outOf(139.3, 139.8);
+    [...$("collage").children].forEach((im, i) => {
+      const a = 128.2 + i * .08, p = eOut(prog(t, a, a + 1));
+      im.style.opacity = p * o;
+      im.style.transform = `rotate(${(i % 2 ? 1 : -1) * (2 + i % 3)}deg) scale(${.9 + .1 * p + .03 * prog(t, a, 140)})`;
+    });
+    $("veil").style.opacity = o;
+    const p = eOut(prog(t, 128.3, 129.6));
+    put("s14logo", p * o, 0, (1 - p) * 30, .92 + .08 * p);
+    put("ros14", p * .45 * o, 0, 0, .85 + .15 * p, `rotate(${-t * 6}deg)`);
+  }
+  // 15. Muallif
+  if (t >= 140) {
+    const p = eOut(prog(t, 140.2, 141.6));
     put("aring", p, 0, (1 - p) * 40, .9 + .1 * p);
     $("aring").style.background = `conic-gradient(from ${t * 40}deg, #a3123f, #d6a24c, #f6e7c8, #d6a24c, #a3123f)`;
-    put("ros10", p * .35, 0, 0, .9 + .1 * p);
-    $("ros10").style.transform += ` rotate(${t * 5}deg)`;
-    rise("s10a", t, 87, 1, 30);
-    rise("s10b", t, 88.4, 1, 30);
+    put("ros15", p * .35, 0, 0, .9 + .1 * p, `rotate(${t * 5}deg)`);
   }
 }
 window.DURATION = DURATION;
