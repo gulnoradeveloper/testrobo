@@ -37,3 +37,15 @@ python video/render.py                          # video/out/begoyim_taqdimot.mp4
 
 Matn va vaqtlarni `scenes.html` dagi `render(t)` funksiyasida o‘zgartirish mumkin.
 Shriftlar: Playfair Display, Open Sans, Great Vibes (SIL Open Font License).
+
+## Tayyor qo‘shiqdan minus (instrumental) olish
+
+```bash
+pip install onnxruntime numpy
+curl -LO https://github.com/TRvlvr/model_repo/releases/download/all_public_uvr_models/UVR-MDX-NET-Inst_HQ_3.onnx
+python video/separate.py qoshiq.mp3 minus.wav --model UVR-MDX-NET-Inst_HQ_3.onnx
+python video/render.py --music minus.wav
+```
+
+Qo‘shiq va minus fayllari repozitoriyaga qo‘shilmaydi. Videoni ommaga tarqatishda qo‘shiq mualliflik
+huquqi egasining ruxsatini olish tavsiya etiladi; `--music` berilmasa, sintez qilingan fon musiqasi ishlatiladi.

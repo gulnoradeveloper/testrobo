@@ -116,7 +116,17 @@ def synth_music(duration, path):
         w.writeframes(pcm.tobytes())
 
 
-def render_full():
+def prepare_music(src, duration, path):
+    """Tayyor trekni video uzunligiga moslash: kesish, fade in/out, ovoz balandligini normallash."""
+    subprocess.run(
+        [ffmpeg_bin(), "-y", "-loglevel", "error", "-i", str(src), "-t", str(duration),
+         "-af", f"afade=t=in:d=1.5,afade=t=out:st={duration - 4.5}:d=4.5,loudnorm=I=-16:TP=-1.5:LRA=11",
+         "-ar", "44100", "-ac", "2", str(path)],
+        check=True,
+    )
+
+
+def render_full(music_src=None):
     OUT.mkdir(exist_ok=True)
     silent = OUT / "video_silent.mp4"
     music = OUT / "music.wav"
@@ -139,7 +149,10 @@ def render_full():
         proc.stdin.close()
         proc.wait()
         browser.close()
-    synth_music(duration, music)
+    if music_src:
+        prepare_music(music_src, duration, music)
+    else:
+        synth_music(duration, music)
     subprocess.run(
         [ff, "-y", "-loglevel", "error", "-i", str(silent), "-i", str(music), "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
          "-shortest", "-movflags", "+faststart", str(final)],
@@ -170,9 +183,10 @@ def render_preview(times):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--preview", nargs="*", type=float)
+    ap.add_argument("--music", help="tayyor fon musiqasi (masalan, separate.py bilan olingan minus)")
     args = ap.parse_args()
     if args.preview:
         render_preview(args.preview)
     else:
-        render_full()
+        render_full(args.music)
     sys.exit(0)
