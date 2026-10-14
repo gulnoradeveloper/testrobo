@@ -7,3 +7,4 @@ staticfiles/
 venv/
 .venv/
 *.zip
+video/out/

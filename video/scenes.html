@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<title>BEGOYIM — taqdimot videosi</title>
+<!-- Har bir kadr render(t) chaqiruvi bilan aniqlanadi (t — soniyalarda). CSS transition ishlatilmaydi. -->
+<style>
+@font-face { font-family: "Playfair"; src: url(fonts/PlayfairDisplay-700.ttf); font-weight: 700; }
+@font-face { font-family: "Playfair"; src: url(fonts/PlayfairDisplay-900.ttf); font-weight: 900; }
+@font-face { font-family: "Sans"; src: url(fonts/OpenSans-400.ttf); font-weight: 400; }
+@font-face { font-family: "Sans"; src: url(fonts/OpenSans-600.ttf); font-weight: 600; }
+@font-face { font-family: "Sans"; src: url(fonts/OpenSans-700.ttf); font-weight: 700; }
+@font-face { font-family: "Sans"; src: url(fonts/OpenSans-800.ttf); font-weight: 800; }
+@font-face { font-family: "Script"; src: url(fonts/GreatVibes-400.ttf); }
+:root { --crimson: #8e1238; --crimson2: #a3123f; --rose: #c2185b; --gold: #d6a24c; --gold-soft: #f6e7c8; --cream: #fffaf4; --ink: #2b1a20; --muted: #6f5f64; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--cream); font-family: "Sans", sans-serif; color: var(--ink); }
+.scene { position: absolute; inset: 0; display: none; overflow: hidden; }
+.abs { position: absolute; will-change: transform, opacity; }
+.center { left: 0; right: 0; text-align: center; }
+.bg-cream { background: radial-gradient(1200px 700px at 70% 30%, #fff 0%, var(--cream) 55%, #f8ecd9 100%); }
+.bg-crimson { background: linear-gradient(135deg, #5e0b25 0%, #8e1238 45%, #a3123f 75%, #b8693a 100%); color: #fff; }
+.h1 { font-family: "Playfair"; font-weight: 900; font-size: 92px; line-height: 1.08; }
+.h2 { font-family: "Playfair"; font-weight: 700; font-size: 64px; line-height: 1.15; }
+.lead { font-size: 38px; line-height: 1.4; font-weight: 600; }
+.script { font-family: "Script"; color: var(--crimson2); }
+.gold { color: var(--gold); }
+.crimson { color: var(--crimson2); }
+.kicker { font-size: 24px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); }
+img.photo { object-fit: cover; border-radius: 26px; box-shadow: 0 24px 60px rgba(94, 11, 37, .28); }
+.card { color: var(--ink); background: #fff; border-radius: 28px; box-shadow: 0 18px 50px rgba(142, 18, 56, .14); border: 1px solid #f0e3e6; }
+.pill { display: inline-block; border-radius: 40px; padding: 10px 26px; font-weight: 800; font-size: 26px; }
+
+/* Brauzer maketi */
+.browser { position: absolute; border-radius: 22px; overflow: hidden; background: #fff; box-shadow: 0 30px 80px rgba(60, 10, 25, .30); }
+.browser .bar { height: 46px; background: #f3ecee; display: flex; align-items: center; padding: 0 18px; gap: 9px; }
+.browser .dot { width: 13px; height: 13px; border-radius: 50%; background: #e0b4be; }
+.browser .url { margin-left: 18px; background: #fff; border-radius: 10px; height: 28px; flex: 1; font-size: 16px; color: #8a7a80; display: flex; align-items: center; padding: 0 14px; }
+.browser .vp { position: absolute; top: 46px; left: 0; right: 0; bottom: 0; overflow: hidden; }
+.browser .vp img { position: absolute; left: 0; top: 0; width: 100%; }
+
+/* Telefon maketi */
+.phone { position: absolute; width: 400px; height: 820px; border-radius: 58px; background: #1d1216; padding: 16px; box-shadow: 0 30px 80px rgba(60, 10, 25, .35); }
+.phone .screen { width: 100%; height: 100%; border-radius: 44px; overflow: hidden; position: relative; background: #fff; }
+.phone .screen img { width: 100%; position: absolute; top: 0; left: 0; }
+
+/* Qadamlar ro'yxati */
+.steps { position: absolute; left: 110px; top: 250px; width: 470px; }
+.step { display: flex; align-items: center; gap: 22px; height: 82px; font-size: 29px; font-weight: 700; color: #b9a9ae; }
+.step .n { width: 54px; height: 54px; border-radius: 50%; border: 3px solid #e6d6da; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; flex: none; background: #fff; }
+.step.done { color: var(--muted); }
+.step.done .n { background: #e8f5e9; border-color: #b8dfbb; color: #2e7d32; }
+.step.now { color: var(--ink); }
+.step.now .n { background: linear-gradient(-145deg, #a3123f, #d6a24c); border: 0; color: #fff; }
+
+.chip { display: inline-block; background: var(--gold-soft); color: var(--crimson); border-radius: 16px; padding: 12px 24px; font-weight: 800; font-size: 30px; margin-right: 16px; }
+.ring { width: 150px; height: 150px; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; flex: none; }
+.ring::after { content: ""; position: absolute; inset: 13px; background: #fff; border-radius: 50%; }
+.ring b { position: relative; z-index: 1; font-size: 40px; color: var(--crimson); font-weight: 800; }
+.badge { display: inline-block; background: #e8f5e9; color: #2e7d32; border-radius: 30px; padding: 6px 18px; font-weight: 800; font-size: 24px; }
+.tile { position: absolute; width: 250px; height: 250px; border-radius: 22px; overflow: hidden; background: #fff; box-shadow: 0 14px 34px rgba(94, 11, 37, .16); }
+.tile img { width: 100%; height: 190px; object-fit: cover; display: block; }
+.tile span { color: var(--ink); display: block; padding: 14px 16px; font-weight: 800; font-size: 21px; }
+.caption { font-size: 34px; font-weight: 700; color: var(--ink); }
+.sub { font-size: 27px; color: var(--muted); font-weight: 600; }
+.feature { position: absolute; width: 1080px; padding: 30px 40px; display: flex; gap: 34px; align-items: center; }
+.feature .ic { font-size: 64px; flex: none; }
+.feature h3 { font-size: 34px; font-weight: 800; margin: 0 0 8px; }
+.feature p { font-size: 25px; line-height: 1.45; color: var(--muted); font-weight: 600; }
+.btn { display: inline-flex; align-items: center; justify-content: center; height: 84px; padding: 0 46px; border-radius: 20px; font-size: 32px; font-weight: 800; }
+.btn.main { background: linear-gradient(-145deg, #a3123f, #d6a24c); color: #fff; box-shadow: 0 14px 30px rgba(163, 18, 63, .3); }
+.btn.ghost { border: 3px solid var(--crimson2); color: var(--crimson2); background: #fff; }
+#fade { position: absolute; inset: 0; background: var(--cream); pointer-events: none; }
+</style>
+</head>
+<body>
+
+<!-- 1. INTRO -->
+<section class="scene bg-cream" id="s1" data-from="0" data-to="6.2">
+  <img class="abs" id="s1logo" src="assets/logo.png" style="left:560px; top:110px; width:800px;">
+  <div class="abs center script" id="s1slogan" style="top:770px; font-size:86px;">Ayoldan ayolga — imkoniyat va ko‘mak.</div>
+  <div class="abs center" id="s1tag" style="top:900px; font-size:30px; font-weight:700; color:var(--muted); letter-spacing:2px;">AYOLLAR BANDLIGI VA FAROVONLIGI RAQAMLI EKOTIZIMI</div>
+</section>
+
+<!-- 2. MUAMMO -->
+<section class="scene bg-cream" id="s2" data-from="6" data-to="15.2">
+  <img class="abs photo" id="p1" src="assets/photos/osh_big.jpg" style="left:900px; top:70px; width:520px; height:390px;">
+  <img class="abs photo" id="p2" src="assets/photos/parda_big.jpg" style="left:1450px; top:70px; width:390px; height:520px;">
+  <img class="abs photo" id="p3" src="assets/photos/korpacha_big.jpg" style="left:900px; top:490px; width:300px; height:520px;">
+  <img class="abs photo" id="p4" src="assets/photos/bola_big.jpg" style="left:1230px; top:490px; width:190px; height:520px;">
+  <img class="abs photo" id="p5" src="assets/photos/pishiriq_big.jpg" style="left:1450px; top:620px; width:390px; height:390px;">
+  <div class="abs" id="s2a" style="left:110px; top:250px; width:740px;">
+    <div class="kicker">Har bir mahallada</div>
+    <div class="h2" style="margin-top:22px;">mohir, mehnatkash<br>ayollar bor.</div>
+  </div>
+  <div class="abs lead" id="s2b" style="left:110px; top:540px; width:720px; color:var(--muted);">Osh damlaydi, parda tikadi, ko‘rpacha qaviydi, bolaga mehr bilan qaraydi…</div>
+  <div class="abs" id="s2c" style="left:110px; top:760px; width:740px;">
+    <div class="h2 crimson" style="font-size:54px;">Ammo bu mahorat ko‘pincha daromadga aylanmaydi.</div>
+  </div>
+</section>
+
+<!-- 3. YECHIM -->
+<section class="scene bg-crimson" id="s3" data-from="15" data-to="22.2">
+  <div class="abs center" id="s3k" style="top:110px;"><span class="kicker" style="color:var(--gold-soft)">Yechim</span></div>
+  <div class="abs center h1" id="s3t" style="top:160px; color:#fff;">BEGOYIM</div>
+  <div class="abs center lead" id="s3s" style="top:290px; color:#ffe9cf;">ko‘nikmani — xizmatga, xizmatni — daromadga aylantiradi</div>
+  <div id="s3tiles"></div>
+</section>
+
+<!-- 4. QAHRAMON -->
+<section class="scene bg-cream" id="s4" data-from="22" data-to="26.4">
+  <img class="abs photo" id="s4p" src="assets/photos/korpacha_big.jpg" style="left:1060px; top:110px; width:640px; height:860px;">
+  <div class="abs" id="s4a" style="left:140px; top:300px; width:820px;">
+    <div class="kicker">Masalan</div>
+    <div class="h1" style="margin-top:18px;">Aziza opa</div>
+    <div class="lead" style="margin-top:26px; color:var(--muted);">Buxoro, Navbahor mahallasi.<br>10 yildan beri parda va ko‘rpacha tikadi.</div>
+  </div>
+  <div class="abs script" id="s4b" style="left:140px; top:700px; width:860px; font-size:74px; line-height:1.15;">Endi uning mahorati —<br>daromad manbai.</div>
+</section>
+
+<!-- 5. YO'L (skrinshotlar) -->
+<section class="scene bg-cream" id="s5" data-from="26" data-to="56.3">
+  <div class="abs kicker" style="left:110px; top:150px;">Platformadagi yo‘l</div>
+  <div class="steps" id="steps"></div>
+  <div class="browser" id="br" style="left:650px; top:120px; width:1170px; height:740px;">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url" id="brurl">begoyim</span></div>
+    <div class="vp" id="brvp"></div>
+  </div>
+  <div class="abs" id="cap" style="left:650px; top:895px; width:1170px;">
+    <div class="caption" id="capt"></div>
+    <div class="sub" id="caps" style="margin-top:8px;"></div>
+  </div>
+</section>
+
+<!-- 6. AI -->
+<section class="scene bg-crimson" id="s6" data-from="56" data-to="64.3">
+  <div class="abs" style="left:150px; top:90px;"><span class="kicker" style="color:var(--gold-soft)">🤖 AI Smart Matching</span></div>
+  <div class="abs h2" style="left:150px; top:140px; color:#fff;">Oddiy tilda yozing — mos ijrochini topamiz</div>
+  <div class="abs card" style="left:150px; top:290px; width:1620px; height:120px; display:flex; align-items:center; padding:0 40px;">
+    <span style="font-size:40px; margin-right:24px;">💬</span><span id="typed" style="font-size:38px; font-weight:600;"></span><span id="caret" style="font-size:40px; color:var(--crimson2); font-weight:300;">|</span>
+  </div>
+  <div class="abs" id="chips" style="left:150px; top:450px;">
+    <span class="chip" id="c1">xizmat = Uy tozalash</span><span class="chip" id="c2">hudud = Buxoro shahri</span><span class="chip" id="c3">vaqt = ertaga</span>
+  </div>
+  <div class="abs card" id="m1" style="left:150px; top:560px; width:790px; height:250px; display:flex; align-items:center; gap:34px; padding:0 40px;">
+    <div class="ring" id="r1"><b id="r1t">0%</b></div>
+    <div><div style="font-size:34px; font-weight:800;">Mohira Saidova</div><div style="font-size:24px; color:var(--muted); margin:6px 0 12px;">Uy tozalash · Buxoro shahri · ★ 4,8</div><span class="badge">✓ Tasdiqlangan</span></div>
+  </div>
+  <div class="abs card" id="m2" style="left:980px; top:560px; width:790px; height:250px; display:flex; align-items:center; gap:34px; padding:0 40px;">
+    <div class="ring" id="r2"><b id="r2t">0%</b></div>
+    <div><div style="font-size:34px; font-weight:800;">Dilnoza Rahimova</div><div style="font-size:24px; color:var(--muted); margin:6px 0 12px;">Uy tozalash · Buxoro shahri · ★ 4,6</div><span class="badge">✓ Tasdiqlangan</span></div>
+  </div>
+  <div class="abs center" id="formula" style="top:870px; font-size:27px; color:#ffe9cf; font-weight:600;">MatchScore = xizmat mosligi + hudud + reyting + mahalla tasdig‘i + bo‘shlik<br><span style="color:var(--gold-soft); font-weight:800;">AI faqat tavsiya beradi — tanlov sizda.</span></div>
+</section>
+
+<!-- 7. ISHONCH VA XAVFSIZLIK -->
+<section class="scene bg-cream" id="s7" data-from="64" data-to="72.3">
+  <div class="abs kicker" style="left:130px; top:110px;">Ishonch va xavfsizlik</div>
+  <div class="abs h2" id="s7t" style="left:130px; top:160px; width:1100px;">Har bir qadam himoyalangan</div>
+  <div class="abs card feature" id="f1" style="left:130px; top:300px;"><div class="ic">✅</div><div><h3>Mahalla tasdig‘i</h3><p>Mahalla vakili ijrochini tekshiradi. Profilda “✓ Mahalla tomonidan tasdiqlangan” belgisi chiqadi.</p></div></div>
+  <div class="abs card feature" id="f2" style="left:130px; top:530px;"><div class="ic">🛡️</div><div><h3>BEGOYIM Safe</h3><p>Mijoz manzilidagi ishda “Ishni boshladim” va “Ishni yakunladim” vaqti qayd etiladi.</p></div></div>
+  <div class="abs card feature" id="f3" style="left:130px; top:760px;"><div class="ic">🔒</div><div><h3>Psixologik yordam</h3><p>Tajribali psixologlar bilan ONLINE yoki OFFLINE qabul. Murojaat mazmuni maxfiy qoladi.</p></div></div>
+  <div class="phone" id="ph" style="left:1400px; top:150px;"><div class="screen"><img id="phimg" src="assets/shots/m_service.png"></div></div>
+</section>
+
+<!-- 8. MAHALLA -->
+<section class="scene bg-cream" id="s8" data-from="72" data-to="78.3">
+  <div class="browser" id="br2" style="left:110px; top:150px; width:1080px; height:700px;">
+    <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">begoyim / mahalla</span></div>
+    <div class="vp"><img id="mh" src="assets/shots/mahalla.png"></div>
+  </div>
+  <div class="abs" id="s8a" style="left:1260px; top:250px; width:560px;">
+    <div class="kicker">Mahalla uchun</div>
+    <div class="h2" style="font-size:56px; margin-top:16px;">Bandlik ko‘z oldida</div>
+    <div class="lead" style="font-size:30px; color:var(--muted); margin-top:26px;">Nechta ayol xizmat ko‘rsatyapti, nechtasi tasdiqlangan, qaysi xizmatlar talabgir — barchasi bitta dashboardda.</div>
+    <div class="sub" style="margin-top:26px; font-size:24px;">🔒 Faqat umumiy ko‘rsatkichlar, shaxsiy ma’lumotlarsiz.</div>
+  </div>
+</section>
+
+<!-- 9. FINAL -->
+<section class="scene bg-cream" id="s9" data-from="78" data-to="88">
+  <img class="abs" id="s9logo" src="assets/logo.png" style="left:710px; top:70px; width:500px;">
+  <div class="abs center script" id="s9s" style="top:500px; font-size:80px;">Ayoldan ayolga — imkoniyat va ko‘mak.</div>
+  <div class="abs center lead" id="s9l" style="top:640px; font-size:34px; color:var(--muted);">O‘z ko‘nikmangizni daromadga aylantiring — yoki ishonchli ijrochini toping.</div>
+  <div class="abs center" id="s9b" style="top:760px;"><span class="btn main">Xizmat topish</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn ghost">Xizmat ko‘rsatish</span></div>
+  <div class="abs center" id="s9f" style="top:930px; font-size:24px; font-weight:700; letter-spacing:2px; color:var(--muted);">BEGOYIM · Ayollar bandligi va farovonligi raqamli ekotizimi</div>
+</section>
+
+<div id="fade"></div>
+
+<script>
+const DURATION = 86;
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const eOut = x => 1 - Math.pow(1 - x, 3);
+const eInOut = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const $ = id => document.getElementById(id);
+// Kirish (a..b) va chiqish (c..d) bilan opacity
+const io = (t, a, b, c = 1e9, d = 1e9) => eOut(prog(t, a, b)) * (1 - eInOut(prog(t, c, d)));
+function put(el, o, x = 0, y = 0, s = 1) {
+  if (typeof el === "string") el = $(el);
+  el.style.opacity = o;
+  el.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+}
+// Kirish animatsiyasi: pastdan suzib chiqish
+function rise(el, t, a, dur = .8, dist = 40, out = null) {
+  const p = eOut(prog(t, a, a + dur));
+  const o = out ? p * (1 - eInOut(prog(t, out[0], out[1]))) : p;
+  put(el, o, 0, (1 - p) * dist);
+}
+
+// --- 3-sahna: kategoriyalar lentasi ---
+const CATS = [["pazandachilik","Pazandachilik"],["pishiriqlar","Pishiriqlar"],["tikuvchilik","Tikuvchilik"],["parda-tikish","Parda tikish"],
+  ["korpacha-uy-tekstili","Ko‘rpacha"],["milliy-kiyim","Milliy kiyim"],["hunarmandchilik","Hunarmandchilik"],["gozallik","Go‘zallik"],
+  ["repetitorlik","Repetitorlik"],["bolalarga-qarash","Bolalarga qarash"],["uy-tozalash","Uy tozalash"],["masofaviy","Masofaviy"],["boshqa","Boshqa xizmatlar"]];
+const tiles = $("s3tiles");
+CATS.concat(CATS).forEach(([slug, name], i) => {
+  const d = document.createElement("div");
+  d.className = "tile"; d.style.top = "470px";
+  d.innerHTML = `<img src="assets/photos/${slug}.jpg"><span>${name}</span>`;
+  tiles.appendChild(d);
+});
+
+// --- 5-sahna: qadamlar ---
+const STEPS = [
+  { t: "Ro‘yxatdan o‘tish", s: "Telefon raqami va parol — bir daqiqada.", img: "register", url: "begoyim / ro‘yxatdan o‘tish" },
+  { t: "Profil va ko‘nikmalar", s: "Parda tikish, ko‘rpacha tikish — tajriba va portfolio bilan.", img: "profile", url: "begoyim / profil" },
+  { t: "Mahalla tasdig‘i ✓", s: "Mahalla vakili arizani tekshiradi va tasdiqlaydi.", img: "verify", url: "begoyim / mahalla / arizalar" },
+  { t: "Xizmat joylash", s: "Narx, hudud, xizmat shakli va rasmlar.", img: "service_new", url: "begoyim / xizmatlar / yangi" },
+  { t: "AI tavsiya", s: "Mijoz oddiy tilda yozadi — AI mos ijrochilarni topadi.", img: "ai", url: "begoyim / ai-tavsiya" },
+  { t: "Buyurtma va baho", s: "Yangi → Qabul qilindi → Jarayonda → Bajarildi → ★ baho.", img: "order", url: "begoyim / buyurtmalar" },
+  { t: "Daromad", s: "Platforma orqali hisoblangan daromad oyma-oy ko‘rinadi.", img: "income", url: "begoyim / daromad" },
+];
+const S5_START = 26.6, STEP_LEN = 4.2;
+const stepsEl = $("steps"), vp = $("brvp");
+STEPS.forEach((st, i) => {
+  const row = document.createElement("div");
+  row.className = "step"; row.innerHTML = `<span class="n">${i + 1}</span><span>${st.t}</span>`;
+  stepsEl.appendChild(row);
+  const img = document.createElement("img");
+  img.src = `assets/shots/${st.img}.png`;
+  vp.appendChild(img);
+});
+
+const scenes = [...document.querySelectorAll(".scene")];
+
+function render(t) {
+  scenes.forEach(s => { s.style.display = (t >= +s.dataset.from && t < +s.dataset.to) ? "block" : "none"; });
+  // Sahnalar orasidagi yumshoq o'tish (krem rangli parda)
+  const cuts = [6, 15, 22, 26, 56, 64, 72, 78];
+  let f = 0;
+  cuts.forEach(c => { f = Math.max(f, 1 - clamp(Math.abs(t - c) / .35)); });
+  f = Math.max(f, prog(t, DURATION - 1.4, DURATION));
+  $("fade").style.opacity = f;
+
+  // 1. Intro
+  if (t < 6.2) {
+    const p = eOut(prog(t, .2, 1.8));
+    put("s1logo", p * (1 - prog(t, 5.4, 6)), 0, (1 - p) * 30, .9 + .1 * p + .02 * prog(t, 1.8, 6));
+    rise("s1slogan", t, 1.9, 1, 30, [5.4, 6]);
+    rise("s1tag", t, 2.7, .9, 20, [5.4, 6]);
+  }
+  // 2. Muammo
+  if (t >= 6 && t < 15.2) {
+    ["p1", "p2", "p3", "p4", "p5"].forEach((id, i) => {
+      const a = 6.3 + i * .35, p = eOut(prog(t, a, a + 1));
+      put(id, p * (1 - prog(t, 14.4, 15)), 0, (1 - p) * 60, 1.0 + .05 * prog(t, a, 15));
+    });
+    rise("s2a", t, 6.5, .9, 40, [14.4, 15]);
+    rise("s2b", t, 8.3, .9, 30, [14.4, 15]);
+    rise("s2c", t, 11, .9, 30, [14.4, 15]);
+  }
+  // 3. Yechim + kategoriyalar lentasi
+  if (t >= 15 && t < 22.2) {
+    rise("s3k", t, 15.2, .7, 20); rise("s3t", t, 15.4, .9, 30); rise("s3s", t, 16.1, .9, 20);
+    const shift = (t - 15) * 120, w = 280;
+    [...tiles.children].forEach((el, i) => {
+      el.style.left = (1920 - shift + i * w - 1300) + "px";
+      const a = 16.2 + i * .05;
+      el.style.opacity = eOut(prog(t, a, a + .8));
+      el.style.transform = `translateY(${(1 - eOut(prog(t, a, a + .8))) * 60}px)`;
+    });
+    tiles.style.opacity = 1 - prog(t, 21.6, 22.1);
+  }
+  // 4. Qahramon
+  if (t >= 22 && t < 26.4) {
+    const p = eOut(prog(t, 22.1, 23.1));
+    put("s4p", p * (1 - prog(t, 25.8, 26.3)), (1 - p) * 60, 0, 1 + .04 * prog(t, 22, 26.4));
+    rise("s4a", t, 22.3, .9, 30, [25.8, 26.3]);
+    rise("s4b", t, 23.6, .9, 20, [25.8, 26.3]);
+  }
+  // 5. Platformadagi yo'l
+  if (t >= 26 && t < 56.3) {
+    const idx = clamp(Math.floor((t - S5_START) / STEP_LEN), 0, STEPS.length - 1);
+    const local = t - (S5_START + idx * STEP_LEN);
+    [...stepsEl.children].forEach((row, i) => {
+      row.className = "step" + (i < idx ? " done" : i === idx ? " now" : "");
+      if (i < idx) row.querySelector(".n").textContent = "✓"; else row.querySelector(".n").textContent = i + 1;
+      const a = 26.2 + i * .12, p = eOut(prog(t, a, a + .6));
+      row.style.opacity = p * (1 - prog(t, 55.7, 56.2));
+      row.style.transform = `translateX(${(1 - p) * -40}px) scale(${i === idx ? 1.04 : 1})`;
+    });
+    const brIn = eOut(prog(t, 26.2, 27.2)), brOut = prog(t, 55.7, 56.2);
+    put("br", brIn * (1 - brOut), 0, (1 - brIn) * 50);
+    [...vp.children].forEach((img, i) => {
+      if (i === idx) {
+        const p = eOut(prog(local, 0, .6));
+        img.style.opacity = p;
+        // Sekin pastga "skroll"
+        const pan = -70 * eInOut(prog(local, .8, STEP_LEN));
+        img.style.transform = `translateY(${pan + (1 - p) * 30}px) scale(${1.02 - .02 * p})`;
+      } else if (i === idx - 1) {
+        img.style.opacity = 1 - prog(local, 0, .5);
+      } else img.style.opacity = 0;
+    });
+    $("brurl").textContent = STEPS[idx].url;
+    $("capt").textContent = STEPS[idx].t;
+    $("caps").textContent = STEPS[idx].s;
+    const cp = eOut(prog(local, .15, .8));
+    put("cap", cp * (1 - brOut) * (idx < STEPS.length - 1 ? 1 - prog(local, STEP_LEN - .3, STEP_LEN) : 1), 0, (1 - cp) * 20);
+  }
+  // 6. AI
+  if (t >= 56 && t < 64.3) {
+    const text = "Ertaga Buxoro shahrida 2 ta xonani tozalaydigan ayol kerak.";
+    const n = Math.floor(text.length * prog(t, 56.6, 59.2));
+    $("typed").textContent = text.slice(0, n);
+    $("caret").style.opacity = (Math.floor(t * 2.4) % 2 === 0 || t < 59.2) ? 1 : 0;
+    ["c1", "c2", "c3"].forEach((id, i) => rise(id, t, 59.4 + i * .25, .6, 20));
+    [["m1", "r1", 60.4], ["m2", "r2", 60.75]].forEach(([m, r, a]) => {
+      rise(m, t, a, .8, 40);
+      const v = Math.round(99 * eOut(prog(t, a + .3, a + 2)));
+      $(r + "t").textContent = v + "%";
+      $(r).style.background = `conic-gradient(#d6a24c 0%, #a3123f ${v}%, #f0e3e6 ${v}% 100%)`;
+    });
+    rise("formula", t, 62, .8, 20);
+  }
+  // 7. Ishonch
+  if (t >= 64 && t < 72.3) {
+    rise("s7t", t, 64.2, .8, 30, [71.6, 72.1]);
+    rise("f1", t, 64.8, .8, 40, [71.6, 72.1]);
+    rise("f2", t, 66.3, .8, 40, [71.6, 72.1]);
+    rise("f3", t, 67.8, .8, 40, [71.6, 72.1]);
+    const p = eOut(prog(t, 64.4, 65.4));
+    put("ph", p * (1 - prog(t, 71.6, 72.1)), (1 - p) * 80, 0);
+    const ph = $("phimg"), maxPan = Math.min(1500, Math.max(0, ph.offsetHeight - 788));
+    ph.style.transform = `translateY(${-maxPan * eInOut(prog(t, 65.5, 71))}px)`;
+  }
+  // 8. Mahalla
+  if (t >= 72 && t < 78.3) {
+    const p = eOut(prog(t, 72.1, 73.1));
+    put("br2", p * (1 - prog(t, 77.6, 78.1)), (1 - p) * -60, 0);
+    $("mh").style.transform = `translateY(${-160 * eInOut(prog(t, 73.4, 77.4))}px)`;
+    rise("s8a", t, 72.6, .9, 30, [77.6, 78.1]);
+  }
+  // 9. Final
+  if (t >= 78) {
+    const p = eOut(prog(t, 78.2, 79.6));
+    put("s9logo", p, 0, (1 - p) * 30, .92 + .08 * p);
+    rise("s9s", t, 79.4, 1, 30);
+    rise("s9l", t, 80.4, .9, 20);
+    rise("s9b", t, 81.2, .9, 20);
+    rise("s9f", t, 82, .9, 10);
+  }
+}
+window.DURATION = DURATION;
+window.render = render;
+render(0);
+</script>
+</body>
+</html>
