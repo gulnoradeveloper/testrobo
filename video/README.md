@@ -1,6 +1,6 @@
 # BEGOYIM taqdimot videosi (kod orqali)
 
-~86 soniya, 1920×1080, 30 fps, o‘zbek tilida, sintez qilingan fon musiqasi bilan.
+~96 soniya, 1920×1080, 30 fps, o‘zbek tilida, sintez qilingan fon musiqasi bilan.
 
 | Vaqt | Sahna |
 |---|---|
@@ -13,6 +13,7 @@
 | 64–72 s | Ishonch: mahalla tasdig‘i, BEGOYIM Safe, psixologik yordam |
 | 72–78 s | Mahalla dashboardi |
 | 78–86 s | Final va chaqiriq |
+| 86–96 s | Loyiha muallifi: Bo‘ronova Gulnora Yodgorovna, mualliflik huquqi |
 
 ## Qayta yaratish
 

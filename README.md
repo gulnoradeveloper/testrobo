@@ -1,5 +1,8 @@
 # BEGOYIM MVP
 
+**Loyiha muallifi:** Bo‘ronova Gulnora Yodgorovna  
+© 2026 Bo‘ronova Gulnora Yodgorovna. Barcha huquqlar himoyalangan. BEGOYIM nomi, logotipi, konsepsiyasi va platformasi muallifning intellektual mulki hisoblanadi; muallif ruxsatisiz nusxa ko‘chirish va tarqatish taqiqlanadi.
+
 **Ayollar bandligi va farovonligi raqamli ekotizimi** — *“Ayoldan ayolga — imkoniyat va ko‘mak.”*
 
 Texnik topshiriq (TT) asosida tayyorlangan MVP: ayollar ko‘nikmasini xizmatga aylantirish, mahalla orqali verifikatsiya,

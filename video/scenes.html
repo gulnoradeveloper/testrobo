@@ -70,6 +70,20 @@ img.photo { object-fit: cover; border-radius: 26px; box-shadow: 0 24px 60px rgba
 .btn { display: inline-flex; align-items: center; justify-content: center; height: 84px; padding: 0 46px; border-radius: 20px; font-size: 32px; font-weight: 800; }
 .btn.main { background: linear-gradient(-145deg, #a3123f, #d6a24c); color: #fff; box-shadow: 0 14px 30px rgba(163, 18, 63, .3); }
 .btn.ghost { border: 3px solid var(--crimson2); color: var(--crimson2); background: #fff; }
+#fx { position: absolute; inset: 0; pointer-events: none; }
+.orn { position: absolute; left: 0; right: 0; height: 30px; pointer-events: none; background-repeat: repeat-x; background-size: 60px 30px; }
+#orn-top { top: 0; } #orn-bot { bottom: 0; transform: scaleY(-1); }
+#copy { position: absolute; right: 44px; bottom: 44px; font-size: 19px; font-weight: 700; letter-spacing: .5px; pointer-events: none; }
+.rosette { position: absolute; pointer-events: none; }
+.stat { text-align: center; color: #fff; width: 360px; }
+.stat b { display: block; font-family: "Playfair"; font-weight: 900; font-size: 92px; line-height: 1; color: var(--gold-soft); }
+.stat span { display: block; margin-top: 14px; font-size: 26px; font-weight: 700; color: #ffe9cf; }
+#sline { position: absolute; left: 27px; top: 41px; width: 4px; height: 492px; background: #eadbdf; border-radius: 4px; z-index: 0; }
+#sline i { position: absolute; left: 0; top: 0; width: 100%; background: linear-gradient(#a3123f, #d6a24c); border-radius: 4px; }
+.step { position: relative; z-index: 1; }
+.shine { position: absolute; top: -200px; width: 260px; height: 1500px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,245,225,.55), rgba(255,255,255,0)); transform: rotate(18deg); pointer-events: none; }
+.avatar-ring { position: absolute; width: 600px; height: 600px; border-radius: 50%; padding: 14px; }
+.avatar-ring img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 10px solid #fff; display: block; }
 #fade { position: absolute; inset: 0; background: var(--cream); pointer-events: none; }
 </style>
 </head>
@@ -77,6 +91,7 @@ img.photo { object-fit: cover; border-radius: 26px; box-shadow: 0 24px 60px rgba
 
 <!-- 1. INTRO -->
 <section class="scene bg-cream" id="s1" data-from="0" data-to="6.2">
+  <img class="rosette" id="ros1" src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20400%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23d6a24c%22%20stroke-width%3D%222.4%22%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%280%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2830%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2860%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2890%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28120%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28150%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28180%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28210%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28240%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28270%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28300%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28330%20200%20200%29%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%22190%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%22150%22%20stroke-dasharray%3D%224%2010%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%2258%22/%3E%3C/g%3E%3Cg%20fill%3D%22%23a3123f%22%20fill-opacity%3D%22.28%22%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2815%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2845%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2875%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28105%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28135%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28165%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28195%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28225%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28255%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28285%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28315%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28345%20200%20200%29%22/%3E%3C/g%3E%3C/svg%3E" style="left:560px; top:20px; width:800px; height:800px;">
   <img class="abs" id="s1logo" src="assets/logo.png" style="left:560px; top:110px; width:800px;">
   <div class="abs center script" id="s1slogan" style="top:770px; font-size:86px;">Ayoldan ayolga — imkoniyat va ko‘mak.</div>
   <div class="abs center" id="s1tag" style="top:900px; font-size:30px; font-weight:700; color:var(--muted); letter-spacing:2px;">AYOLLAR BANDLIGI VA FAROVONLIGI RAQAMLI EKOTIZIMI</div>
@@ -89,6 +104,7 @@ img.photo { object-fit: cover; border-radius: 26px; box-shadow: 0 24px 60px rgba
   <img class="abs photo" id="p3" src="assets/photos/korpacha_big.jpg" style="left:900px; top:490px; width:300px; height:520px;">
   <img class="abs photo" id="p4" src="assets/photos/bola_big.jpg" style="left:1230px; top:490px; width:190px; height:520px;">
   <img class="abs photo" id="p5" src="assets/photos/pishiriq_big.jpg" style="left:1450px; top:620px; width:390px; height:390px;">
+  <div class="shine" id="shine2"></div>
   <div class="abs" id="s2a" style="left:110px; top:250px; width:740px;">
     <div class="kicker">Har bir mahallada</div>
     <div class="h2" style="margin-top:22px;">mohir, mehnatkash<br>ayollar bor.</div>
@@ -105,6 +121,11 @@ img.photo { object-fit: cover; border-radius: 26px; box-shadow: 0 24px 60px rgba
   <div class="abs center h1" id="s3t" style="top:160px; color:#fff;">BEGOYIM</div>
   <div class="abs center lead" id="s3s" style="top:290px; color:#ffe9cf;">ko‘nikmani — xizmatga, xizmatni — daromadga aylantiradi</div>
   <div id="s3tiles"></div>
+  <div class="abs" id="s3stats" style="left:0; right:0; top:775px; display:flex; justify-content:center; gap:60px;">
+    <div class="stat"><b id="n1">0</b><span>xizmat yo‘nalishi</span></div>
+    <div class="stat"><b id="n2">0</b><span>viloyat va respublika</span></div>
+    <div class="stat"><b id="n3">0</b><span>foydalanuvchi roli</span></div>
+  </div>
 </section>
 
 <!-- 4. QAHRAMON -->
@@ -121,7 +142,7 @@ img.photo { object-fit: cover; border-radius: 26px; box-shadow: 0 24px 60px rgba
 <!-- 5. YO'L (skrinshotlar) -->
 <section class="scene bg-cream" id="s5" data-from="26" data-to="56.3">
   <div class="abs kicker" style="left:110px; top:150px;">Platformadagi yo‘l</div>
-  <div class="steps" id="steps"></div>
+  <div class="steps" id="steps"><div id="sline"><i id="slinef"></i></div></div>
   <div class="browser" id="br" style="left:650px; top:120px; width:1170px; height:740px;">
     <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url" id="brurl">begoyim</span></div>
     <div class="vp" id="brvp"></div>
@@ -178,18 +199,39 @@ img.photo { object-fit: cover; border-radius: 26px; box-shadow: 0 24px 60px rgba
 </section>
 
 <!-- 9. FINAL -->
-<section class="scene bg-cream" id="s9" data-from="78" data-to="88">
+<section class="scene bg-cream" id="s9" data-from="78" data-to="86.3">
+  <img class="rosette" id="ros9" src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20400%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23d6a24c%22%20stroke-width%3D%222.4%22%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%280%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2830%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2860%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2890%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28120%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28150%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28180%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28210%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28240%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28270%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28300%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28330%20200%20200%29%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%22190%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%22150%22%20stroke-dasharray%3D%224%2010%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%2258%22/%3E%3C/g%3E%3Cg%20fill%3D%22%23a3123f%22%20fill-opacity%3D%22.28%22%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2815%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2845%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2875%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28105%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28135%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28165%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28195%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28225%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28255%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28285%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28315%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28345%20200%20200%29%22/%3E%3C/g%3E%3C/svg%3E" style="left:700px; top:-10px; width:520px; height:520px;">
   <img class="abs" id="s9logo" src="assets/logo.png" style="left:710px; top:70px; width:500px;">
   <div class="abs center script" id="s9s" style="top:500px; font-size:80px;">Ayoldan ayolga — imkoniyat va ko‘mak.</div>
   <div class="abs center lead" id="s9l" style="top:640px; font-size:34px; color:var(--muted);">O‘z ko‘nikmangizni daromadga aylantiring — yoki ishonchli ijrochini toping.</div>
   <div class="abs center" id="s9b" style="top:760px;"><span class="btn main">Xizmat topish</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn ghost">Xizmat ko‘rsatish</span></div>
-  <div class="abs center" id="s9f" style="top:930px; font-size:24px; font-weight:700; letter-spacing:2px; color:var(--muted);">BEGOYIM · Ayollar bandligi va farovonligi raqamli ekotizimi</div>
+  <div class="abs center" id="s9f" style="top:910px; font-size:24px; font-weight:700; letter-spacing:2px; color:var(--muted);">BEGOYIM · Ayollar bandligi va farovonligi raqamli ekotizimi</div>
 </section>
 
+<!-- 10. MUALLIF -->
+<section class="scene bg-cream" id="s10" data-from="86" data-to="97">
+  <img class="rosette" id="ros10" src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20400%20400%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23d6a24c%22%20stroke-width%3D%222.4%22%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%280%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2830%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2860%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%2890%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28120%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28150%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28180%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28210%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28240%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28270%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28300%20200%20200%29%22/%3E%3Cellipse%20cx%3D%22200%22%20cy%3D%2295%22%20rx%3D%2234%22%20ry%3D%2292%22%20transform%3D%22rotate%28330%20200%20200%29%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%22190%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%22150%22%20stroke-dasharray%3D%224%2010%22/%3E%3Ccircle%20cx%3D%22200%22%20cy%3D%22200%22%20r%3D%2258%22/%3E%3C/g%3E%3Cg%20fill%3D%22%23a3123f%22%20fill-opacity%3D%22.28%22%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2815%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2845%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%2875%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28105%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28135%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28165%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28195%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28225%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28255%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28285%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28315%20200%20200%29%22/%3E%3Cpath%20d%3D%22M200%2040%20L222%20120%20L200%20160%20L178%20120Z%22%20transform%3D%22rotate%28345%20200%20200%29%22/%3E%3C/g%3E%3C/svg%3E" style="left:90px; top:110px; width:860px; height:860px;">
+  <div class="avatar-ring" id="aring" style="left:220px; top:240px;"><img src="assets/author.jpg" alt="Bo‘ronova Gulnora Yodgorovna"></div>
+  <div class="abs" id="s10a" style="left:1000px; top:250px; width:820px;">
+    <div class="kicker">Loyiha muallifi</div>
+    <div class="h2" style="margin-top:18px; font-size:66px;">Bo‘ronova Gulnora<br>Yodgorovna</div>
+    <div class="lead" style="font-size:30px; color:var(--muted); margin-top:24px;">BEGOYIM — ayollar bandligi va farovonligi raqamli ekotizimi g‘oyasi, konsepsiyasi va loyihasi muallifi.</div>
+  </div>
+  <div class="abs" id="s10b" style="left:1000px; top:700px; width:820px;">
+    <div style="height:30px; background-image:url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2260%22%20height%3D%2230%22%20viewBox%3D%220%200%2060%2030%22%3E%3Crect%20width%3D%2260%22%20height%3D%2230%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M30%202%20L46%2015%20L30%2028%20L14%2015Z%22%20fill%3D%22%23a3123f%22/%3E%3Cpath%20d%3D%22M30%208%20L39%2015%20L30%2022%20L21%2015Z%22%20fill%3D%22%23d6a24c%22/%3E%3Cpath%20d%3D%22M30%2012%20L33%2015%20L30%2018%20L27%2015Z%22%20fill%3D%22%23fffaf4%22/%3E%3Cpath%20d%3D%22M0%2015%20L6%209%20L12%2015%20L6%2021Z%20M48%2015%20L54%209%20L60%2015%20L54%2021Z%22%20fill%3D%22%23d6a24c%22/%3E%3C/svg%3E'); background-size:60px 30px; opacity:.85; margin-bottom:26px;"></div>
+    <div style="font-size:30px; font-weight:800; color:var(--crimson2);">© 2026 Bo‘ronova Gulnora Yodgorovna.<br>Barcha huquqlar himoyalangan.</div>
+    <div class="sub" style="font-size:21px; margin-top:14px;">BEGOYIM nomi, logotipi, konsepsiyasi va platformasi muallifning intellektual mulki hisoblanadi. Muallif ruxsatisiz nusxa ko‘chirish va tarqatish taqiqlanadi.</div>
+  </div>
+</section>
+
+<canvas id="fx" width="1920" height="1080"></canvas>
+<div class="orn" id="orn-top" style="background-image:url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2260%22%20height%3D%2230%22%20viewBox%3D%220%200%2060%2030%22%3E%3Crect%20width%3D%2260%22%20height%3D%2230%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M30%202%20L46%2015%20L30%2028%20L14%2015Z%22%20fill%3D%22%23a3123f%22/%3E%3Cpath%20d%3D%22M30%208%20L39%2015%20L30%2022%20L21%2015Z%22%20fill%3D%22%23d6a24c%22/%3E%3Cpath%20d%3D%22M30%2012%20L33%2015%20L30%2018%20L27%2015Z%22%20fill%3D%22%23fffaf4%22/%3E%3Cpath%20d%3D%22M0%2015%20L6%209%20L12%2015%20L6%2021Z%20M48%2015%20L54%209%20L60%2015%20L54%2021Z%22%20fill%3D%22%23d6a24c%22/%3E%3C/svg%3E')"></div>
+<div class="orn" id="orn-bot" style="background-image:url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2260%22%20height%3D%2230%22%20viewBox%3D%220%200%2060%2030%22%3E%3Crect%20width%3D%2260%22%20height%3D%2230%22%20fill%3D%22none%22/%3E%3Cpath%20d%3D%22M30%202%20L46%2015%20L30%2028%20L14%2015Z%22%20fill%3D%22%23a3123f%22/%3E%3Cpath%20d%3D%22M30%208%20L39%2015%20L30%2022%20L21%2015Z%22%20fill%3D%22%23d6a24c%22/%3E%3Cpath%20d%3D%22M30%2012%20L33%2015%20L30%2018%20L27%2015Z%22%20fill%3D%22%23fffaf4%22/%3E%3Cpath%20d%3D%22M0%2015%20L6%209%20L12%2015%20L6%2021Z%20M48%2015%20L54%209%20L60%2015%20L54%2021Z%22%20fill%3D%22%23d6a24c%22/%3E%3C/svg%3E')"></div>
+<div id="copy">© 2026 Bo‘ronova Gulnora Yodgorovna · BEGOYIM</div>
 <div id="fade"></div>
 
 <script>
-const DURATION = 86;
+const DURATION = 96;
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const prog = (t, a, b) => clamp((t - a) / (b - a));
 const eOut = x => 1 - Math.pow(1 - x, 3);
@@ -243,15 +285,53 @@ STEPS.forEach((st, i) => {
 });
 
 const scenes = [...document.querySelectorAll(".scene")];
+const DARK = new Set(["s3", "s6"]);
+// Oltin zarrachalar (deterministik)
+let seed = 7;
+const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const PARTS = Array.from({ length: 70 }, () => ({ x: rnd() * 1920, y: rnd() * 1080, r: 1.5 + rnd() * 4.5, vy: 14 + rnd() * 30, ph: rnd() * 6.28, sw: 10 + rnd() * 30, a: .25 + rnd() * .55 }));
+const fx = $("fx").getContext("2d");
+function drawFx(t, dark) {
+  fx.clearRect(0, 0, 1920, 1080);
+  // Yumshoq yorug'lik dog'lari
+  [[.25, .3, 520], [.78, .7, 640]].forEach(([cx, cy, R], i) => {
+    const x = 1920 * cx + Math.sin(t * .23 + i * 2) * 120, y = 1080 * cy + Math.cos(t * .19 + i) * 80;
+    const g = fx.createRadialGradient(x, y, 0, x, y, R);
+    g.addColorStop(0, dark ? "rgba(255,210,150,.16)" : "rgba(214,162,76,.13)");
+    g.addColorStop(1, "rgba(255,255,255,0)");
+    fx.fillStyle = g; fx.fillRect(0, 0, 1920, 1080);
+  });
+  PARTS.forEach(p => {
+    const y = ((p.y - t * p.vy) % 1180 + 1180) % 1180 - 50;
+    const x = p.x + Math.sin(t * .8 + p.ph) * p.sw;
+    const tw = .55 + .45 * Math.sin(t * 2.2 + p.ph * 3);
+    fx.beginPath(); fx.arc(x, y, p.r, 0, 6.283);
+    fx.fillStyle = dark ? `rgba(255,226,170,${p.a * tw})` : `rgba(214,162,76,${p.a * tw * .8})`;
+    fx.shadowColor = "rgba(255,210,140,.9)"; fx.shadowBlur = 12;
+    fx.fill();
+  });
+  fx.shadowBlur = 0;
+}
 
 function render(t) {
   scenes.forEach(s => { s.style.display = (t >= +s.dataset.from && t < +s.dataset.to) ? "block" : "none"; });
   // Sahnalar orasidagi yumshoq o'tish (krem rangli parda)
-  const cuts = [6, 15, 22, 26, 56, 64, 72, 78];
+  const cuts = [6, 15, 22, 26, 56, 64, 72, 78, 86];
   let f = 0;
   cuts.forEach(c => { f = Math.max(f, 1 - clamp(Math.abs(t - c) / .35)); });
   f = Math.max(f, prog(t, DURATION - 1.4, DURATION));
   $("fade").style.opacity = f;
+  const active = scenes.find(sc => sc.style.display === "block");
+  const dark = active && DARK.has(active.id);
+  drawFx(t, dark);
+  ["orn-top", "orn-bot"].forEach((id, i) => {
+    const el = $(id);
+    el.style.opacity = dark ? .45 : .7;
+    el.style.backgroundPosition = `${(i ? -1 : 1) * t * 18}px 0`;
+  });
+  const cp = $("copy");
+  cp.style.color = dark ? "rgba(255,240,225,.85)" : "rgba(142,18,56,.75)";
+  cp.style.opacity = t < 1.5 || t > 86 ? 0 : clamp((t - 1.5) / .8);
 
   // 1. Intro
   if (t < 6.2) {
@@ -259,6 +339,9 @@ function render(t) {
     put("s1logo", p * (1 - prog(t, 5.4, 6)), 0, (1 - p) * 30, .9 + .1 * p + .02 * prog(t, 1.8, 6));
     rise("s1slogan", t, 1.9, 1, 30, [5.4, 6]);
     rise("s1tag", t, 2.7, .9, 20, [5.4, 6]);
+    const rp = eOut(prog(t, 0, 2));
+    put("ros1", rp * .5 * (1 - prog(t, 5.4, 6)), 0, 0, .8 + .2 * rp);
+    $("ros1").style.transform += ` rotate(${t * 6}deg)`;
   }
   // 2. Muammo
   if (t >= 6 && t < 15.2) {
@@ -269,6 +352,8 @@ function render(t) {
     rise("s2a", t, 6.5, .9, 40, [14.4, 15]);
     rise("s2b", t, 8.3, .9, 30, [14.4, 15]);
     rise("s2c", t, 11, .9, 30, [14.4, 15]);
+    const sh = $("shine2"), sp = prog(t, 9, 11.2);
+    sh.style.left = (700 + sp * 1400) + "px"; sh.style.opacity = sp > 0 && sp < 1 ? 1 : 0;
   }
   // 3. Yechim + kategoriyalar lentasi
   if (t >= 15 && t < 22.2) {
@@ -281,6 +366,8 @@ function render(t) {
       el.style.transform = `translateY(${(1 - eOut(prog(t, a, a + .8))) * 60}px)`;
     });
     tiles.style.opacity = 1 - prog(t, 21.6, 22.1);
+    rise("s3stats", t, 17.6, .9, 30, [21.6, 22.1]);
+    [["n1", 13], ["n2", 14], ["n3", 5]].forEach(([id, v], i) => { $(id).textContent = Math.round(v * eOut(prog(t, 17.8 + i * .2, 19.6 + i * .2))); });
   }
   // 4. Qahramon
   if (t >= 22 && t < 26.4) {
@@ -293,7 +380,7 @@ function render(t) {
   if (t >= 26 && t < 56.3) {
     const idx = clamp(Math.floor((t - S5_START) / STEP_LEN), 0, STEPS.length - 1);
     const local = t - (S5_START + idx * STEP_LEN);
-    [...stepsEl.children].forEach((row, i) => {
+    [...stepsEl.querySelectorAll(".step")].forEach((row, i) => {
       row.className = "step" + (i < idx ? " done" : i === idx ? " now" : "");
       if (i < idx) row.querySelector(".n").textContent = "✓"; else row.querySelector(".n").textContent = i + 1;
       const a = 26.2 + i * .12, p = eOut(prog(t, a, a + .6));
@@ -314,6 +401,9 @@ function render(t) {
       } else img.style.opacity = 0;
     });
     $("brurl").textContent = STEPS[idx].url;
+    const lineP = clamp((t - S5_START) / (STEP_LEN * (STEPS.length - 1)));
+    $("slinef").style.height = (lineP * 492) + "px";
+    $("sline").style.opacity = eOut(prog(t, 26.4, 27.2)) * (1 - prog(t, 55.7, 56.2));
     $("capt").textContent = STEPS[idx].t;
     $("caps").textContent = STEPS[idx].s;
     const cp = eOut(prog(local, .15, .8));
@@ -359,7 +449,21 @@ function render(t) {
     rise("s9s", t, 79.4, 1, 30);
     rise("s9l", t, 80.4, .9, 20);
     rise("s9b", t, 81.2, .9, 20);
-    rise("s9f", t, 82, .9, 10);
+    rise("s9f", t, 82, .9, 10, [85.4, 86]);
+    ["s9logo", "s9s", "s9l", "s9b"].forEach(id => { $(id).style.opacity *= 1 - prog(t, 85.4, 86); });
+    const rp = eOut(prog(t, 78.2, 80));
+    put("ros9", rp * .45 * (1 - prog(t, 85.4, 86)), 0, 0, .85 + .15 * rp);
+    $("ros9").style.transform += ` rotate(${-t * 6}deg)`;
+  }
+  // 10. Muallif
+  if (t >= 86) {
+    const p = eOut(prog(t, 86.2, 87.6));
+    put("aring", p, 0, (1 - p) * 40, .9 + .1 * p);
+    $("aring").style.background = `conic-gradient(from ${t * 40}deg, #a3123f, #d6a24c, #f6e7c8, #d6a24c, #a3123f)`;
+    put("ros10", p * .35, 0, 0, .9 + .1 * p);
+    $("ros10").style.transform += ` rotate(${t * 5}deg)`;
+    rise("s10a", t, 87, 1, 30);
+    rise("s10b", t, 88.4, 1, 30);
   }
 }
 window.DURATION = DURATION;
