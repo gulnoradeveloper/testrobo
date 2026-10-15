@@ -24,6 +24,10 @@ class Settings(BaseSettings):
     device: str = "auto"
     torch_threads: int = 0  # 0 — PyTorch standarti
 
+    # Yig‘ilgan frontend (npm run build natijasi). Mavjud bo‘lsa, backend interfeysni o‘zi beradi —
+    # ishga tushirish uchun Node.js shart emas: http://127.0.0.1:8000
+    frontend_dist: Path = PROJECT_ROOT / "frontend" / "dist"
+
     max_upload_mb: int = 20
     max_image_pixels: int = 50_000_000
     min_image_side: int = 128

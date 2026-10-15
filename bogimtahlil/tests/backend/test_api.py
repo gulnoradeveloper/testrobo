@@ -266,3 +266,20 @@ def test_empty_gradcam_is_reported(client, png_bytes, monkeypatch):
     assert a["heatmap"]["available"] is False and "bo‘sh" in a["heatmap"]["error"]
     r = client.get(f"/api/v1/analyses/{a['id']}/heatmap")
     assert r.status_code == 404 and r.json()["error"]["code"] == "GRADCAM_EMPTY"
+
+
+def test_backend_serves_built_frontend(tmp_path, fixture_checkpoint):
+    from app.main import create_app
+
+    dist = tmp_path / "dist"
+    (dist / "assets").mkdir(parents=True)
+    (dist / "index.html").write_text("<html>Bo‘g‘imTahlil</html>", encoding="utf-8")
+    (dist / "assets" / "a.js").write_text("console.log(1)")
+    (tmp_path / "secret.txt").write_text("x")
+    with TestClient(create_app(make_settings(tmp_path, fixture_checkpoint, frontend_dist=dist))) as c:
+        assert "Bo‘g‘imTahlil" in c.get("/").text
+        assert "Bo‘g‘imTahlil" in c.get("/natija/abc").text  # SPA marshruti
+        assert c.get("/assets/a.js").text == "console.log(1)"
+        assert "x" != c.get("/../secret.txt").text and "Bo‘g‘imTahlil" in c.get("/..%2Fsecret.txt").text
+        assert c.get("/api/v1/yoq").json()["error"]["code"] == "ROUTE_NOT_FOUND"
+        assert c.get("/api/v1/health").json()["status"] == "ok"

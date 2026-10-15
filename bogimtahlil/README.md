@@ -53,10 +53,10 @@ bogimtahlil/
 # 1) Backend
 python3.11 -m venv .venv && source .venv/bin/activate
 pip install -r backend/requirements-dev.txt -r ai/requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
-cd backend && uvicorn app.main:app --reload --port 8000      # baza Alembic orqali avtomatik yaratiladi
+cd backend && uvicorn app.main:app --port 8000      # http://127.0.0.1:8000 — interfeys ham shu yerda (frontend/dist)
 
-# 2) Frontend (yangi terminalda)
-cd frontend && npm install && npm run dev                     # http://localhost:5173
+# 2) Faqat interfeys kodini o‘zgartirish uchun (Node.js kerak, ixtiyoriy)
+cd frontend && npm install && npm run dev            # http://localhost:5173
 
 # 3) Testlar
 pytest                       # loyiha ildizida — 82 ta test (+4 tasi real dataset/model bo‘lganda)

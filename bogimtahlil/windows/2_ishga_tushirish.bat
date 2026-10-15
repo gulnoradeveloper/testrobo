@@ -7,9 +7,15 @@ if not exist .venv\Scripts\activate.bat (
     pause
     exit /b 1
 )
-echo Backend: http://127.0.0.1:8000/api/docs
-start "Bo'g'imTahlil backend" cmd /k "set PYTHONUTF8=1 && call .venv\Scripts\activate.bat && cd backend && uvicorn app.main:app --port 8000"
-echo Frontend: http://localhost:5173
-start "Bo'g'imTahlil frontend" cmd /k "cd frontend && npm run dev"
-timeout /t 6 >nul
-start http://localhost:5173
+echo ============================================================
+echo  Bo'g'imTahlil ishga tushmoqda...
+echo  Brauzerda oching:  http://127.0.0.1:8000
+echo  To'xtatish: shu oynada Ctrl+C
+echo ============================================================
+start "" cmd /c "timeout /t 8 >nul && start http://127.0.0.1:8000"
+call .venv\Scripts\activate.bat
+cd backend
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+echo.
+echo Server to'xtadi. Yuqoridagi xabarni o'qing (masalan, 8000-port band bo'lishi mumkin).
+pause

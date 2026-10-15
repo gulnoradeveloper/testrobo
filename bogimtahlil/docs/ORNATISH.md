@@ -2,7 +2,9 @@
 
 ## Talablar
 
-- Python 3.11+ (3.13 da ham sinovdan o‘tgan), Node.js 20+ (22 da sinovdan o‘tgan)
+- Python 3.11+ (3.13 da ham sinovdan o‘tgan)
+- Node.js 20+ — faqat interfeys kodini o‘zgartirish uchun; tayyor interfeys `frontend/dist` da keladi va backend uni
+  `http://127.0.0.1:8000` manzilida o‘zi beradi
 - 4 GB RAM, ~3 GB disk (PyTorch CPU)
 - GPU ixtiyoriy: mavjud bo‘lsa (`BT_DEVICE=auto`) avtomatik ishlatiladi
 - Tashqi pullik AI API talab qilinmaydi

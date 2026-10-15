@@ -5,7 +5,6 @@ __pycache__/
 venv/
 .venv/
 node_modules/
-frontend/dist/
 
 # Ma’lumotlar to‘plami, bazalar va vaqtinchalik fayllar repozitoriyga qo‘shilmaydi
 data/*

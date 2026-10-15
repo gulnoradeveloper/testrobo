@@ -4,6 +4,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import logging
+from pathlib import Path
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
@@ -83,7 +84,30 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins, allow_credentials=True,
                        allow_methods=["GET", "POST", "DELETE"], allow_headers=["*"])
     app.include_router(router)
+    _mount_frontend(app, settings)
     return app
+
+
+def _mount_frontend(app: FastAPI, settings: Settings) -> None:
+    """frontend/dist mavjud bo‘lsa, SPA ni shu serverdan berish (API manzillariga ta’sir qilmaydi)."""
+    from fastapi.responses import FileResponse
+
+    dist = Path(settings.frontend_dist).resolve()
+    index = dist / "index.html"
+    if not index.is_file():
+        log.info("frontend/dist topilmadi — interfeys Vite orqali alohida ishga tushiriladi")
+        return
+
+    @app.get("/{path:path}", include_in_schema=False)
+    async def spa(path: str):
+        if path.startswith("api/") or path == "api":
+            from .errors import ApiError
+
+            raise ApiError("ROUTE_NOT_FOUND", 404)
+        candidate = (dist / path).resolve()
+        if path and dist in candidate.parents and candidate.is_file():
+            return FileResponse(candidate)
+        return FileResponse(index, headers={"Cache-Control": "no-cache"})
 
 
 app = create_app()
