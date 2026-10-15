@@ -43,6 +43,10 @@ bogimtahlil/
 ├── docker-compose.yml · .env.example · .gitignore · pytest.ini
 ```
 
+## Windows
+
+`windows\1_ornatish.bat` → `windows\2_ishga_tushirish.bat` — batafsil: [`windows/README.md`](windows/README.md).
+
 ## Tez ishga tushirish (lokal)
 
 ```bash

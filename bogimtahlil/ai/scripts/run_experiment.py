@@ -42,6 +42,11 @@ def main() -> None:
     ap.add_argument("--benchmark-image", help="tezlikni o‘lchash uchun tasvir (bo‘lmasa test guruhidan birinchisi)")
     args = ap.parse_args()
 
+    if not resolve(args.manifest).is_file():
+        raise SystemExit(
+            f"Manifest topilmadi: {args.manifest}\n"
+            "Avval OAI ma’lumotlaridan manifest yarating (build_oai_manifest.py) — docs/MODEL_OQITISH.md, 1–3-bandlar."
+        )
     exp, art, splits = resolve(args.experiments_dir), resolve(args.artifacts_dir), resolve(args.splits_dir)
     manifest = splits / "manifest_split.csv"
     step("1. Ma’lumotlarni tekshirish va bemorlar bo‘yicha ajratish", SCRIPTS / "prepare_dataset.py",

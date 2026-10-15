@@ -31,6 +31,9 @@ def main() -> None:
                     help="ustun nomlari hujjat bilan solishtirilmagan bo‘lsa ham ishlash (faqat sinov uchun)")
     args = ap.parse_args()
 
+    for f in [*args.labels, args.image_index]:
+        if not resolve(f).is_file():
+            raise SystemExit(f"Fayl topilmadi: {f} — yo‘lni tekshiring (docs/MODEL_OQITISH.md)")
     cfg = load_config(resolve(args.config))
     if not cfg.get("verified") and not args.allow_unverified:
         raise SystemExit(

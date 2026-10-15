@@ -18,3 +18,4 @@ artifacts/*.pt
 experiments/**/*.pt
 artifacts/**/*.pth
 experiments/**/predictions_*.csv
+.venv/
