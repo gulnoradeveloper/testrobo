@@ -283,3 +283,9 @@ def test_backend_serves_built_frontend(tmp_path, fixture_checkpoint):
         assert "x" != c.get("/../secret.txt").text and "Bo‘g‘imTahlil" in c.get("/..%2Fsecret.txt").text
         assert c.get("/api/v1/yoq").json()["error"]["code"] == "ROUTE_NOT_FOUND"
         assert c.get("/api/v1/health").json()["status"] == "ok"
+
+
+def test_service_worker_killswitch(client):
+    r = client.get("/sw.js")
+    assert r.status_code == 200 and "javascript" in r.headers["content-type"]
+    assert "unregister()" in r.text and r.headers["cache-control"] == "no-store"

@@ -84,8 +84,31 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins, allow_credentials=True,
                        allow_methods=["GET", "POST", "DELETE"], allow_headers=["*"])
     app.include_router(router)
+    _install_sw_killswitch(app)
     _mount_frontend(app, settings)
     return app
+
+
+SW_KILLSWITCH = """// Bo‘g‘imTahlil service worker ishlatmaydi. Shu manzilda avval boshqa dastur (masalan, BEGOYIM)
+// ro‘yxatdan o‘tkazgan service worker bo‘lsa, u o‘chiriladi va sahifalar qayta yuklanadi.
+self.addEventListener("install", () => self.skipWaiting());
+self.addEventListener("activate", (event) => {
+  event.waitUntil((async () => {
+    for (const key of await caches.keys()) await caches.delete(key);
+    await self.registration.unregister();
+    for (const client of await self.clients.matchAll({ type: "window" })) client.navigate(client.url);
+  })());
+});
+"""
+
+
+def _install_sw_killswitch(app: FastAPI) -> None:
+    from fastapi.responses import Response
+
+    for path in ("/sw.js", "/service-worker.js"):
+        app.add_api_route(path, lambda: Response(SW_KILLSWITCH, media_type="application/javascript",
+                                                 headers={"Cache-Control": "no-store"}),
+                          methods=["GET"], include_in_schema=False)
 
 
 def _mount_frontend(app: FastAPI, settings: Settings) -> None:

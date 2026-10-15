@@ -9,13 +9,13 @@ if not exist .venv\Scripts\activate.bat (
 )
 echo ============================================================
 echo  Bo'g'imTahlil ishga tushmoqda...
-echo  Brauzerda oching:  http://127.0.0.1:8000
+echo  Brauzerda oching:  http://127.0.0.1:8765
 echo  To'xtatish: shu oynada Ctrl+C
 echo ============================================================
-start "" cmd /c "timeout /t 8 >nul && start http://127.0.0.1:8000"
+start "" cmd /c "timeout /t 8 >nul && start http://127.0.0.1:8765"
 call .venv\Scripts\activate.bat
 cd backend
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8765
 echo.
-echo Server to'xtadi. Yuqoridagi xabarni o'qing (masalan, 8000-port band bo'lishi mumkin).
+echo Server to'xtadi. Yuqoridagi xabarni o'qing (masalan, 8765-port band bo'lishi mumkin).
 pause
