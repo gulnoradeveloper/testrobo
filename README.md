@@ -1,5 +1,7 @@
 # BEGOYIM MVP
 
+> Repozitoriyda alohida loyiha ham bor: **[Bo‘g‘imTahlil 1.0](bogimtahlil/README.md)** — tizza bo‘g‘imi rentgen tasvirlarini sun’iy intellekt asosida tahlil qilish tizimi.
+
 **Loyiha muallifi:** Bo‘ronova Gulnora Yodgorovna  
 © 2026 Bo‘ronova Gulnora Yodgorovna. Barcha huquqlar himoyalangan. BEGOYIM nomi, logotipi, konsepsiyasi va platformasi muallifning intellektual mulki hisoblanadi; muallif ruxsatisiz nusxa ko‘chirish va tarqatish taqiqlanadi.
 

@@ -1,0 +1,18 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+venv/
+.venv/
+node_modules/
+frontend/dist/
+
+# Ma’lumotlar to‘plami, bazalar va vaqtinchalik fayllar repozitoriyga qo‘shilmaydi
+data/*
+!data/README.md
+reports/*
+!reports/README.md
+
+# Model checkpointlari katta va litsenziyaga bog‘liq — git LFS yoki alohida tarqatiladi
+artifacts/*.pt
+experiments/**/*.pt

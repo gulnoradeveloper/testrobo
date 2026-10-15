@@ -1,0 +1,16 @@
+# ResNet-18 — bazaviy model (TT 10-bo‘lim boshlang‘ich parametrlari)
+architecture: resnet18
+model_version: resnet18-kl-1.0.0
+manifest: data/splits/manifest_split.csv
+output_dir: experiments/resnet18
+pretrained: true          # ImageNet vaznlari (internet yoki torch keshi kerak)
+epochs: 50
+batch_size: 32
+learning_rate: 0.0001
+weight_decay: 0.01
+optimizer: adamw
+loss: weighted_cross_entropy
+early_stopping_patience: 7
+selection_metric: macro_f1   # model tanlash faqat validation bo‘yicha
+seed: 42
+num_workers: 4

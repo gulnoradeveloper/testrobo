@@ -1,0 +1,26 @@
+# Ishga tushirish:  cp .env.example .env && docker compose up -d --build
+# Interfeys: http://localhost:8080   API hujjati: http://localhost:8080/api/docs
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    env_file: .env
+    environment:
+      BT_DATABASE_URL: sqlite:////data/bogimtahlil.db
+      BT_STORAGE_DIR: /data/storage
+      BT_MODEL_PATH: /models/model.pt
+    volumes:
+      - appdata:/data
+      - ./artifacts:/models:ro      # o‘qitilgan model: artifacts/model.pt
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    depends_on: [backend]
+    ports:
+      - "${BT_HTTP_PORT:-8080}:80"
+    restart: unless-stopped
+
+volumes:
+  appdata:
