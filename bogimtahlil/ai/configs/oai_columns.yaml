@@ -1,0 +1,44 @@
+# OAI fayllaridagi ustunlarni manifest ustunlariga moslashtirish qoidasi.
+#
+# MANBA: Osteoarthritis Initiative (https://nda.nih.gov/oai) — "Semi-Quantitative Central Reading of Knee
+# X-rays, Boston University" (kXR_SQ_BU##) fayllari va ularning data dictionary’si (AllClinical ma’lumotlar
+# to‘plamining hujjatlari). Ishlab chiqish muhitidan nda.nih.gov ga kirish imkoni bo‘lmagani uchun quyidagi
+# nomlar hujjat bilan HALI SOLISHTIRILMAGAN — `verified: false`. Datasetni yuklab olgach:
+#   1) data dictionary’dagi o‘zgaruvchi nomlarini shu fayl bilan solishtiring;
+#   2) mos bo‘lsa `verified: true` qiling (aks holda build_oai_manifest.py ishlamaydi, --allow-unverified bundan mustasno);
+#   3) mos bo‘lmasa, nomlarni tuzating.
+# Kod ustun yo‘q bo‘lsa aniq xato beradi va mavjud ustunlar ro‘yxatini chiqaradi — taxminiy birlashtirish qilinmaydi.
+verified: false
+documentation_reference: "OAI kXR_SQ_BU## data dictionary (AllClinical ASCII release)"
+
+labels:
+  # OAI ASCII fayllari odatda "|" bilan ajratilgan, sarlavhali matn fayllari
+  delimiter: "|"
+  patient_id: ID           # bemorning anonim identifikatori
+  knee_side: SIDE          # tizza tomoni kodi
+  read_project: READPRJ    # o‘qish loyihasi (bitta tizza bir necha marta o‘qilgan bo‘lishi mumkin)
+  # KL ustuni: "{visit}XRKL", masalan V00XRKL. Har bir fayl bitta tashrifga tegishli.
+  kl_column_template: "{visit}XRKL"
+  # SIDE kodlari (qiymat "1" yoki "1: Right" ko‘rinishida bo‘lishi mumkin — boshidagi butun son olinadi)
+  side_codes: {1: R, 2: L}
+
+# Fayl nomi → tashrif kodi (kXR_SQ_BU00 → V00). OAI tashrif kodlari va oylari:
+visits:
+  V00: 0     # boshlang‘ich
+  V01: 12
+  V03: 24
+  V05: 36
+  V06: 48
+  V08: 72
+  V10: 96
+
+# Bitta (bemor, tomon, tashrif) uchun bir nechta o‘qish bo‘lsa:
+#   agree_or_drop  — barcha o‘qishlar bir xil bo‘lsa olinadi, aks holda yozuv chiqariladi (standart)
+#   prefer_project — read_project_priority ro‘yxatidagi birinchi mavjud loyiha olinadi
+duplicate_policy: agree_or_drop
+read_project_priority: []
+
+# Tasvir indeksi — bitta tizza kesmalari ro‘yxati (OAI tasvirlaridan siz tayyorlaysiz).
+# Ustunlar: image_path, patient_id, knee_side (L/R), visit_id (V00...), projection (PA)
+image_index:
+  delimiter: ","

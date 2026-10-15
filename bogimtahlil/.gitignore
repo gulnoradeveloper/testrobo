@@ -16,3 +16,5 @@ reports/*
 # Model checkpointlari katta va litsenziyaga bog‘liq — git LFS yoki alohida tarqatiladi
 artifacts/*.pt
 experiments/**/*.pt
+artifacts/**/*.pth
+experiments/**/predictions_*.csv

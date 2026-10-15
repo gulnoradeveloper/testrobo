@@ -3,7 +3,10 @@ architecture: efficientnet_b0
 model_version: efficientnet_b0-kl-1.0.0
 manifest: data/splits/manifest_split.csv
 output_dir: experiments/efficientnet_b0
-pretrained: true          # ImageNet vaznlari (internet yoki torch keshi kerak)
+artifact_path: artifacts/efficientnet_b0_best.pt
+pretrained: true          # transfer learning: ImageNet vaznlari (download.pytorch.org yoki torch keshi)
+# Internetsiz muhitda torchvision vaznlar faylini ko‘rsating:
+# pretrained_weights: artifacts/imagenet/efficientnet_b0.pth
 epochs: 50
 batch_size: 32
 learning_rate: 0.0001

@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import shutil
 import time
 
 from _common import load_config, pick_device, resolve, set_seed
@@ -49,16 +50,55 @@ def run_epoch(model, loader, criterion, device, optimizer=None):
     return total_loss / max(n, 1), np.concatenate(targets), np.concatenate(preds)
 
 
+def make_model(cfg: dict) -> nn.Module:
+    """Transfer learning: ImageNet vaznlari yuklanadi, oxirgi qatlam 5 sinfga almashtiriladi.
+
+    `pretrained_weights` — oldindan yuklab olingan torchvision vaznlari fayli (internetsiz muhit uchun).
+    Vaznlarni olish imkoni bo‘lmasa, o‘qitish TO‘XTATILADI — tasodifiy vaznlardan jimgina boshlanmaydi.
+    """
+    arch = cfg["architecture"]
+    local = cfg.get("pretrained_weights")
+    if local:
+        model = build_model(arch, pretrained=False)
+        state = torch.load(resolve(local), map_location="cpu", weights_only=True)
+        state = {k: v for k, v in state.items() if not k.startswith(("fc.", "classifier."))}
+        missing, unexpected = model.load_state_dict(state, strict=False)
+        head = [k for k in missing if not k.startswith(("fc.", "classifier."))]
+        if head or unexpected:
+            raise SystemExit(f"ImageNet vaznlari arxitekturaga mos emas: missing={head[:5]}, unexpected={unexpected[:5]}")
+        return model
+    if cfg.get("pretrained", True):
+        try:
+            return build_model(arch, pretrained=True)
+        except Exception as exc:
+            raise SystemExit(
+                f"ImageNet vaznlarini yuklab bo‘lmadi ({type(exc).__name__}). Internetga ulaning yoki vaznlar faylini "
+                "konfiguratsiyadagi `pretrained_weights` orqali ko‘rsating. Transfer learningsiz o‘qitish uchun "
+                "`pretrained: false` ni ataylab belgilang."
+            ) from exc
+    return build_model(arch, pretrained=False)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--config", required=True)
     ap.add_argument("--device", default="auto")
     ap.add_argument("--epochs", type=int, help="konfiguratsiyadagi qiymatni almashtirish")
+    ap.add_argument("--manifest", help="konfiguratsiyadagi manifestni almashtirish")
+    ap.add_argument("--output-dir", help="konfiguratsiyadagi output_dir ni almashtirish")
+    ap.add_argument("--artifact-path", help="konfiguratsiyadagi artifact_path ni almashtirish")
+    ap.add_argument("--num-workers", type=int)
+    ap.add_argument("--no-pretrained", action="store_true",
+                    help="transfer learningsiz (tasodifiy vaznlardan) — faqat smoke-test uchun; hisobotda ko‘rsatiladi")
     args = ap.parse_args()
 
     cfg = load_config(args.config)
-    if args.epochs:
-        cfg["epochs"] = args.epochs
+    for key, val in (("epochs", args.epochs), ("manifest", args.manifest), ("output_dir", args.output_dir),
+                     ("artifact_path", args.artifact_path), ("num_workers", args.num_workers)):
+        if val is not None:
+            cfg[key] = val
+    if args.no_pretrained:
+        cfg["pretrained"], cfg["pretrained_weights"] = False, None
     set_seed(int(cfg["seed"]))
     device = pick_device(args.device)
     out_dir = resolve(cfg["output_dir"])
@@ -79,13 +119,14 @@ def main() -> None:
         batch_size=int(cfg["batch_size"]), shuffle=False, num_workers=int(cfg["num_workers"]),
     )
 
-    model = build_model(cfg["architecture"], pretrained=bool(cfg.get("pretrained", True))).to(device)
+    model = make_model(cfg).to(device)
     weights = torch.tensor(class_weights(train_df["kl_grade"]), device=device)
     criterion = nn.CrossEntropyLoss(weight=weights)
     optimizer = torch.optim.AdamW(model.parameters(), lr=float(cfg["learning_rate"]), weight_decay=float(cfg["weight_decay"]))
 
     history_path = out_dir / "history.csv"
-    fields = ["epoch", "train_loss", "val_loss", "train_accuracy", "val_accuracy", "val_macro_f1", "val_qwk",
+    fields = ["epoch", "train_loss", "val_loss", "train_accuracy", "val_accuracy", "val_balanced_accuracy",
+              "val_macro_precision", "val_macro_recall", "val_macro_f1", "val_qwk",
               *[f"val_recall_{c}" for c in KL_CLASSES], "epoch_seconds"]
     best_score, best_epoch, patience = -1.0, 0, int(cfg["early_stopping_patience"])
     started = time.time()
@@ -100,6 +141,8 @@ def main() -> None:
             row = {
                 "epoch": epoch, "train_loss": tr_loss, "val_loss": va_loss,
                 "train_accuracy": float((tr_y == tr_p).mean()), "val_accuracy": vm["accuracy"],
+                "val_balanced_accuracy": vm["balanced_accuracy"], "val_macro_precision": vm["macro_precision"],
+                "val_macro_recall": vm["macro_recall"],
                 "val_macro_f1": vm["macro_f1"], "val_qwk": vm["quadratic_weighted_kappa"],
                 **{f"val_recall_{c}": vm["per_class"][c]["recall"] for c in KL_CLASSES},
                 "epoch_seconds": time.time() - t0,
@@ -110,10 +153,15 @@ def main() -> None:
             score = vm[cfg.get("selection_metric", "macro_f1")]
             if score > best_score:
                 best_score, best_epoch = score, epoch
+                (out_dir / "val_metrics.json").write_text(json.dumps({**vm, "epoch": epoch, "split": "val"},
+                                                                     ensure_ascii=False, indent=2), encoding="utf-8")
                 save_checkpoint(
                     out_dir / "best.pt", model, cfg["architecture"], cfg["model_version"], DEFAULT_CONFIG,
                     training_status=TRAINED,
-                    dataset={"manifest": cfg["manifest"], "n_train": len(train_df), "n_val": len(val_df)},
+                    dataset={"manifest": cfg["manifest"], "n_train": len(train_df), "n_val": len(val_df),
+                             "n_train_patients": int(train_df["patient_id"].nunique()),
+                             "n_val_patients": int(val_df["patient_id"].nunique()),
+                             "sources": sorted(train_df["dataset_source"].dropna().unique().tolist())},
                     metrics={"validation": vm},
                     training={**cfg, "best_epoch": epoch},
                 )
@@ -121,8 +169,17 @@ def main() -> None:
                 print(f"Erta to‘xtatish: {patience} epoch davomida yaxshilanish yo‘q")
                 break
 
+    if cfg.get("artifact_path"):
+        dst = resolve(cfg["artifact_path"])
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(out_dir / "best.pt", dst)
+        shutil.copy2(out_dir / "best.pt.sha256", dst.with_suffix(dst.suffix + ".sha256"))
+        sha_line = dst.with_suffix(dst.suffix + ".sha256").read_text().split()[0]
+        dst.with_suffix(dst.suffix + ".sha256").write_text(f"{sha_line}  {dst.name}\n", encoding="utf-8")
+
     summary = {
-        "architecture": cfg["architecture"], "best_epoch": best_epoch,
+        "architecture": cfg["architecture"], "best_epoch": best_epoch, "epochs_run": epoch,
+        "pretrained": bool(cfg.get("pretrained_weights") or cfg.get("pretrained", True)),
         "best_val_" + cfg.get("selection_metric", "macro_f1"): best_score,
         "training_seconds": time.time() - started, "device": str(device),
     }

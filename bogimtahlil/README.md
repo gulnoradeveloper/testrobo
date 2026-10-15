@@ -18,6 +18,7 @@ xaritasini yaratadi va natijani o‘zbek tilidagi PDF hisobot sifatida beradi.
 | Backend API (8 ta asosiy endpoint), validatsiya, sessiya, tarix, o‘chirish, rate limit | ✅ Tayyor, testlangan |
 | Preprocess, inference, Grad-CAM, PDF hisobot | ✅ Tayyor, testlangan |
 | O‘qitish / baholash / taqqoslash / eksport / benchmark skriptlari | ✅ Tayyor, sintetik ma’lumotda smoke-test qilingan |
+| O‘qitish zanjiri: OAI manifest → 70/15/15 → ResNet-18 + EfficientNet-B0 → tanlash → test → eksport (`ai/scripts/run_experiment.py`) | ✅ Tayyor, OAI formatidagi sintetik ma’lumotda uchidan-uchiga sinovdan o‘tgan |
 | **O‘qitilgan model (`artifacts/model.pt`)** | ❌ **Mavjud emas** — OAI datasetiga kirish ruxsati va ma’lumotlar kerak |
 | **Model metrikalari (test)** | ❌ **Hali baholanmagan** |
 | Docker obrazlari | ⚠️ Konfiguratsiya yozilgan, `docker compose config` tekshirilgan; ishlab chiqish muhitida Docker daemon yo‘qligi sababli obraz yig‘ilmagan |
@@ -54,7 +55,7 @@ cd backend && uvicorn app.main:app --reload --port 8000      # baza Alembic orqa
 cd frontend && npm install && npm run dev                     # http://localhost:5173
 
 # 3) Testlar
-pytest                       # loyiha ildizida — 64 ta test
+pytest                       # loyiha ildizida — 82 ta test (+4 tasi real dataset/model bo‘lganda)
 cd frontend && npm test      # 9 ta test
 ```
 

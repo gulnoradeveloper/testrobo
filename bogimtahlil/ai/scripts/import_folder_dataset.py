@@ -27,6 +27,7 @@ def main() -> None:
     ap.add_argument("--patient-regex", help="masalan: '^(\\d{7})' — fayl nomidan bemor ID")
     ap.add_argument("--side-regex", help="masalan: '_(L|R)'")
     ap.add_argument("--view", default="PA")
+    ap.add_argument("--source", required=True, help="ma’lumot manbasi nomi (masalan, dataset nomi va versiyasi)")
     ap.add_argument("--keep-split", action="store_true", help="papkadagi split'ni saqlash")
     args = ap.parse_args()
 
@@ -44,8 +45,9 @@ def main() -> None:
         if args.side_regex and (m := re.search(args.side_regex, f.name)):
             side = m.group(1).upper()
         rows.append({
-            "image_path": str(f), "patient_id": pid or f"img-{f.stem}-{len(rows)}", "side": side,
-            "view": args.view, "timepoint": f"{f.parent.parent.name}-{len(rows)}", "kl_grade": int(grade),
+            "image_path": str(f), "patient_id": pid or f"img-{f.stem}-{len(rows)}", "knee_side": side,
+            "visit_id": f"{f.parent.parent.name}-{len(rows)}", "projection": args.view, "kl_grade": int(grade),
+            "dataset_source": args.source,
             **({"split": {"val": "val", "valid": "val", "test": "test"}.get(f.parent.parent.name, "train")}
                if args.keep_split else {}),
             "patient_id_verified": bool(pid),

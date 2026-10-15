@@ -1,13 +1,16 @@
-"""Dataset manifest, patient bo‘yicha ajratish va PyTorch Dataset.
+"""Dataset manifest, bemor bo‘yicha ajratish va PyTorch Dataset.
 
-Manifest CSV ustunlari (majburiy):
-    image_path   — tasvir fayliga yo‘l (manifestga nisbatan yoki absolyut)
-    patient_id   — bemorning anonim identifikatori (OAI: ID)
-    side         — "L" yoki "R" (qaysi tizza)
-    view         — proyeksiya, masalan "PA" yoki "AP" (frontal)
-    timepoint    — tashrif / vaqt nuqtasi (OAI: V00, V01 ...)
-    kl_grade     — 0..4
-Ixtiyoriy: split ("train" | "val" | "test"), source
+Manifest CSV ustunlari (TT: modelni o‘qitish bosqichi, 2-band):
+    image_path      — bitta tizza tasviri fayliga yo‘l (manifestga nisbatan yoki absolyut)
+    patient_id      — bemorning anonim identifikatori (OAI: ID)
+    knee_side       — "L" yoki "R" (qaysi tizza)
+    visit_id        — tashrif kodi (OAI: V00, V01, V03, ...)
+    projection      — rentgen proyeksiyasi, masalan "PA" (frontal)
+    kl_grade        — 0..4
+    dataset_source  — ma’lumot manbasi, masalan "OAI"
+    split           — "train" | "val" | "test" (prepare_dataset.py qo‘shadi)
+
+Eski nomlar (side, timepoint, view) avtomatik yangi nomlarga o‘tkaziladi.
 """
 from __future__ import annotations
 
@@ -20,8 +23,11 @@ import pandas as pd
 from . import KL_CLASSES
 from .preprocess import DEFAULT_CONFIG, PreprocessConfig, decode_grayscale, letterbox, normalize_to_chw
 
-REQUIRED_COLUMNS = ("image_path", "patient_id", "side", "view", "timepoint", "kl_grade")
+REQUIRED_COLUMNS = ("image_path", "patient_id", "knee_side", "visit_id", "projection", "kl_grade")
+MANIFEST_COLUMNS = (*REQUIRED_COLUMNS, "dataset_source", "split")
+LEGACY_COLUMNS = {"side": "knee_side", "timepoint": "visit_id", "view": "projection"}
 FRONTAL_VIEWS = {"PA", "AP", "FRONTAL", "PA_FIXED_FLEXION"}
+SPLITS = ("train", "val", "test")
 
 
 class ManifestError(ValueError):
@@ -30,10 +36,16 @@ class ManifestError(ValueError):
 
 def load_manifest(path: str | Path) -> pd.DataFrame:
     path = Path(path)
-    df = pd.read_csv(path, dtype={"patient_id": str, "timepoint": str, "side": str, "view": str})
+    df = pd.read_csv(path, dtype=str, keep_default_na=False, na_values=[""])
+    df = df.rename(columns={k: v for k, v in LEGACY_COLUMNS.items() if k in df.columns and v not in df.columns})
     missing = [c for c in REQUIRED_COLUMNS if c not in df.columns]
     if missing:
         raise ManifestError(f"Manifestda ustunlar yo‘q: {missing}")
+    df["kl_grade"] = pd.to_numeric(df["kl_grade"], errors="coerce")
+    for c in ("knee_side", "projection"):
+        df[c] = df[c].astype(str).str.strip().str.upper()
+    if "dataset_source" not in df.columns:
+        df["dataset_source"] = "noma’lum"
     base = path.parent
     df["image_path"] = [str(p if Path(p).is_absolute() else (base / p)) for p in df["image_path"]]
     return df
@@ -42,16 +54,16 @@ def load_manifest(path: str | Path) -> pd.DataFrame:
 def validate_manifest(df: pd.DataFrame, check_files: bool = True) -> dict:
     """Yorliqlar, proyeksiya, takrorlar va fayllar mavjudligini tekshiradi. Hisobot qaytaradi."""
     issues: list[str] = []
-    bad_grade = ~df["kl_grade"].isin(range(len(KL_CLASSES)))
+    bad_grade = ~df["kl_grade"].isin(list(range(len(KL_CLASSES))))
     if bad_grade.any():
         issues.append(f"{int(bad_grade.sum())} ta yozuvda KL bahosi 0..4 oralig‘ida emas")
-    bad_side = ~df["side"].str.upper().isin(["L", "R"])
+    bad_side = ~df["knee_side"].isin(["L", "R"])
     if bad_side.any():
         issues.append(f"{int(bad_side.sum())} ta yozuvda tizza tomoni (L/R) noaniq")
-    non_frontal = ~df["view"].str.upper().isin(FRONTAL_VIEWS)
+    non_frontal = ~df["projection"].isin(FRONTAL_VIEWS)
     if non_frontal.any():
         issues.append(f"{int(non_frontal.sum())} ta yozuv frontal proyeksiya emas — o‘qitishdan chiqariladi")
-    key_dup = df.duplicated(subset=["patient_id", "side", "timepoint"], keep=False)
+    key_dup = df.duplicated(subset=["patient_id", "knee_side", "visit_id"], keep=False)
     if key_dup.any():
         issues.append(f"{int(key_dup.sum())} ta yozuvda (bemor, tomon, vaqt nuqtasi) kaliti takrorlangan")
     missing_files = 0
@@ -63,6 +75,7 @@ def validate_manifest(df: pd.DataFrame, check_files: bool = True) -> dict:
         "n_records": int(len(df)),
         "n_patients": int(df["patient_id"].nunique()),
         "invalid_grades": int(bad_grade.sum()),
+        "invalid_sides": int(bad_side.sum()),
         "non_frontal": int(non_frontal.sum()),
         "duplicate_keys": int(key_dup.sum()),
         "missing_files": missing_files,
@@ -103,6 +116,22 @@ def patient_split(df: pd.DataFrame, val_frac: float = 0.15, test_frac: float = 0
             assignment[pid] = "train"
     out = df.copy()
     out["split"] = out["patient_id"].map(assignment)
+    return out
+
+
+def split_summary(df: pd.DataFrame) -> dict:
+    """Har bir guruh: tasvirlar, bemorlar, KL0–KL4 sinflar soni va ulushi."""
+    out = {}
+    n_pat = df["patient_id"].nunique()
+    for split in SPLITS:
+        part = df[df["split"] == split]
+        vc = part["kl_grade"].astype(int).value_counts().reindex(range(len(KL_CLASSES)), fill_value=0)
+        out[split] = {
+            "images": int(len(part)),
+            "patients": int(part["patient_id"].nunique()),
+            "patient_fraction": float(part["patient_id"].nunique() / n_pat) if n_pat else 0.0,
+            "classes": {KL_CLASSES[i]: int(vc[i]) for i in range(len(KL_CLASSES))},
+        }
     return out
 
 

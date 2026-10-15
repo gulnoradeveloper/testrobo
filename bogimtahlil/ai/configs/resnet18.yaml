@@ -3,7 +3,10 @@ architecture: resnet18
 model_version: resnet18-kl-1.0.0
 manifest: data/splits/manifest_split.csv
 output_dir: experiments/resnet18
-pretrained: true          # ImageNet vaznlari (internet yoki torch keshi kerak)
+artifact_path: artifacts/resnet18_best.pt
+pretrained: true          # transfer learning: ImageNet vaznlari (download.pytorch.org yoki torch keshi)
+# Internetsiz muhitda torchvision vaznlar faylini ko‘rsating:
+# pretrained_weights: artifacts/imagenet/resnet18.pth
 epochs: 50
 batch_size: 32
 learning_rate: 0.0001

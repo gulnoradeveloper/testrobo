@@ -76,7 +76,7 @@ BT_TRUST_PROXY_HEADERS=true
 ## 6. Testlar
 
 ```bash
-pytest                         # loyiha ildizida: AI moduli + backend (64 ta)
+pytest                         # loyiha ildizida: AI moduli + backend (82 ta; 4 tasi real dataset/model paydo bo‘lganda ishlaydi)
 cd frontend && npm test        # Vitest (9 ta)
 ```
 

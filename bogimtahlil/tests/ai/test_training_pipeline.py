@@ -31,7 +31,8 @@ def test_pipeline_end_to_end(tmp_path):
             g = int(rng.integers(0, 5))
             f = tmp_path / "img" / f"{p}_{side}.png"
             Image.fromarray((60 + 30 * g + rng.normal(0, 10, (160, 160))).clip(0, 255).astype(np.uint8)).save(f)
-            rows.append(dict(image_path=str(f), patient_id=f"P{p}", side=side, view="PA", timepoint="V00", kl_grade=g))
+            rows.append(dict(image_path=str(f), patient_id=f"P{p}", knee_side=side, projection="PA", visit_id="V00",
+                             kl_grade=g, dataset_source="sintetik"))
     with open(tmp_path / "m.csv", "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=rows[0].keys())
         w.writeheader()
@@ -51,13 +52,30 @@ def test_pipeline_end_to_end(tmp_path):
     run_dir = tmp_path / "run"
     for f in ("best.pt", "history.csv", "train_summary.json", "training_curves.png"):
         assert (run_dir / f).is_file(), f
+    lock = tmp_path / "test_lock.json"
     run(SCRIPTS / "evaluate.py", "--checkpoint", run_dir / "best.pt", "--manifest",
-        tmp_path / "splits" / "manifest_split.csv", "--split", "test")
+        tmp_path / "splits" / "manifest_split.csv", "--split", "test", "--test-lock", lock)
+    assert lock.is_file()
     ev = json.loads((run_dir / "eval_test.json").read_text())
     assert {"accuracy", "balanced_accuracy", "macro_f1", "quadratic_weighted_kappa", "confusion_matrix"} <= set(ev)
     assert (run_dir / "confusion_test.png").is_file()
     run(SCRIPTS / "export_model.py", "--run", run_dir, "--out", tmp_path / "out" / "model.pt",
-        "--dataset-name", "sintetik", "--dataset-license", "test")
+        "--dataset-name", "sintetik", "--dataset-license", "test", "--test-lock", lock,
+        "--comparison", tmp_path / "yoq.json")
+
+    # Test to‘plamini boshqa checkpoint uchun qayta ishlatish taqiqlangan
+    import torch
+
+    from kltool.architectures import build_model
+    from kltool.checkpoint import save_checkpoint
+    from kltool.preprocess import DEFAULT_CONFIG
+
+    torch.manual_seed(1)
+    save_checkpoint(tmp_path / "other.pt", build_model("resnet18"), "resnet18", "other", DEFAULT_CONFIG)
+    r = subprocess.run([sys.executable, str(SCRIPTS / "evaluate.py"), "--checkpoint", str(tmp_path / "other.pt"),
+                        "--manifest", str(tmp_path / "splits" / "manifest_split.csv"), "--split", "test",
+                        "--test-lock", str(lock)], cwd=ROOT, capture_output=True, text=True)
+    assert r.returncode != 0 and "qayta tanlash taqiqlanadi" in r.stderr
 
     from kltool.checkpoint import load_checkpoint
 

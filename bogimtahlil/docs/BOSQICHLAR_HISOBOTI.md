@@ -52,3 +52,15 @@ Sana: 2026-10-15 · Versiya: 1.0
 - **Tekshiruv natijalari:** pytest — 64/64; Vitest — 9/9; Playwright E2E — desktop va mobil; CPU benchmark — median 117 ms (ResNet-18) / 140 ms (EfficientNet-B0), API orqali to‘liq tahlil ≈ 0,5–1,3 s (`experiments/benchmark.md`).
 - **Bajarilmagan / tekshirilmagan:** Docker obrazlari yig‘ilmagan (muhitda Docker daemon yo‘q; `docker compose config` muvaffaqiyatli). Edge va Firefox brauzerlarida qo‘lda sinov o‘tkazilmagan (faqat Chromium). Real rentgen tasvirlari bilan sinov — o‘qitilgan model bo‘lmagani sababli o‘tkazilmagan.
 - **Loyiha holati:** **Qisman tayyor / Model mavjud emas.** TT 23-bo‘limidagi 6, 7, 15-mezonlar o‘qitilgan model talab qiladi va hozircha bajarilmagan.
+
+---
+
+## 8-bosqich. Modelni o‘qitish va integratsiya qilish (2-ish topshirig‘i)
+
+- **Bajarilgan ishlar:**
+  - `kltool/oai.py` + `configs/oai_columns.yaml` + `build_oai_manifest.py` — OAI `kXR_SQ_BU##` yorliqlarini tasvir indeksi bilan (bemor, tomon, tashrif) kaliti bo‘yicha 1:1 bog‘lash; ziddiyatli qayta o‘qishlar, yetishmayotgan kodlar, frontal bo‘lmagan va takroriy tasvirlarni chiqarish va sanash.
+  - Manifest sxemasi TT ustunlariga o‘tkazildi: `image_path, patient_id, knee_side, visit_id, projection, kl_grade, dataset_source, split` (eski nomlar avtomatik moslashtiriladi).
+  - `prepare_dataset.py` — har bir guruhda tasvir/bemor/KL0–KL4 soni; `train.py` — transfer learning (vaznlar bo‘lmasa to‘xtaydi), `artifacts/<arch>_best.pt`; `evaluate.py` — test qulfi; `compare_models.py` — adolatli taqqoslash sharti; `export_model.py` — to‘liq metadata va backend yuklovchisi bilan qayta tekshirish; `run_experiment.py` — butun jarayon; `make_report.py` — faqat fayllardan hisobot.
+- **Tekshiruv natijalari:** pytest — 82 o‘tdi, 4 o‘tkazib yuborildi (real dataset/model talab qiladi). OAI formatidagi sintetik ma’lumotda `run_experiment.py` 8 bosqichi to‘liq bajarildi (2 daq 37 s, CPU); eksport qilingan model backendga standart (qat’iy) rejimda yuklandi va `test_real_model.py` o‘tdi. Sintetik natijalar repozitoriyga qo‘shilmagan.
+- **Bajarilmagan:** real OAI ma’lumotlari yo‘q (kirish ruxsati va tarmoq cheklovi), ImageNet vaznlari yuklab olinmadi. Shuning uchun ResNet-18 va EfficientNet-B0 o‘qitilmagan, metrikalar yo‘q, `artifacts/model.pt` yo‘q. `oai_columns.yaml` dagi ustun nomlari OAI data dictionary bilan solishtirilmagan (`verified: false`).
+- **Loyiha holati:** **Model mavjud emas** — o‘qitish uchun barcha kod tayyor va tekshirilgan.

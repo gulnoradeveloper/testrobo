@@ -35,8 +35,8 @@ def _manifest(n_patients=200, seed=0):
     for p in range(n_patients):
         for side in ("L", "R"):
             for tp in ("V00", "V01"):
-                rows.append({"image_path": f"x/{p}_{side}_{tp}.png", "patient_id": f"P{p:04d}", "side": side,
-                             "view": "PA", "timepoint": tp, "kl_grade": int(rng.integers(0, 5))})
+                rows.append({"image_path": f"x/{p}_{side}_{tp}.png", "patient_id": f"P{p:04d}", "knee_side": side,
+                             "projection": "PA", "visit_id": tp, "dataset_source": "test", "kl_grade": int(rng.integers(0, 5))})
     return pd.DataFrame(rows)
 
 
@@ -56,8 +56,8 @@ def test_split_reproducible():
 def test_validate_manifest_detects_problems():
     df = _manifest(5)
     df.loc[0, "kl_grade"] = 7
-    df.loc[1, "view"] = "LATERAL"
-    df.loc[2, ["patient_id", "side", "timepoint"]] = df.loc[3, ["patient_id", "side", "timepoint"]].values
+    df.loc[1, "projection"] = "LATERAL"
+    df.loc[2, ["patient_id", "knee_side", "visit_id"]] = df.loc[3, ["patient_id", "knee_side", "visit_id"]].values
     rep = validate_manifest(df, check_files=False)
     assert rep["invalid_grades"] == 1 and rep["non_frontal"] == 1 and rep["duplicate_keys"] >= 2
 
@@ -66,3 +66,23 @@ def test_class_weights_inverse_frequency():
     w = class_weights([0] * 80 + [1] * 10 + [2] * 5 + [3] * 3 + [4] * 2)
     assert w.argmin() == 0 and w.argmax() == 4
     assert abs(w.mean() - 1) < 1e-6
+
+
+def test_split_summary_counts_classes_per_split():
+    from kltool.data import split_summary
+
+    df = patient_split(_manifest(), seed=42)
+    s = split_summary(df)
+    assert sum(v["images"] for v in s.values()) == len(df)
+    for split, v in s.items():
+        assert sum(v["classes"].values()) == v["images"]
+        assert v["classes"]["KL3"] == int(((df["split"] == split) & (df["kl_grade"] == 3)).sum())
+
+
+def test_legacy_column_names_are_mapped(tmp_path):
+    from kltool.data import load_manifest
+
+    p = tmp_path / "m.csv"
+    p.write_text("image_path,patient_id,side,view,timepoint,kl_grade\nx.png,P1,l,pa,V00,2\n")
+    df = load_manifest(p)
+    assert df.loc[0, "knee_side"] == "L" and df.loc[0, "projection"] == "PA" and df.loc[0, "visit_id"] == "V00"
