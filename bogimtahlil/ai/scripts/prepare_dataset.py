@@ -69,6 +69,12 @@ def main() -> None:
                                   f"train/val/test = {1 - args.val_frac - args.test_frac:.2f}/{args.val_frac:.2f}/"
                                   f"{args.test_frac:.2f}, seed={args.seed}")
 
+    verified = bool(df["patient_id_verified"].astype(str).str.lower().eq("true").all()) \
+        if "patient_id_verified" in df.columns else True
+    report["patient_ids_verified"] = verified
+    if not verified:
+        report["patient_ids_note"] = ("Datasetda bemor identifikatorlari yo‘q — bemorlar bo‘yicha ajratishni tekshirib "
+                                      "bo‘lmaydi; bitta bemorning tasvirlari turli guruhlarga tushgan bo‘lishi mumkin.")
     leaks = check_patient_leakage(df)
     report["patient_leakage"] = {"n_patients_in_multiple_splits": len(leaks)}
     if leaks:

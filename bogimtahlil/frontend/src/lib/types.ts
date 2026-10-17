@@ -132,6 +132,8 @@ export interface Experiments {
     sources?: Record<string, number>;
     split_rule?: string;
     patients_in_multiple_splits?: number;
+    patient_ids_verified?: boolean;
+    patient_ids_note?: string | null;
     splits?: Record<string, { images: number; patients: number; classes: Record<string, number> }>;
   };
   training: Record<string, TrainingRun>;

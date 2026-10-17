@@ -96,10 +96,11 @@ function DatasetSection({ e, info }: { e: Experiments; info: ModelInfo }) {
       <dl>
         <Row k="Nomi" v={d.name ?? (info.dataset.name as string | undefined)} />
         <Row k="Tasvirlar soni" v={d.images?.toLocaleString("uz")} />
-        <Row k="Bemorlar soni" v={d.patients?.toLocaleString("uz")} />
+        <Row k={d.patient_ids_verified === false ? "Bemorlar soni (ID yo‘q — tasvirlar soni)" : "Bemorlar soni"} v={d.patients?.toLocaleString("uz")} />
         <Row k="Ajratish qoidasi" v={d.split_rule} />
-        <Row k="Guruhlar orasida kesishgan bemorlar" v={d.available ? String(d.patients_in_multiple_splits ?? 0) : null} />
+        <Row k="Guruhlar orasida kesishgan bemorlar" v={d.available ? (d.patient_ids_verified === false ? "Tekshirib bo‘lmaydi" : String(d.patients_in_multiple_splits ?? 0)) : null} />
       </dl>
+      {d.patient_ids_verified === false && <Alert variant="warning" className="mt-3">{d.patient_ids_note}</Alert>}
       {d.available && chart.length > 0 ? (
         <div className="mt-5 grid gap-6">
           <div className="overflow-x-auto">

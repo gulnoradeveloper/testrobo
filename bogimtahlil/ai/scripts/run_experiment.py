@@ -38,6 +38,8 @@ def main() -> None:
     ap.add_argument("--artifacts-dir", default="artifacts")
     ap.add_argument("--epochs", type=int)
     ap.add_argument("--num-workers", type=int)
+    ap.add_argument("--keep-existing-split", action="store_true",
+                    help="manifestdagi tayyor train/val/test taqsimotidan foydalanish (masalan, Chen 2018 dataseti)")
     ap.add_argument("--no-pretrained", action="store_true", help="faqat smoke-test uchun (transfer learningsiz)")
     ap.add_argument("--benchmark-image", help="tezlikni o‘lchash uchun tasvir (bo‘lmasa test guruhidan birinchisi)")
     args = ap.parse_args()
@@ -50,7 +52,8 @@ def main() -> None:
     exp, art, splits = resolve(args.experiments_dir), resolve(args.artifacts_dir), resolve(args.splits_dir)
     manifest = splits / "manifest_split.csv"
     step("1. Ma’lumotlarni tekshirish va bemorlar bo‘yicha ajratish", SCRIPTS / "prepare_dataset.py",
-         "--manifest", resolve(args.manifest), "--out", splits)
+         "--manifest", resolve(args.manifest), "--out", splits,
+         *(["--keep-existing-split"] if args.keep_existing_split else []))
 
     runs = []
     for arch, cfg in CONFIGS.items():

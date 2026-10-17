@@ -72,6 +72,8 @@ def collect(experiments_dir: Path, splits_dir: Path, model_metrics: dict | None,
             images=ds.get("totals", {}).get("images"), patients=ds.get("totals", {}).get("patients"),
             sources=ds.get("totals", {}).get("sources"), split_rule=ds.get("split_source"),
             patients_in_multiple_splits=ds.get("patient_leakage", {}).get("n_patients_in_multiple_splits"),
+            patient_ids_verified=ds.get("patient_ids_verified", True),
+            patient_ids_note=ds.get("patient_ids_note"),
             splits={s: {"images": v.get("images"), "patients": v.get("patients"), "classes": v.get("classes")}
                     for s, v in (ds.get("splits") or {}).items()},
         )

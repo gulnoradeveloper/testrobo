@@ -71,6 +71,8 @@ def main() -> None:
         for s, v in ds["splits"].items():
             L.append(f"| {s} | {v['images']} | {v['patients']} | {v['patient_fraction']:.1%} | "
                      + " | ".join(str(v["classes"][c]) for c in KL_CLASSES) + " |")
+        if ds.get("patient_ids_verified") is False:
+            L += ["", f"**Cheklov:** {ds['patient_ids_note']}"]
         L += ["", f"Tozalash: {json.dumps(ds['duplicates'], ensure_ascii=False)}", ""]
     else:
         L += [f"{NA} — dataset hali tayyorlanmagan (`build_oai_manifest.py`, so‘ng `prepare_dataset.py`).", ""]

@@ -7,7 +7,25 @@ foydalanadi (preprocess, arxitektura, checkpoint formati, Grad-CAM).
 > Quyidagi kod sintetik OAI-formatidagi ma’lumotlarda uchidan-uchiga sinovdan o‘tkazilgan; haqiqiy natijalar
 > faqat siz real ma’lumotda ishga tushirgandan keyin paydo bo‘ladi (`experiments/EXPERIMENT_REPORT.md`).
 
-## Qisqa yo‘l (bitta buyruq)
+## Eng oson yo‘l: Google Colab (bepul GPU, kompyuterga yuklab olish shart emas)
+
+1. https://colab.research.google.com → *Upload* → `ai/colab/BogimTahlil_Colab.ipynb`.
+2. *Runtime → Change runtime type → T4 GPU*.
+3. Kataklarni ketma-ket bajaring: dastur arxivini yuklaysiz, Mendeley’dagi **KneeXrayData.zip** havolasini qo‘yasiz
+   (Chen P., *Knee Osteoarthritis Severity Grading Dataset*, doi:10.17632/56rmx5bjcr.1 — OAI asosida).
+4. ~40–90 daqiqadan so‘ng `bogimtahlil_model_natijalari.zip` yuklanadi: `artifacts/model.pt`, `experiments/`,
+   `data/splits/dataset_report.json`, `demo_images/` (test guruhidan 10 ta haqiqiy rentgen, har bir KL dan 2 tadan).
+5. Uni `bogimtahlil` papkasiga ustidan nusxalang → `AI_ORNATISH.bat` → `BOGIMTAHLIL.bat`.
+
+Jarayon `ai/colab/colab_pipeline.py` da: arxivdan faqat `kneeKL224/{train,val,test}/{0..4}` ajratiladi (`auto_test` va
+299 px variant chiqariladi), datasetning tayyor train/val/test taqsimoti saqlanadi.
+**Cheklov:** bu datasetda bemor ID yo‘q — bemorlar bo‘yicha ajratishni tekshirib bo‘lmaydi; bu hisobotda va model
+sahifasida ochiq ko‘rsatiladi. OAI’ning asl fayllari bilan (quyida) bemor bo‘yicha qat’iy ajratish mumkin.
+
+**Nega 10 ta rasmda o‘qitilmaydi:** 5 sinf uchun 10 ta tasvir (har biriga 2 ta) bilan neyron tarmoq o‘rgana olmaydi —
+natija tasodifiy bo‘ladi va uni “ishlayotgan sun’iy intellekt” sifatida ko‘rsatish TT talablariga zid.
+
+## OAI asl fayllari bilan (bitta buyruq)
 
 ```bash
 pip install -r ai/requirements.txt

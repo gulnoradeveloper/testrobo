@@ -25,8 +25,9 @@ SUN'IY INTELLEKT MODELI
   O'qitilgan model (artifacts\model.pt) hozircha yo'q. Interfeys to'liq ishlaydi, lekin
   "Rentgen tahlili" sahifasi "Sun'iy intellekt modeli hozircha tahlil qilish uchun tayyor emas."
   xabarini ko'rsatadi - dastur soxta natija bermaydi.
-  Model tayyor bo'lgach:
-    1) artifacts\model.pt faylini joylashtiring;
-    2) .venv\Scripts\python -m pip install -r backend\requirements-ai.txt --extra-index-url https://download.pytorch.org/whl/cpu
-    3) BOGIMTAHLIL.bat ni qayta ishga tushiring.
-  Modelni o'qitish: docs\MODEL_OQITISH.md
+  Modelni o'qitish - Google Colab'da (bepul GPU, kompyuterga yuklab olish shart emas):
+    1) colab.research.google.com ga  ai\colab\BogimTahlil_Colab.ipynb  faylini yuklang va ko'rsatmalarni bajaring.
+    2) Natija (bogimtahlil_model_natijalari.zip) ichidagini shu papkaga ustidan nusxalang.
+    3) AI_ORNATISH.bat  ni bir marta ishga tushiring (PyTorch).
+    4) BOGIMTAHLIL.bat - sinash uchun demo_images papkasidagi 10 ta haqiqiy rentgen tasviridan foydalaning.
+  Batafsil: docs\MODEL_OQITISH.md

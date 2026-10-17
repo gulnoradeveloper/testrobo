@@ -19,3 +19,4 @@ artifacts/**/*.pth
 experiments/**/predictions_*.csv
 .venv/
 logs/
+demo_images/

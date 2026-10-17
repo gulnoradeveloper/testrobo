@@ -18,6 +18,7 @@ import pandas as pd
 from _common import resolve
 
 EXTS = {".png", ".jpg", ".jpeg"}
+SPLIT_DIRS = {"train": "train", "val": "val", "valid": "val", "validation": "val", "test": "test"}
 
 
 def main() -> None:
@@ -29,6 +30,7 @@ def main() -> None:
     ap.add_argument("--view", default="PA")
     ap.add_argument("--source", required=True, help="ma’lumot manbasi nomi (masalan, dataset nomi va versiyasi)")
     ap.add_argument("--keep-split", action="store_true", help="papkadagi split'ni saqlash")
+    ap.add_argument("--path-contains", help="faqat yo‘lida shu matn bor fayllar (masalan, kneeKL224)")
     args = ap.parse_args()
 
     root = resolve(args.root)
@@ -39,6 +41,11 @@ def main() -> None:
         grade = f.parent.name
         if not grade.isdigit() or int(grade) not in range(5):
             continue
+        if args.path_contains and args.path_contains not in f.as_posix():
+            continue
+        split_dir = f.parent.parent.name.lower()
+        if args.keep_split and split_dir not in SPLIT_DIRS:
+            continue  # masalan, auto_test — o‘qitish/baholash taqsimotiga kirmaydi
         pid, side = None, "L"
         if args.patient_regex and (m := re.search(args.patient_regex, f.name)):
             pid = m.group(1)
@@ -48,8 +55,7 @@ def main() -> None:
             "image_path": str(f), "patient_id": pid or f"img-{f.stem}-{len(rows)}", "knee_side": side,
             "visit_id": f"{f.parent.parent.name}-{len(rows)}", "projection": args.view, "kl_grade": int(grade),
             "dataset_source": args.source,
-            **({"split": {"val": "val", "valid": "val", "test": "test"}.get(f.parent.parent.name, "train")}
-               if args.keep_split else {}),
+            **({"split": SPLIT_DIRS[split_dir]} if args.keep_split else {}),
             "patient_id_verified": bool(pid),
         })
     out = resolve(args.out)
