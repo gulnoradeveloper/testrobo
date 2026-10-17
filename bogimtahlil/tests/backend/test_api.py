@@ -110,7 +110,7 @@ def test_file_too_large(tmp_path, fixture_checkpoint):
 def test_no_model_no_fake_result(client_no_model, png_bytes):
     h = client_no_model.get("/api/v1/health").json()
     assert h["model_loaded"] is False
-    assert h["model_status_message"] == "Sun’iy intellekt modeli hozircha tahlil qilish uchun tayyor emas."
+    assert h["model_status_message"] == "Model hali o‘qitilmagan: artifacts/model.pt mavjud emas."
     info = client_no_model.get("/api/v1/model/info").json()
     assert info["loaded"] is False and info["status_code"] == "MODEL_NOT_FOUND" and info["version"] is None
     r = upload(client_no_model, png_bytes)

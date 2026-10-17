@@ -3,7 +3,7 @@ import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
 import { api } from "@/lib/api";
 import HistoryPage, { DELETE_CONFIRM } from "@/pages/HistoryPage";
-import ModelPage, { NOT_EVALUATED } from "@/pages/ModelPage";
+import ModelPage, { NA } from "@/pages/ModelPage";
 import type { ModelInfo } from "@/lib/types";
 
 class RO { observe() {} unobserve() {} disconnect() {} }
@@ -30,17 +30,60 @@ it("Tahlillar tarixi: o‘chirishdan oldin tasdiqlash so‘raladi va API chaqiri
   await waitFor(() => expect(screen.queryAllByText("BT-20261015-111111")).toHaveLength(0));
 });
 
-it("Model sahifasi: metrikalar yo‘q bo‘lsa “Hali baholanmagan” ko‘rsatiladi, soxta raqam emas", async () => {
-  const info: ModelInfo = {
-    loaded: false, trained: false, status_code: "MODEL_NOT_FOUND",
-    status_message: "Sun’iy intellekt modeli hozircha tahlil qilish uchun tayyor emas.", name: "Bo‘g‘imTahlil",
-    architecture: null, version: null, checkpoint_sha256: null, preprocess: null,
-    class_names: ["KL0", "KL1", "KL2", "KL3", "KL4"], class_titles: {}, dataset: {}, metrics: {}, training: {},
-    calibration_evaluated: false, limitations: ["x"],
-  };
-  vi.spyOn(api, "modelInfo").mockResolvedValue(info);
+const emptyExp = {
+  dataset: { available: false, name: null },
+  training: {
+    resnet18: { title: "ResNet-18", available: false, history: [], validation: null, best_epoch: null, epochs_run: null, training_minutes: null, pretrained: null },
+    efficientnet_b0: { title: "EfficientNet-B0", available: false, history: [], validation: null, best_epoch: null, epochs_run: null, training_minutes: null, pretrained: null },
+  },
+  comparison: { available: false },
+  test: { available: false },
+  class_names: ["KL0", "KL1", "KL2", "KL3", "KL4"],
+};
+
+const noModel: ModelInfo = {
+  loaded: false, trained: false, status_code: "MODEL_NOT_FOUND",
+  status_message: "Model hali o‘qitilmagan: artifacts/model.pt mavjud emas.", name: "Bo‘g‘imTahlil",
+  architecture: null, version: null, checkpoint_sha256: null, preprocess: null,
+  class_names: ["KL0", "KL1", "KL2", "KL3", "KL4"], class_titles: {}, dataset: {}, metrics: {}, training: {},
+  calibration_evaluated: false, limitations: ["Cheklov matni"],
+};
+
+it("Model sahifasi: model yo‘q — sahifa ochiladi, “Natija mavjud emas”, soxta raqam yo‘q", async () => {
+  vi.spyOn(api, "modelInfo").mockResolvedValue(noModel);
+  vi.spyOn(api, "experiments").mockResolvedValue(emptyExp as never);
   render(<MemoryRouter><ModelPage /></MemoryRouter>);
-  expect(await screen.findByText("Sun’iy intellekt modeli hozircha tahlil qilish uchun tayyor emas.")).toBeInTheDocument();
-  expect(screen.getAllByText(NOT_EVALUATED).length).toBeGreaterThanOrEqual(5);
-  expect(screen.queryByText(/%$/)).toBeNull();
+  expect(await screen.findByText("Model hali o‘qitilmagan", { selector: "p" })).toBeInTheDocument();
+  for (const t of ["Model pasporti", "Ma’lumotlar to‘plami", "O‘qitish jarayoni", "Model samaradorligi",
+    "ResNet-18 va EfficientNet-B0 qiyosi", "Tasniflash xatoliklari jadvali", "Model cheklovlari"]) {
+    expect(screen.getByText(t)).toBeInTheDocument();
+  }
+  expect(screen.getAllByText(NA).length).toBeGreaterThanOrEqual(10);
+  expect(screen.queryByText(/\d+(\.\d+)?%/)).toBeNull();
+  expect(screen.queryByText("Server bilan bog‘lanib bo‘lmadi.")).toBeNull();
+});
+
+it("Model sahifasi: server javob bermasa — alohida “server” xabari va qayta urinish", async () => {
+  const { ApiError } = await import("@/lib/api");
+  vi.spyOn(api, "modelInfo").mockRejectedValue(new ApiError("NETWORK", "Server bilan bog‘lanib bo‘lmadi."));
+  vi.spyOn(api, "experiments").mockResolvedValue(emptyExp as never);
+  render(<MemoryRouter><ModelPage /></MemoryRouter>);
+  expect(await screen.findByText("Server bilan bog‘lanib bo‘lmadi.")).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /Qayta urinish/ })).toBeInTheDocument();
+  expect(screen.queryByText("Model hali o‘qitilmagan")).toBeNull();
+});
+
+it("Model sahifasi: real tajriba fayllari bo‘lsa — qiymatlar ko‘rsatiladi", async () => {
+  const m = { accuracy: 0.6123, balanced_accuracy: 0.55, macro_precision: 0.5, macro_recall: 0.5, macro_f1: 0.5432,
+    quadratic_weighted_kappa: 0.8123, recall: { KL0: 0.9, KL1: 0.2, KL2: 0.5, KL3: 0.7, KL4: 0.8 },
+    confusion_matrix: [[9, 1, 0, 0, 0], [3, 2, 0, 0, 0], [0, 1, 4, 0, 0], [0, 0, 1, 7, 0], [0, 0, 0, 1, 4]], n_samples: 33 };
+  vi.spyOn(api, "modelInfo").mockResolvedValue({ ...noModel, loaded: true, trained: true, status_code: null,
+    status_message: "Model yuklangan va tahlilga tayyor.", architecture: "EfficientNet-B0", version: "v1" });
+  vi.spyOn(api, "experiments").mockResolvedValue({ ...emptyExp, test: { available: true, ...m },
+    comparison: { available: true, selected: "efficientnet_b0", reason: "EfficientNet-B0 tanlandi", rule: "val macro F1" } } as never);
+  render(<MemoryRouter><ModelPage /></MemoryRouter>);
+  expect(await screen.findByText("61.2%")).toBeInTheDocument();
+  expect(screen.getByText("0.543")).toBeInTheDocument();
+  expect(screen.getByText("0.812")).toBeInTheDocument();
+  expect(screen.getByText("Model ishlamoqda")).toBeInTheDocument();
 });

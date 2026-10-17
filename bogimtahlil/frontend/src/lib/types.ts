@@ -87,3 +87,55 @@ export interface ModelInfo {
   calibration_evaluated: boolean;
   limitations: string[];
 }
+
+export interface MetricSet {
+  accuracy: number;
+  balanced_accuracy: number;
+  macro_precision: number;
+  macro_recall: number;
+  macro_f1: number;
+  quadratic_weighted_kappa: number;
+  n_samples?: number | null;
+  n_patients?: number | null;
+  recall: Record<string, number>;
+  confusion_matrix: number[][] | null;
+  early_grade_error_rate?: number | null;
+}
+
+export interface HistoryRow {
+  epoch: number;
+  train_loss: number | null;
+  val_loss: number | null;
+  train_accuracy: number | null;
+  val_accuracy: number | null;
+  val_macro_f1: number | null;
+  val_qwk: number | null;
+}
+
+export interface TrainingRun {
+  title: string;
+  available: boolean;
+  history: HistoryRow[];
+  validation: MetricSet | null;
+  best_epoch: number | null;
+  epochs_run: number | null;
+  training_minutes: number | null;
+  pretrained: boolean | null;
+}
+
+export interface Experiments {
+  dataset: {
+    available: boolean;
+    name?: string | null;
+    images?: number;
+    patients?: number;
+    sources?: Record<string, number>;
+    split_rule?: string;
+    patients_in_multiple_splits?: number;
+    splits?: Record<string, { images: number; patients: number; classes: Record<string, number> }>;
+  };
+  training: Record<string, TrainingRun>;
+  comparison: { available: boolean; selected?: string | null; selected_title?: string | null; rule?: string; reason?: string };
+  test: { available: boolean } & Partial<MetricSet>;
+  class_names: string[];
+}

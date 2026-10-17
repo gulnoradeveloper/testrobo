@@ -24,7 +24,10 @@ Keyin serverni qayta ishga tushiring — model avtomatik yuklanadi.
 
 ## 1. OAI ma’lumotlarini olish
 
-1. https://nda.nih.gov/oai da ro‘yxatdan o‘ting va **OAI Data Use Agreement** ni qabul qiling.
+1. OAI ma’lumotlari bepul, lekin **ro‘yxatdan o‘tish va Data Use Agreement’ni qabul qilish** talab qilinadi:
+   - https://oai.epi-ucsf.org/datarelease (UCSF — OAI ma’lumotlar relizlari, ASCII/SAS fayllar);
+   - https://nda.nih.gov/oai (NIH NDA — tasvirlar va relizlar).
+   Ishlab chiqish muhitidan bu saytlarga kirish imkoni bo‘lmadi — yuklab olishni o‘zingiz bajarasiz.
    Ma’lumotlarni qayta tarqatish taqiqlangan — `data/` git’ga qo‘shilmaydi.
 2. Yuklab oling:
    - KL yorliqlari: *Semi-Quantitative Central Reading of Knee X-rays (Boston University)* — `kXR_SQ_BU##` fayllari

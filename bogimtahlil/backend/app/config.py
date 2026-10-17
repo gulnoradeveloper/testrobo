@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     storage_dir: Path = PROJECT_ROOT / "data" / "storage"
 
     model_path: Path = PROJECT_ROOT / "artifacts" / "model.pt"
+    experiments_dir: Path = PROJECT_ROOT / "experiments"   # o‘qitish natijalari (history.csv, eval_*.json, ...)
+    splits_dir: Path = PROJECT_ROOT / "data" / "splits"    # dataset_report.json
     model_sha256: str | None = None  # ko‘rsatilsa, yuklashda tekshiriladi
     model_name: str = "Bo‘g‘imTahlil KL tasniflagichi"
     allow_untrained_model: bool = False  # FAQAT avtomatik testlar uchun

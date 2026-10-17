@@ -58,6 +58,8 @@ def _model_status_message(m: ModelService) -> str:
         return "Model yuklangan va tahlilga tayyor."
     if m.ready:
         return "Yuklangan checkpoint o‘qitilgan model emas (faqat test rejimi) — natijalar ma’noga ega emas."
+    if m.error_code == "MODEL_NOT_FOUND":
+        return "Model hali o‘qitilmagan: artifacts/model.pt mavjud emas."
     return MODEL_NOT_READY_UI
 
 
@@ -88,6 +90,15 @@ def model_info(m: ModelService = Depends(get_model), settings: Settings = Depend
         training={k: v for k, v in (lm.training if lm else {}).items() if k not in ("manifest", "output_dir")},
         calibration_evaluated=bool(metrics.get("calibration_evaluated", False)), limitations=LIMITATIONS,
     )
+
+
+@router.get("/model/experiments")
+def model_experiments(m: ModelService = Depends(get_model), settings: Settings = Depends(get_settings_dep)):
+    """Ma’lumotlar to‘plami, o‘qitish grafiklari, modellarni taqqoslash va test natijalari (faqat fayllardan)."""
+    from ..services.experiments import collect
+
+    lm = m.loaded
+    return collect(settings.experiments_dir, settings.splits_dir, lm.metrics if lm else None, lm.dataset if lm else None)
 
 
 @router.post("/analyses", response_model=AnalysisOut, status_code=201)

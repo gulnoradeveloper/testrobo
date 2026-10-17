@@ -2,17 +2,19 @@
 
     python start.py            (Windows: BOGIMTAHLIL.bat)
 
-1. Python versiyasi va kutubxonalarni tekshiradi (yo‘q bo‘lsa — nima qilishni aytadi).
+1. Python versiyasi va kutubxonalarni tekshiradi.
 2. Bo‘sh portni tanlaydi (8765 band bo‘lsa — keyingisi).
-3. Serverni ishga tushiradi, u javob bera boshlagach brauzerni ochadi.
-Barcha xabarlar logs/server.log fayliga ham yoziladi.
+3. Serverni alohida jarayonda ishga tushiradi; uning barcha xabarlari logs/server.log ga yoziladi
+   (konsolga emas — Windows konsolida sichqoncha bilan bosish serverni “muzlatib” qo‘ymaydi).
+4. Server javob bera boshlagach brauzerni ochadi.
+5. Server kutilmaganda to‘xtasa — sababini ko‘rsatadi va qayta ishga tushiradi.
 """
 from __future__ import annotations
 
 import os
 import socket
+import subprocess
 import sys
-import threading
 import time
 import urllib.request
 import webbrowser
@@ -20,17 +22,35 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 LOGS = ROOT / "logs"
+SERVER_LOG = LOGS / "server.log"
 REQUIRED = ["fastapi", "uvicorn", "pydantic_settings", "multipart", "sqlalchemy", "alembic", "numpy", "PIL",
             "reportlab", "yaml"]
+MAX_RESTARTS = 3
 
 
 def say(msg: str = "") -> None:
     print(msg, flush=True)
     try:
         LOGS.mkdir(exist_ok=True)
-        with open(LOGS / "server.log", "a", encoding="utf-8") as f:
+        with open(LOGS / "start.log", "a", encoding="utf-8") as f:
             f.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} {msg}\n")
     except OSError:
+        pass
+
+
+def disable_windows_quickedit() -> None:
+    """Windows konsolida “QuickEdit” rejimi oynaga bosilganda dasturni to‘xtatib qo‘yadi — o‘chiramiz."""
+    if os.name != "nt":
+        return
+    try:
+        import ctypes
+
+        k = ctypes.windll.kernel32
+        handle = k.GetStdHandle(-10)  # STD_INPUT_HANDLE
+        mode = ctypes.c_uint32()
+        if k.GetConsoleMode(handle, ctypes.byref(mode)):
+            k.SetConsoleMode(handle, (mode.value & ~0x0040) | 0x0080)  # QUICK_EDIT o‘chiriladi
+    except Exception:
         pass
 
 
@@ -68,56 +88,92 @@ def free_port(start: int) -> int:
     raise SystemExit("Bo‘sh port topilmadi")
 
 
-def open_browser_when_ready(url: str) -> None:
-    for _ in range(360):
-        try:
-            with urllib.request.urlopen(url + "/api/v1/health", timeout=2) as r:
-                if r.status == 200:
-                    say(f"\nServer tayyor. Brauzerda oching:  {url}\n(Oynani yopmang. To‘xtatish: Ctrl+C)\n")
-                    if os.environ.get("BT_NO_BROWSER") != "1":
-                        webbrowser.open(url)
-                    return
-        except Exception:
-            time.sleep(0.5)
-    say("OGOHLANTIRISH: server 3 daqiqada javob bermadi — yuqoridagi xabarlarni o‘qing.")
+def healthy(url: str) -> bool:
+    try:
+        with urllib.request.urlopen(url + "/api/v1/health", timeout=3) as r:
+            return r.status == 200
+    except Exception:
+        return False
+
+
+def tail(path: Path, n: int = 25) -> str:
+    try:
+        return "\n".join(path.read_text(encoding="utf-8", errors="replace").splitlines()[-n:])
+    except OSError:
+        return "(log fayli o‘qilmadi)"
+
+
+def start_server(port: int) -> subprocess.Popen:
+    LOGS.mkdir(exist_ok=True)
+    log = open(SERVER_LOG, "a", encoding="utf-8")
+    log.write(f"\n===== {time.strftime('%Y-%m-%d %H:%M:%S')} server ishga tushirilmoqda (port {port}) =====\n")
+    log.flush()
+    env = {**os.environ, "PYTHONUTF8": "1", "PYTHONUNBUFFERED": "1"}
+    cmd = [sys.executable, "-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", str(port),
+           "--log-level", "info"]
+    return subprocess.Popen(cmd, cwd=ROOT / "backend", stdout=log, stderr=subprocess.STDOUT,
+                            stdin=subprocess.DEVNULL, env=env)
 
 
 def main() -> int:
-    say("=" * 60)
+    disable_windows_quickedit()
+    say("=" * 64)
     say(" Bo‘g‘imTahlil 1.0 — ishga tushirish")
     say(f" Python: {sys.version.split()[0]}  ({sys.executable})")
-    say("=" * 60)
+    say("=" * 64)
     if not (check_python() and check_packages()):
         return 1
-    sys.path.insert(0, str(ROOT / "backend"))
-    os.chdir(ROOT / "backend")
     port = free_port(int(os.environ.get("BT_PORT", "8765")))
     url = f"http://127.0.0.1:{port}"
-    say(f"Manzil: {url}")
     try:
         import torch  # noqa: F401
 
         say("PyTorch: o‘rnatilgan")
     except Exception:
-        say("PyTorch: o‘rnatilmagan — interfeys ishlaydi, sun’iy intellekt tahlili o‘chirilgan "
-            "(o‘rnatish: pip install -r backend/requirements-ai.txt)")
+        say("PyTorch: o‘rnatilmagan — interfeys ishlaydi, sun’iy intellekt tahlili o‘chirilgan")
     if not Path(os.environ.get("BT_MODEL_PATH", ROOT / "artifacts" / "model.pt")).is_file():
-        say("Model: artifacts/model.pt yo‘q — tahlil “model tayyor emas” xabari bilan cheklanadi")
+        say("Model: artifacts/model.pt yo‘q — “Model hali o‘qitilmagan” holati")
 
-    threading.Thread(target=open_browser_when_ready, args=(url,), daemon=True).start()
+    restarts, opened = 0, False
+    proc = start_server(port)
     try:
-        import uvicorn
-
-        uvicorn.run("app.main:app", host="127.0.0.1", port=port, log_level="info")
+        while True:
+            # Server tayyor bo‘lishini kutish
+            for _ in range(360):
+                if proc.poll() is not None or healthy(url):
+                    break
+                time.sleep(0.5)
+            if proc.poll() is None and healthy(url):
+                say(f"\nServer ishlayapti:  {url}")
+                say("Bu oynani YOPMANG — dastur shu oynada ishlaydi. To‘xtatish: Ctrl+C.")
+                say(f"Server xabarlari: {SERVER_LOG}\n")
+                if not opened and os.environ.get("BT_NO_BROWSER") != "1":
+                    webbrowser.open(url)
+                opened = True
+                code = proc.wait()
+            else:
+                code = proc.poll()
+                if code is None:  # 3 daqiqada javob bermadi
+                    say("XATO: server 3 daqiqada javob bermadi. Oxirgi xabarlar:\n" + tail(SERVER_LOG))
+                    proc.terminate()
+                    return 1
+            say(f"\nXATO: server to‘xtadi (kod {code}). Oxirgi xabarlar ({SERVER_LOG}):\n" + tail(SERVER_LOG))
+            restarts += 1
+            if restarts > MAX_RESTARTS:
+                say("Server bir necha marta to‘xtadi — logs\\server.log faylini yuboring.")
+                return 1
+            say(f"Server qayta ishga tushirilmoqda ({restarts}/{MAX_RESTARTS})...")
+            time.sleep(2)
+            proc = start_server(port)
     except KeyboardInterrupt:
-        pass
-    except Exception as exc:
-        say(f"XATO: server ishga tushmadi: {type(exc).__name__}: {exc}")
-        import traceback
-
-        say(traceback.format_exc())
-        return 1
-    return 0
+        say("\nTo‘xtatilmoqda...")
+        if proc.poll() is None:
+            proc.terminate()
+            try:
+                proc.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+        return 0
 
 
 if __name__ == "__main__":

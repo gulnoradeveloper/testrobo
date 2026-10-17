@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import type { Analysis, AnalysisListItem, Health, ModelInfo } from "./types";
+import type { Analysis, AnalysisListItem, Experiments, Health, ModelInfo } from "./types";
 
 export const http = axios.create({
   baseURL: import.meta.env.VITE_API_URL ?? "",
@@ -45,8 +45,10 @@ async function call<T>(p: Promise<{ data: T }>): Promise<T> {
 }
 
 export const api = {
-  health: () => call<Health>(http.get("/api/v1/health")),
-  modelInfo: () => call<ModelInfo>(http.get("/api/v1/model/info")),
+  // Holat so‘rovlari uchun qisqa kutish: server javob bermasa, foydalanuvchi 10 soniyada xabar oladi
+  health: () => call<Health>(http.get("/api/v1/health", { timeout: 10_000 })),
+  modelInfo: () => call<ModelInfo>(http.get("/api/v1/model/info", { timeout: 10_000 })),
+  experiments: () => call<Experiments>(http.get("/api/v1/model/experiments", { timeout: 15_000 })),
   analyze: (file: File, onUpload?: (percent: number) => void) => {
     const fd = new FormData();
     fd.append("file", file);
