@@ -48,14 +48,14 @@ export function Layout() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-40 border-b border-border bg-white/95 backdrop-blur">
-        <div className="container flex h-16 items-center justify-between gap-4">
+      <header className="sticky top-0 z-40 border-b border-border bg-white/95 shadow-[0_1px_0_rgba(18,58,99,0.04)] backdrop-blur">
+        <div className="container flex h-[72px] items-center justify-between gap-4">
           <NavLink to="/" aria-label="Bo‘g‘imTahlil — bosh sahifa"><Logo /></NavLink>
-          <nav className="hidden items-center gap-1 lg:flex" aria-label="Asosiy menyu"><NavItems /></nav>
+          <nav className="hidden items-center gap-1 xl:flex" aria-label="Asosiy menyu"><NavItems /></nav>
           <div className="flex items-center gap-2">
             <ModelStatusPill className="hidden sm:inline-flex" />
             <button
-              className="inline-flex h-10 w-10 items-center justify-center rounded-md text-primary hover:bg-muted-bg lg:hidden"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-md text-primary hover:bg-muted-bg xl:hidden"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-label={open ? "Menyuni yopish" : "Menyuni ochish"}
@@ -65,7 +65,7 @@ export function Layout() {
           </div>
         </div>
         {open && (
-          <nav className="container flex flex-col gap-1 border-t border-border pb-4 pt-2 lg:hidden" aria-label="Mobil menyu">
+          <nav className="container flex flex-col gap-1 border-t border-border pb-4 pt-2 xl:hidden" aria-label="Mobil menyu">
             <NavItems mobile onClick={() => setOpen(false)} />
             <ModelStatusPill className="mt-2 self-start sm:hidden" />
           </nav>
@@ -76,14 +76,37 @@ export function Layout() {
         <Outlet />
       </main>
 
-      <footer className="border-t border-border bg-white">
-        <div className="container flex flex-col gap-2 py-6 text-xs text-muted md:flex-row md:items-center md:justify-between">
-          <p>
-            <span className="font-semibold text-primary">Bo‘g‘imTahlil 1.0</span> — “Aniq tahlil sari aqlli qadam!”
-          </p>
-          <p className="max-w-2xl md:text-right">
-            Ilmiy-tadqiqot prototipi. Natijalar shifokor tashxisi o‘rnini bosmaydi va davolashni belgilash uchun ishlatilmaydi.
-          </p>
+      <footer className="bg-[#0B2240] text-white/80">
+        <div className="container grid gap-8 py-12 md:grid-cols-[1.3fr_1fr_1.2fr]">
+          <div className="space-y-4">
+            <Logo inverted />
+            <p className="max-w-sm text-sm leading-relaxed text-white/70">
+              Tizza bo‘g‘imi rentgen tasvirlarini sun’iy intellekt yordamida tahlil qilish va osteoartrit darajasini
+              Kellgren–Lawrence tasnifi bo‘yicha baholash uchun ilmiy-tadqiqot platformasi.
+            </p>
+            <p className="text-sm font-semibold italic text-[#7DB8EC]">“Aniq tahlil sari aqlli qadam!”</p>
+          </div>
+          <nav aria-label="Pastki menyu">
+            <p className="mb-3 text-sm font-bold uppercase tracking-wider text-white">Bo‘limlar</p>
+            <ul className="space-y-2 text-sm">
+              {NAV.map((n) => (
+                <li key={n.to}><NavLink to={n.to} className="hover:text-white">{n.label}</NavLink></li>
+              ))}
+            </ul>
+          </nav>
+          <div>
+            <p className="mb-3 text-sm font-bold uppercase tracking-wider text-white">Muhim</p>
+            <p className="text-sm leading-relaxed text-white/70">
+              Ilmiy-tadqiqot prototipi. Natijalar shifokor tashxisi o‘rnini bosmaydi va davolashni belgilash uchun
+              ishlatilmaydi. Yuklangan tasvirlar 24 soatdan so‘ng avtomatik o‘chiriladi.
+            </p>
+          </div>
+        </div>
+        <div className="border-t border-white/10">
+          <div className="container flex flex-col gap-1 py-4 text-xs text-white/50 sm:flex-row sm:justify-between">
+            <span>© 2026 Bo‘g‘imTahlil 1.0</span>
+            <span>Tadqiqot dasturi — klinik tashxis vositasi emas</span>
+          </div>
         </div>
       </footer>
     </div>

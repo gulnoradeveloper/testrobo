@@ -1,5 +1,8 @@
 # O‘rnatish yo‘riqnomasi
 
+> **Eng oson yo‘l:** Windows’da `BOGIMTAHLIL.bat`, Linux/macOS’da `./start.sh` — faqat Python kerak. Qisqa yo‘riqnoma:
+> [`ISHGA_TUSHIRISH.txt`](../ISHGA_TUSHIRISH.txt). Quyida qo‘lda o‘rnatish va ishlab chiquvchilar uchun tafsilotlar.
+
 ## Talablar
 
 - Python 3.11+ (3.13 da ham sinovdan o‘tgan)

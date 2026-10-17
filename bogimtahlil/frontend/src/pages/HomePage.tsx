@@ -1,6 +1,7 @@
 import { ArrowRight, BarChart3, Brain, FileText, History, Layers, ScanLine, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { MedicalDisclaimer } from "@/components/Disclaimer";
+import { LogoFull } from "@/components/Logo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -80,13 +81,17 @@ function ModelSnapshot() {
 export default function HomePage() {
   return (
     <div>
-      <section className="border-b border-border bg-white">
-        <div className="container grid gap-10 py-12 md:py-16 lg:grid-cols-[1.25fr_1fr] lg:items-center">
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-[#EAF3FD] via-white to-[#F2F7FD]">
+        <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-accent/10 blur-3xl" />
+        <div aria-hidden className="pointer-events-none absolute -bottom-48 -left-32 h-[420px] w-[420px] rounded-full bg-primary/5 blur-3xl" />
+        <div className="container relative grid gap-10 py-12 md:py-16 lg:grid-cols-[1.2fr_1fr] lg:items-center">
           <div className="space-y-6">
-            <Badge variant="outline">Ilmiy-tadqiqot platformasi · versiya 1.0</Badge>
+            <Badge variant="outline" className="bg-white">Ilmiy-tadqiqot platformasi · versiya 1.0</Badge>
             <div className="space-y-3">
-              <h1 className="text-4xl font-bold md:text-5xl">Bo‘g‘imTahlil</h1>
-              <p className="text-xl font-semibold text-accent md:text-2xl">
+              <h1 className="text-4xl font-extrabold tracking-tight md:text-5xl">
+                Bo‘g‘im<span className="text-accent">Tahlil</span>
+              </h1>
+              <p className="text-xl font-semibold text-[#1F5791] md:text-2xl">
                 Sun’iy intellekt asosida tizza bo‘g‘imi rentgen tasvirlarini tahlil qilish tizimi
               </p>
             </div>
@@ -94,9 +99,9 @@ export default function HomePage() {
               Bo‘g‘imTahlil — tizza bo‘g‘imining rentgen tasvirlarini sun’iy intellekt yordamida tahlil qilish va osteoartritga
               xos rentgenologik o‘zgarishlarni baholashga mo‘ljallangan ilmiy platforma.
             </p>
-            <p className="text-sm font-medium italic text-muted">“Aniq tahlil sari aqlli qadam!”</p>
+            <p className="text-sm font-semibold italic text-accent">“Aniq tahlil sari aqlli qadam!”</p>
             <div className="flex flex-wrap gap-3">
-              <Button asChild size="lg" variant="accent">
+              <Button asChild size="lg" variant="accent" className="shadow-lg shadow-accent/25">
                 <Link to="/tahlil">Tahlilni boshlash <ArrowRight /></Link>
               </Button>
               <Button asChild size="lg" variant="outline">
@@ -104,8 +109,14 @@ export default function HomePage() {
               </Button>
             </div>
           </div>
-          <Card>
-            <CardContent className="space-y-4 pt-5">
+          <div className="relative mx-auto w-full max-w-md">
+            <div aria-hidden className="absolute inset-6 rounded-full bg-gradient-to-br from-accent/15 to-primary/10 blur-2xl" />
+            <LogoFull className="relative w-full drop-shadow-[0_18px_30px_rgba(18,58,99,0.18)]" />
+          </div>
+        </div>
+        <div className="container relative pb-12">
+          <Card className="border-accent/10">
+            <CardContent className="grid gap-4 pt-5 md:grid-cols-[auto_1fr] md:items-center md:gap-8">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="h-5 w-5 text-accent" />
                 <h2 className="text-base font-semibold">Sun’iy intellekt modeli holati</h2>
@@ -180,6 +191,18 @@ export default function HomePage() {
             </dl>
           </div>
           <MedicalDisclaimer />
+        </div>
+      </section>
+
+      <section className="bg-gradient-to-r from-primary to-[#1F5791]">
+        <div className="container flex flex-col items-start gap-5 py-10 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-white">Rentgen tasvirini tahlil qilishga tayyormisiz?</h2>
+            <p className="mt-1 text-white/75">JPG yoki PNG formatidagi bitta tizza bo‘g‘imining frontal rentgen tasvirini yuklang.</p>
+          </div>
+          <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90">
+            <Link to="/tahlil">Tahlilni boshlash <ArrowRight /></Link>
+          </Button>
         </div>
       </section>
     </div>

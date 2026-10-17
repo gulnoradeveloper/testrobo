@@ -90,11 +90,15 @@ def build_report(analysis: dict, original_path: Path, overlay_path: Path | None)
     pred = analysis["prediction"]
     created = datetime.fromisoformat(str(analysis["created_at"])).astimezone(TZ)
     model = analysis["model"]
-    flow = [
-        Paragraph("BO‘G‘IMTAHLIL", st["brand"]),
-        Paragraph("TIZZA BO‘G‘IMI RENTGEN TASVIRINING SUN’IY INTELLEKT TAHLILI", st["title"]),
-        Spacer(1, 4 * mm),
-    ]
+    titles = [Paragraph("BO‘G‘IMTAHLIL", st["brand"]),
+              Paragraph("TIZZA BO‘G‘IMI RENTGEN TASVIRINING SUN’IY INTELLEKT TAHLILI", st["title"])]
+    logo = FONT_DIR.parent / "logo.png"
+    if logo.is_file():
+        head = Table([[_fit_image(logo, 30 * mm, 27 * mm), titles]], colWidths=[34 * mm, 140 * mm])
+        head.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "MIDDLE"), ("LEFTPADDING", (0, 0), (0, 0), 0)]))
+        flow = [head, Spacer(1, 3 * mm)]
+    else:
+        flow = [*titles, Spacer(1, 4 * mm)]
     meta = [
         ["Tahlil raqami", analysis["number"]],
         ["Tahlil identifikatori", analysis["id"]],

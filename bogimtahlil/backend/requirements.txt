@@ -1,15 +1,13 @@
-# Backend + AI inference. CPU uchun PyTorch: pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
-fastapi>=0.115
-uvicorn[standard]>=0.30
-pydantic>=2.7
-pydantic-settings>=2.3
+# Asosiy (yengil) kutubxonalar — dastur va interfeys shular bilan ishga tushadi (~60 MB).
+# Sun’iy intellekt modeli bilan tahlil uchun qo‘shimcha: requirements-ai.txt
+fastapi>=0.110
+uvicorn>=0.29
+pydantic>=2.6
+pydantic-settings>=2.2
 python-multipart>=0.0.9
 sqlalchemy>=2.0
 alembic>=1.13
-torch>=2.3
-torchvision>=0.18
 numpy>=1.26
-pillow>=10.3
-opencv-python-headless>=4.9
-reportlab>=4.2
+pillow>=10.2
+reportlab>=4.1
 pyyaml>=6.0

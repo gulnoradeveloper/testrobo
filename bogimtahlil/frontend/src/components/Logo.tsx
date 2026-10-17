@@ -1,20 +1,23 @@
-export function LogoMark({ className = "h-9 w-9" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 32 32" className={className} aria-hidden>
-      <rect width="32" height="32" rx="8" fill="#123A63" />
-      <path d="M11 4v8.5c0 1.6 1.2 2.6 2.6 2.6h4.8c1.4 0 2.6-1 2.6-2.6V4" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" />
-      <path d="M11 28v-7.5c0-1.6 1.2-2.6 2.6-2.6h4.8c1.4 0 2.6 1 2.6 2.6V28" fill="none" stroke="#7DB8EC" strokeWidth="2.4" strokeLinecap="round" />
-    </svg>
-  );
+/** Bo‘g‘imTahlil logotipi (public/logo-mark.webp — emblema, public/logo.webp — to‘liq logotip). */
+export function LogoMark({ className = "h-10 w-auto" }: { className?: string }) {
+  return <img src="/logo-mark.webp" alt="" aria-hidden className={className} width={320} height={255} />;
 }
 
-export function Logo() {
+export function LogoFull({ className = "w-full max-w-sm" }: { className?: string }) {
+  return <img src="/logo.webp" alt="Bo‘g‘imTahlil logotipi" className={className} width={640} height={573} />;
+}
+
+export function Logo({ inverted = false }: { inverted?: boolean }) {
   return (
     <span className="flex items-center gap-2.5">
-      <LogoMark />
+      <LogoMark className="h-11 w-auto" />
       <span className="leading-tight">
-        <span className="block text-[17px] font-bold text-primary">Bo‘g‘imTahlil</span>
-        <span className="block text-[11px] font-medium uppercase tracking-wider text-muted">JointAI · 1.0</span>
+        <span className={`block text-[18px] font-extrabold tracking-tight ${inverted ? "text-white" : "text-primary"}`}>
+          Bo‘g‘im<span className="text-accent">Tahlil</span>
+        </span>
+        <span className={`block text-[10.5px] font-semibold uppercase tracking-[0.14em] ${inverted ? "text-white/60" : "text-muted"}`}>
+          Sun’iy intellekt · 1.0
+        </span>
       </span>
     </span>
   );

@@ -1,10 +1,13 @@
 """Grad-CAM (Selvaraju va boshq., 2017) — tanlangan sinf uchun e’tibor xaritasi."""
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import numpy as np
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
+
+if TYPE_CHECKING:
+    import torch
+    import torch.nn as nn
 
 
 class GradCAM:
@@ -14,6 +17,9 @@ class GradCAM:
 
     def __call__(self, x: torch.Tensor, class_idx: int) -> tuple[np.ndarray, torch.Tensor]:
         """x: 1×3×H×W. Qaytaradi: (H×W [0..1] xarita, logits)."""
+        import torch
+        import torch.nn.functional as F
+
         activations: list[torch.Tensor] = []
         gradients: list[torch.Tensor] = []
 

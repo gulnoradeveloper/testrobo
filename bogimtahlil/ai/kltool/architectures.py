@@ -1,10 +1,12 @@
 """Qo‘llab-quvvatlanadigan neyron tarmoq arxitekturalari."""
 from __future__ import annotations
 
-import torch.nn as nn
-from torchvision import models
+from typing import TYPE_CHECKING
 
 from . import NUM_CLASSES
+
+if TYPE_CHECKING:  # PyTorch faqat model kerak bo‘lganda yuklanadi
+    import torch.nn as nn
 
 SUPPORTED_ARCHITECTURES = ("resnet18", "efficientnet_b0")
 
@@ -16,6 +18,9 @@ DISPLAY_NAMES = {
 
 def build_model(arch: str, num_classes: int = NUM_CLASSES, pretrained: bool = False) -> nn.Module:
     """Arxitekturani yaratadi. pretrained=True — ImageNet vaznlari (internet talab qilinadi)."""
+    import torch.nn as nn
+    from torchvision import models
+
     if arch == "resnet18":
         weights = models.ResNet18_Weights.IMAGENET1K_V1 if pretrained else None
         model = models.resnet18(weights=weights)

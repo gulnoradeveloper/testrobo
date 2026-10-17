@@ -1,0 +1,5 @@
+# Sun’iy intellekt inference uchun (o‘qitilgan model artifacts/model.pt bo‘lganda kerak).
+# CPU versiyasi:  pip install -r backend/requirements-ai.txt --extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.2
+torchvision>=0.17
+opencv-python-headless>=4.9

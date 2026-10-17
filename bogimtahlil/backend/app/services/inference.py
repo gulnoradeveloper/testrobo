@@ -6,13 +6,17 @@ import threading
 import time
 from dataclasses import dataclass
 
-import numpy as np
-import torch
+from typing import TYPE_CHECKING, Any
 
-from kltool.architectures import DISPLAY_NAMES, gradcam_target_layer
-from kltool.checkpoint import TRAINED, CheckpointError, LoadedModel, load_checkpoint
-from kltool.gradcam import GradCAM
+import numpy as np
+
+from kltool.architectures import DISPLAY_NAMES
 from kltool.preprocess import heatmap_to_original, preprocess_array
+
+if TYPE_CHECKING:
+    from kltool.checkpoint import LoadedModel
+
+TRAINED = "trained"
 
 from ..config import Settings
 from ..errors import ApiError
@@ -35,12 +39,30 @@ class ModelService:
         self.loaded: LoadedModel | None = None
         self.error_code: str | None = None
         self.error_message: str | None = None
-        self.device = torch.device("cpu")
+        self.device: Any = "cpu"
         self._lock = threading.Lock()  # Grad-CAM hooklari tufayli bir vaqtda bitta inference
-        self._gradcam: GradCAM | None = None
+        self._gradcam: Any = None
 
     def load(self) -> None:
+        """PyTorch o‘rnatilmagan yoki model fayli yo‘q bo‘lsa, server baribir ishga tushadi —
+        tahlil esa aniq sabab bilan rad etiladi (soxta natija yo‘q)."""
         s = self.settings
+        if not s.model_path.is_file():
+            self.error_code, self.error_message = "MODEL_NOT_FOUND", f"Model fayli topilmadi: {s.model_path.name}"
+            log.warning("Model yuklanmadi: %s", self.error_message)
+            return
+        try:
+            import torch
+
+            from kltool.architectures import gradcam_target_layer
+            from kltool.checkpoint import CheckpointError, load_checkpoint
+            from kltool.gradcam import GradCAM
+        except ImportError as exc:
+            self.error_code = "AI_LIBRARIES_MISSING"
+            self.error_message = (f"Sun’iy intellekt kutubxonalari o‘rnatilmagan ({exc.name}). "
+                                  "O‘rnatish: pip install -r backend/requirements-ai.txt")
+            log.warning("Model yuklanmadi: %s", self.error_message)
+            return
         if s.torch_threads > 0:
             torch.set_num_threads(s.torch_threads)
         if s.device == "auto":
@@ -82,6 +104,8 @@ class ModelService:
         return self.loaded
 
     def predict(self, gray: np.ndarray, with_gradcam: bool = True) -> Prediction:
+        import torch
+
         lm = self.require()
         timing: dict[str, float] = {}
         with self._lock:

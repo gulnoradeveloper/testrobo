@@ -43,28 +43,26 @@ bogimtahlil/
 ├── docker-compose.yml · .env.example · .gitignore · pytest.ini
 ```
 
-## Windows
+## Ishga tushirish (eng oson yo‘l)
 
-`windows\1_ornatish.bat` → `windows\2_ishga_tushirish.bat` — batafsil: [`windows/README.md`](windows/README.md).
+- **Windows:** `BOGIMTAHLIL.bat` ni ikki marta bosing → brauzer o‘zi ochiladi (odatda http://127.0.0.1:8765).
+- **Linux / macOS:** `./start.sh`
 
-## Tez ishga tushirish (lokal)
+Faqat **Python 3.11/3.12** kerak (Node.js shart emas — interfeys `frontend/dist` da tayyor holda). Birinchi
+ishga tushirishda yengil kutubxonalar o‘rnatiladi (`backend/requirements.txt`, PyTorch’siz). Batafsil:
+[`ISHGA_TUSHIRISH.txt`](ISHGA_TUSHIRISH.txt).
+
+PyTorch faqat o‘qitilgan model bilan tahlil uchun kerak: `pip install -r backend/requirements-ai.txt`.
+
+## Ishlab chiquvchilar uchun
 
 ```bash
-# 1) Backend
-python3.11 -m venv .venv && source .venv/bin/activate
+python -m venv .venv && source .venv/bin/activate
 pip install -r backend/requirements-dev.txt -r ai/requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
-cd backend && uvicorn app.main:app --port 8000      # http://127.0.0.1:8000 — interfeys ham shu yerda (frontend/dist)
-
-# 2) Faqat interfeys kodini o‘zgartirish uchun (Node.js kerak, ixtiyoriy)
-cd frontend && npm install && npm run dev            # http://localhost:5173
-
-# 3) Testlar
-pytest                       # loyiha ildizida — 82 ta test (+4 tasi real dataset/model bo‘lganda)
-cd frontend && npm test      # 9 ta test
+python start.py                                   # server + interfeys
+cd frontend && npm install && npm run dev         # interfeys kodini o‘zgartirish (Node.js), so‘ng: npm run build
+pytest                                            # testlar
 ```
-
-Docker bilan: `cp .env.example .env && docker compose up -d --build` → http://localhost:8080.
-Batafsil: [`docs/ORNATISH.md`](docs/ORNATISH.md).
 
 ## Hujjatlar
 

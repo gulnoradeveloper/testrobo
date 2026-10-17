@@ -6,9 +6,9 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends libglib2.0-0 && rm -rf /var/lib/apt/lists/*
 
-COPY backend/requirements.txt /tmp/requirements.txt
+COPY backend/requirements.txt backend/requirements-ai.txt /tmp/
 # CPU uchun PyTorch (GPU kerak bo‘lsa, index-url ni CUDA versiyasiga almashtiring)
-RUN pip install --extra-index-url https://download.pytorch.org/whl/cpu -r /tmp/requirements.txt
+RUN pip install --extra-index-url https://download.pytorch.org/whl/cpu -r /tmp/requirements.txt -r /tmp/requirements-ai.txt
 
 COPY ai/kltool /app/kltool
 COPY backend /app

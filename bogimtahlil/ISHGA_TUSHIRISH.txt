@@ -1,0 +1,32 @@
+BO'G'IMTAHLIL 1.0 - ISHGA TUSHIRISH
+====================================
+
+Talab: Python 3.11 yoki 3.12  (https://www.python.org/downloads/)
+       O'rnatishda "Add python.exe to PATH" belgisini albatta qo'ying.
+       Node.js va boshqa dasturlar SHART EMAS.
+
+WINDOWS
+  1. ZIP faylni oching (masalan, Ish stoliga). Arxiv ichidan to'g'ridan-to'g'ri ishga tushirmang.
+  2. bogimtahlil papkasidagi  BOGIMTAHLIL.bat  faylini ikki marta bosing.
+     - Birinchi marta kutubxonalar o'rnatiladi (1-5 daqiqa, internet kerak).
+     - So'ng brauzer o'zi ochiladi. Manzil oynada yoziladi, odatda: http://127.0.0.1:8765
+  3. Qora oynani YOPMANG - dastur shu oynada ishlaydi. To'xtatish: Ctrl+C yoki oynani yopish.
+
+LINUX / macOS
+  ./start.sh
+
+MUAMMO BO'LSA
+  - Qora oynadagi xabarni yoki logs\server.log, logs\install.log fayllarini yuboring.
+  - "Python topilmadi": Python'ni "Add python.exe to PATH" bilan qayta o'rnating.
+  - Kutubxonalar o'rnatilmasa: .venv papkasini o'chirib, BOGIMTAHLIL.bat ni qayta ishga tushiring.
+  - Port band bo'lsa, dastur keyingi bo'sh portni o'zi tanlaydi (manzil oynada ko'rsatiladi).
+
+SUN'IY INTELLEKT MODELI
+  O'qitilgan model (artifacts\model.pt) hozircha yo'q. Interfeys to'liq ishlaydi, lekin
+  "Rentgen tahlili" sahifasi "Sun'iy intellekt modeli hozircha tahlil qilish uchun tayyor emas."
+  xabarini ko'rsatadi - dastur soxta natija bermaydi.
+  Model tayyor bo'lgach:
+    1) artifacts\model.pt faylini joylashtiring;
+    2) .venv\Scripts\python -m pip install -r backend\requirements-ai.txt --extra-index-url https://download.pytorch.org/whl/cpu
+    3) BOGIMTAHLIL.bat ni qayta ishga tushiring.
+  Modelni o'qitish: docs\MODEL_OQITISH.md

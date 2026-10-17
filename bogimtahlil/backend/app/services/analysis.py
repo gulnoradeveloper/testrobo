@@ -13,7 +13,6 @@ from sqlalchemy.orm import Session
 
 from kltool import KL_CLASSES
 from kltool.architectures import DISPLAY_NAMES
-from kltool.gradcam import overlay as make_overlay
 
 from ..config import Settings
 from ..errors import ApiError
@@ -99,6 +98,8 @@ def run_analysis(db: Session, svc: ModelService, storage: Storage, settings: Set
     try:
         files = [("original", storage.save_png(analysis_id, "original", img.gray))]
         if pred.cam is not None:
+            from kltool.gradcam import overlay as make_overlay
+
             files.append(("heatmap", storage.save_png(analysis_id, "heatmap", heatmap_rgba(pred.cam))))
             files.append(("overlay", storage.save_png(analysis_id, "overlay", make_overlay(img.gray, pred.cam))))
         pred.timing_ms["total_ms"] = (time.perf_counter() - started) * 1000

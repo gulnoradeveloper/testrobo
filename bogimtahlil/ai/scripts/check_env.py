@@ -36,8 +36,7 @@ def main() -> int:
     if missing:
         ok = False
         print("\nKutubxonalar o‘rnatilmagan. Loyiha ildizida bajaring:")
-        print("  pip install -r backend/requirements-dev.txt -r ai/requirements.txt "
-              "--extra-index-url https://download.pytorch.org/whl/cpu")
+        print("  pip install -r backend/requirements.txt  (AI uchun: -r backend/requirements-ai.txt)")
     else:
         import torch
 
