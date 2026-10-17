@@ -2,9 +2,8 @@
 from __future__ import annotations
 
 import io
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from zoneinfo import ZoneInfo
 
 from reportlab.graphics.charts.barcharts import HorizontalBarChart
 from reportlab.graphics.shapes import Drawing
@@ -25,7 +24,9 @@ TEXT = colors.HexColor("#172B4D")
 MUTED = colors.HexColor("#66788A")
 BORDER = colors.HexColor("#E1E8F0")
 FOOTER_TEXT = "Ushbu hisobot sun’iy intellekt algoritmining ilmiy-tadqiqot natijasidir. U shifokor tashxisi o‘rnini bosmaydi."
-TZ = ZoneInfo("Asia/Tashkent")
+# Toshkent vaqti — UTC+5, yozgi vaqt yo‘q. Qat’iy siljish ishlatiladi: Windows’da IANA vaqt zonalari
+# bazasi (tzdata) bo‘lmasligi mumkin, ZoneInfo("Asia/Tashkent") esa u yerda xato beradi.
+TZ = timezone(timedelta(hours=5), "Toshkent")
 
 _fonts_ready = False
 

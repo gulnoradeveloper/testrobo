@@ -44,3 +44,14 @@ def test_report_without_heatmap(tmp_path):
     orig = tmp_path / "o.png"
     Image.fromarray(make_xray_like()).save(orig)
     assert build_report(_analysis(), orig, None).startswith(b"%PDF")
+
+
+def test_report_module_has_no_tz_database_dependency():
+    # Windows’da tzdata bo‘lmaydi — modul ZoneInfo ishlatmasligi kerak
+    import inspect
+
+    import app.services.report as r
+
+    src = inspect.getsource(r)
+    assert "from zoneinfo" not in src and "import zoneinfo" not in src
+    assert r.TZ.utcoffset(None).total_seconds() == 5 * 3600

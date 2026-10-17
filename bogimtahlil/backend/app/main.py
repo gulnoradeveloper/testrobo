@@ -4,6 +4,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import logging
+import mimetypes
 from pathlib import Path
 from contextlib import asynccontextmanager
 
@@ -109,6 +110,14 @@ def _install_sw_killswitch(app: FastAPI) -> None:
         app.add_api_route(path, lambda: Response(SW_KILLSWITCH, media_type="application/javascript",
                                                  headers={"Cache-Control": "no-store"}),
                           methods=["GET"], include_in_schema=False)
+
+
+# Windows reestri .js ni "text/plain" deb ko‘rsatishi mumkin — brauzer bunday skriptni bajarmaydi.
+# Fayl turlari ro‘yxatdan qat’iy belgilanadi.
+for _ext, _type in ((".js", "text/javascript"), (".mjs", "text/javascript"), (".css", "text/css"),
+                    (".webp", "image/webp"), (".svg", "image/svg+xml"), (".png", "image/png"),
+                    (".json", "application/json"), (".html", "text/html")):
+    mimetypes.add_type(_type, _ext)
 
 
 def _mount_frontend(app: FastAPI, settings: Settings) -> None:

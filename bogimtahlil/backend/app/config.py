@@ -14,7 +14,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="BT_", env_file=".env", extra="ignore", protected_namespaces=())
 
     environment: str = "development"
-    database_url: str = f"sqlite:///{PROJECT_ROOT / 'data' / 'bogimtahlil.db'}"
+    # as_posix(): Windows’da ham "sqlite:///C:/..." ko‘rinishidagi to‘g‘ri URL
+    database_url: str = f"sqlite:///{(PROJECT_ROOT / 'data' / 'bogimtahlil.db').as_posix()}"
     storage_dir: Path = PROJECT_ROOT / "data" / "storage"
 
     model_path: Path = PROJECT_ROOT / "artifacts" / "model.pt"

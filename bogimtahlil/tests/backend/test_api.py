@@ -289,3 +289,31 @@ def test_service_worker_killswitch(client):
     r = client.get("/sw.js")
     assert r.status_code == 200 and "javascript" in r.headers["content-type"]
     assert "unregister()" in r.text and r.headers["cache-control"] == "no-store"
+
+
+def test_static_mime_types_do_not_depend_on_os_registry(tmp_path, fixture_checkpoint, monkeypatch):
+    import mimetypes
+
+    from app.main import create_app
+
+    # Windows reestrini taqlid qilish: .js → text/plain
+    monkeypatch.setitem(mimetypes.types_map, ".js", "text/plain")
+    import importlib
+
+    import app.main as m
+
+    importlib.reload(m)
+    dist = tmp_path / "dist"
+    (dist / "assets").mkdir(parents=True)
+    (dist / "index.html").write_text("<html></html>")
+    (dist / "assets" / "a.js").write_text("1")
+    (dist / "logo.webp").write_bytes(b"RIFF0000WEBP")
+    with TestClient(m.create_app(make_settings(tmp_path, fixture_checkpoint, frontend_dist=dist))) as c:
+        assert "javascript" in c.get("/assets/a.js").headers["content-type"]
+        assert c.get("/logo.webp").headers["content-type"] == "image/webp"
+
+
+def test_default_sqlite_url_is_posix():
+    from app.config import Settings
+
+    assert "\\" not in Settings().database_url and Settings().database_url.startswith("sqlite:///")
