@@ -1,0 +1,5 @@
+{
+  "checkpoint": "/content/bogimtahlil/experiments/efficientnet_b0/best.pt",
+  "checkpoint_sha256": "c20d5f6e7b14acd3802d80f9ab28bb5a481c871dc5562e26fb55e08a9d31f69d",
+  "locked_at": "2026-10-17T09:54:24.367322+00:00"
+}

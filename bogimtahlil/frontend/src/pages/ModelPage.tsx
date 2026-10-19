@@ -96,7 +96,7 @@ function DatasetSection({ e, info }: { e: Experiments; info: ModelInfo }) {
       <dl>
         <Row k="Nomi" v={d.name ?? (info.dataset.name as string | undefined)} />
         <Row k="Tasvirlar soni" v={d.images?.toLocaleString("uz")} />
-        <Row k={d.patient_ids_verified === false ? "Bemorlar soni (ID yo‘q — tasvirlar soni)" : "Bemorlar soni"} v={d.patients?.toLocaleString("uz")} />
+        <Row k="Bemorlar soni" v={d.patient_ids_verified === false ? "Ma’lum emas (datasetda bemor ID yo‘q)" : d.patients?.toLocaleString("uz")} />
         <Row k="Ajratish qoidasi" v={d.split_rule} />
         <Row k="Guruhlar orasida kesishgan bemorlar" v={d.available ? (d.patient_ids_verified === false ? "Tekshirib bo‘lmaydi" : String(d.patients_in_multiple_splits ?? 0)) : null} />
       </dl>
@@ -106,13 +106,13 @@ function DatasetSection({ e, info }: { e: Experiments; info: ModelInfo }) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="text-xs text-muted">
-                <tr><th className="py-1.5 text-left">Guruh</th><th>Tasvir</th><th>Bemor</th>{CLASSES.map((c) => <th key={c}>{c}</th>)}</tr>
+                <tr><th className="py-1.5 text-left">Guruh</th><th>Tasvir</th>{d.patient_ids_verified !== false && <th>Bemor</th>}{CLASSES.map((c) => <th key={c}>{c}</th>)}</tr>
               </thead>
               <tbody>
                 {Object.entries(splits).map(([s, v]) => (
                   <tr key={s} className="border-t border-border text-center">
                     <td className="py-1.5 text-left font-semibold text-primary">{SPLIT_TITLES[s] ?? s}</td>
-                    <td>{v.images}</td><td>{v.patients}</td>
+                    <td>{v.images}</td>{d.patient_ids_verified !== false && <td>{v.patients}</td>}
                     {CLASSES.map((c) => <td key={c}>{v.classes?.[c] ?? 0}</td>)}
                   </tr>
                 ))}

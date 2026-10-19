@@ -1,0 +1,56 @@
+{
+  "selection_rule": "validation macro_f1 (teng bo‘lsa: quadratic_weighted_kappa); test to‘plami ishlatilmagan",
+  "manifest": "/content/bogimtahlil/data/splits/manifest_split.csv",
+  "ranking": [
+    {
+      "run": "/content/bogimtahlil/experiments/efficientnet_b0",
+      "architecture": "efficientnet_b0",
+      "model_version": "efficientnet_b0-kl-1.0.0",
+      "best_epoch": 10,
+      "epochs_run": 17,
+      "training_seconds": 539.9,
+      "checkpoint_sha256": "c20d5f6e7b14acd3802d80f9ab28bb5a481c871dc5562e26fb55e08a9d31f69d",
+      "val": {
+        "accuracy": 0.6089588377723971,
+        "balanced_accuracy": 0.65636510471653,
+        "macro_precision": 0.6865969392638952,
+        "macro_recall": 0.65636510471653,
+        "macro_f1": 0.6629094843268886,
+        "quadratic_weighted_kappa": 0.8029386905922893
+      },
+      "val_recall": {
+        "KL0": 0.6585365853658537,
+        "KL1": 0.5032679738562091,
+        "KL2": 0.5235849056603774,
+        "KL3": 0.7075471698113207,
+        "KL4": 0.8888888888888888
+      }
+    },
+    {
+      "run": "/content/bogimtahlil/experiments/resnet18",
+      "architecture": "resnet18",
+      "model_version": "resnet18-kl-1.0.0",
+      "best_epoch": 9,
+      "epochs_run": 16,
+      "training_seconds": 392.2,
+      "checkpoint_sha256": "1347a5a17fa167a9a58d47f5071286666530cd609c2d5f4807a7746138a86626",
+      "val": {
+        "accuracy": 0.6174334140435835,
+        "balanced_accuracy": 0.6758037842124629,
+        "macro_precision": 0.6554858407439565,
+        "macro_recall": 0.6758037842124629,
+        "macro_f1": 0.6580831076519129,
+        "quadratic_weighted_kappa": 0.7828736950093538
+      },
+      "val_recall": {
+        "KL0": 0.6798780487804879,
+        "KL1": 0.49019607843137253,
+        "KL2": 0.4811320754716981,
+        "KL3": 0.8018867924528302,
+        "KL4": 0.9259259259259259
+      }
+    }
+  ],
+  "selected": "/content/bogimtahlil/experiments/efficientnet_b0",
+  "selected_reason": "efficientnet_b0: validation macro_f1 = 0.6629 — eng yuqori"
+}

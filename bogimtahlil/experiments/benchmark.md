@@ -23,3 +23,8 @@ Qayta o‘lchash:
 ```bash
 python ai/scripts/benchmark.py --checkpoint artifacts/model.pt --image <tizza.png> --runs 20
 ```
+
+## O‘qitilgan model (EfficientNet-B0) — Colab CPU, 1 oqim
+
+`experiments/benchmark.json`: median 194 ms, P90 203 ms (preprocess + forward + Grad-CAM). API orqali to‘liq tahlil
+(fayllarni saqlash bilan) sinov kompyuterida ~0,6 s.

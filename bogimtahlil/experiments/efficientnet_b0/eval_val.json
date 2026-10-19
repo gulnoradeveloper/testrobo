@@ -1,0 +1,136 @@
+{
+  "n_samples": 826,
+  "accuracy": 0.6089588377723971,
+  "balanced_accuracy": 0.65636510471653,
+  "macro_precision": 0.6865969392638952,
+  "macro_recall": 0.65636510471653,
+  "macro_f1": 0.6629094843268886,
+  "quadratic_weighted_kappa": 0.8029386905922893,
+  "per_class": {
+    "KL0": {
+      "precision": 0.779783393501805,
+      "recall": 0.6585365853658537,
+      "f1": 0.7140495867768595,
+      "support": 328
+    },
+    "KL1": {
+      "precision": 0.29615384615384616,
+      "recall": 0.5032679738562091,
+      "f1": 0.3728813559322034,
+      "support": 153
+    },
+    "KL2": {
+      "precision": 0.6529411764705882,
+      "recall": 0.5235849056603774,
+      "f1": 0.581151832460733,
+      "support": 212
+    },
+    "KL3": {
+      "precision": 0.8152173913043478,
+      "recall": 0.7075471698113207,
+      "f1": 0.7575757575757576,
+      "support": 106
+    },
+    "KL4": {
+      "precision": 0.8888888888888888,
+      "recall": 0.8888888888888888,
+      "f1": 0.8888888888888888,
+      "support": 27
+    }
+  },
+  "confusion_matrix": [
+    [
+      216,
+      98,
+      13,
+      1,
+      0
+    ],
+    [
+      49,
+      77,
+      26,
+      1,
+      0
+    ],
+    [
+      12,
+      77,
+      111,
+      12,
+      0
+    ],
+    [
+      0,
+      8,
+      20,
+      75,
+      3
+    ],
+    [
+      0,
+      0,
+      0,
+      3,
+      24
+    ]
+  ],
+  "early_grade_confusion": {
+    "submatrix": [
+      [
+        216,
+        98,
+        13
+      ],
+      [
+        49,
+        77,
+        26
+      ],
+      [
+        12,
+        77,
+        111
+      ]
+    ],
+    "pairs": {
+      "KL0->KL1": {
+        "count": 98,
+        "rate_of_true_class": 0.29878048780487804
+      },
+      "KL0->KL2": {
+        "count": 13,
+        "rate_of_true_class": 0.039634146341463415
+      },
+      "KL1->KL0": {
+        "count": 49,
+        "rate_of_true_class": 0.3202614379084967
+      },
+      "KL1->KL2": {
+        "count": 26,
+        "rate_of_true_class": 0.16993464052287582
+      },
+      "KL2->KL0": {
+        "count": 12,
+        "rate_of_true_class": 0.05660377358490566
+      },
+      "KL2->KL1": {
+        "count": 77,
+        "rate_of_true_class": 0.3632075471698113
+      }
+    },
+    "errors_within_kl0_kl2": 275,
+    "samples_kl0_kl2": 693,
+    "error_rate_within_kl0_kl2": 0.3968253968253968,
+    "row_totals": [
+      327,
+      152,
+      200
+    ]
+  },
+  "split": "val",
+  "checkpoint_sha256": "c20d5f6e7b14acd3802d80f9ab28bb5a481c871dc5562e26fb55e08a9d31f69d",
+  "model_version": "efficientnet_b0-kl-1.0.0",
+  "architecture": "efficientnet_b0",
+  "n_patients": 826
+}

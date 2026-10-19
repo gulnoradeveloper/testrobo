@@ -15,7 +15,7 @@ export function ImageViewer({ src, alt, width, height }: { src: string; alt: str
     <div className="space-y-3">
       <div ref={boxRef} className="checker relative h-[360px] overflow-auto rounded-lg md:h-[440px] [&:fullscreen]:h-screen">
         <div className="flex min-h-full min-w-full items-center justify-center" style={{ width: `${scale * 100}%`, height: `${scale * 100}%` }}>
-          <img src={src} alt={alt} className="max-h-full max-w-full object-contain" draggable={false} />
+          <img src={src} alt={alt} className="h-full w-full object-contain" draggable={false} />
         </div>
       </div>
       <div className="flex flex-wrap items-center justify-between gap-2">

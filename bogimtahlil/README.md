@@ -10,7 +10,7 @@ xaritasini yaratadi va natijani o‘zbek tilidagi PDF hisobot sifatida beradi.
 > ⚠️ **Ilmiy-tadqiqot prototipi.** Natijalar shifokor tashxisi o‘rnini bosmaydi. Klinik tasdiqlash va ruxsatlarsiz
 > mustaqil tashxis qo‘yish yoki davolashni belgilash uchun ishlatilmaydi.
 
-## Loyiha holati — **Qisman tayyor / Model mavjud emas**
+## Loyiha holati — **Tayyor (o‘qitilgan model bilan)**
 
 | Qism | Holat |
 |---|---|
@@ -19,10 +19,12 @@ xaritasini yaratadi va natijani o‘zbek tilidagi PDF hisobot sifatida beradi.
 | Preprocess, inference, Grad-CAM, PDF hisobot | ✅ Tayyor, testlangan |
 | O‘qitish / baholash / taqqoslash / eksport / benchmark skriptlari | ✅ Tayyor, sintetik ma’lumotda smoke-test qilingan |
 | O‘qitish zanjiri: OAI manifest → 70/15/15 → ResNet-18 + EfficientNet-B0 → tanlash → test → eksport (`ai/scripts/run_experiment.py`) | ✅ Tayyor, OAI formatidagi sintetik ma’lumotda uchidan-uchiga sinovdan o‘tgan |
-| **O‘qitilgan model (`artifacts/model.pt`)** | ❌ **Mavjud emas** — OAI datasetiga kirish ruxsati va ma’lumotlar kerak |
-| **Model metrikalari (test)** | ❌ **Hali baholanmagan** |
+| **O‘qitilgan model (`artifacts/model.pt`)** | ✅ EfficientNet-B0, 8260 ta haqiqiy rentgen (Chen 2018 / OAI), Google Colab GPU’da o‘qitilgan |
+| **Mustaqil test (1656 tasvir)** | ✅ Accuracy 0,647 · Balanced Accuracy 0,661 · Macro F1 0,678 · QWK 0,826 — [`experiments/EXPERIMENT_REPORT.md`](experiments/EXPERIMENT_REPORT.md) |
+| Sinov uchun tasvirlar | ✅ `demo_images/` — test guruhidan 10 ta haqiqiy rentgen (har bir KL dan 2 ta) |
 | Docker obrazlari | ⚠️ Konfiguratsiya yozilgan, `docker compose config` tekshirilgan; ishlab chiqish muhitida Docker daemon yo‘qligi sababli obraz yig‘ilmagan |
 
+Cheklov: datasetda bemor identifikatorlari yo‘q — bemorlar bo‘yicha ajratishni tekshirib bo‘lmaydi (hisobotda ko‘rsatilgan).
 Model yo‘qligida dastur **hech qanday tasodifiy yoki namunaviy natija ko‘rsatmaydi**: `POST /api/v1/analyses`
 `503 MODEL_NOT_READY` qaytaradi, interfeys esa “Sun’iy intellekt modeli hozircha tahlil qilish uchun tayyor emas.”
 xabarini chiqaradi. Modelni tayyorlash tartibi: [`docs/MODEL_OQITISH.md`](docs/MODEL_OQITISH.md).

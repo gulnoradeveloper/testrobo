@@ -1,0 +1,71 @@
+{
+  "model_version": "efficientnet_b0-kl-1.0.0",
+  "architecture": "efficientnet_b0",
+  "sha256": "845f5c7b70693dc0573ee02092ec452e30f966e5f9a94db1a257d7be7b301a3c",
+  "class_names": [
+    "KL0",
+    "KL1",
+    "KL2",
+    "KL3",
+    "KL4"
+  ],
+  "input_size": 224,
+  "normalization": {
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "preprocess_version": "pp-v1",
+  "dataset": {
+    "manifest": "/content/bogimtahlil/data/splits/manifest_split.csv",
+    "n_train": 5778,
+    "n_val": 826,
+    "n_train_patients": 5778,
+    "n_val_patients": 826,
+    "sources": [
+      "Knee Osteoarthritis Severity Grading Dataset (Chen, Mendeley Data 2018; OAI asosida)"
+    ],
+    "name": "Knee Osteoarthritis Severity Grading Dataset (Chen, Mendeley Data 2018; OAI asosida)",
+    "license": "CC BY 4.0 (Mendeley Data sahifasida tekshiring); manba: Osteoarthritis Initiative",
+    "notes": "Datasetda bemor ID yo‘q; datasetning o‘z train/val/test taqsimoti ishlatilgan",
+    "n_test": 1656,
+    "n_test_patients": 1656
+  },
+  "selection": {
+    "rule": "validation macro_f1 (teng bo‘lsa: quadratic_weighted_kappa); test to‘plami ishlatilmagan",
+    "reason": "efficientnet_b0: validation macro_f1 = 0.6629 — eng yuqori",
+    "candidates": [
+      {
+        "architecture": "efficientnet_b0",
+        "val_macro_f1": 0.6629094843268886
+      },
+      {
+        "architecture": "resnet18",
+        "val_macro_f1": 0.6580831076519129
+      }
+    ]
+  },
+  "test_metrics": {
+    "accuracy": 0.6473429951690821,
+    "balanced_accuracy": 0.6611023811326366,
+    "macro_precision": 0.7201930573321867,
+    "macro_recall": 0.6611023811326366,
+    "macro_f1": 0.6783156454597978,
+    "quadratic_weighted_kappa": 0.825728605762124
+  },
+  "test_recall": {
+    "KL0": 0.7323943661971831,
+    "KL1": 0.5304054054054054,
+    "KL2": 0.5190156599552572,
+    "KL3": 0.7982062780269058,
+    "KL4": 0.7254901960784313
+  },
+  "calibration_evaluated": false
+}

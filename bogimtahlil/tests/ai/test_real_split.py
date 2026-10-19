@@ -21,8 +21,12 @@ def test_no_patient_in_two_splits(df):
 
 
 def test_ratios_and_all_classes(df):
-    frac = df.groupby("split")["patient_id"].nunique() / df["patient_id"].nunique()
-    assert abs(frac["train"] - 0.70) < 0.02 and abs(frac["val"] - 0.15) < 0.02 and abs(frac["test"] - 0.15) < 0.02
+    import json
+
+    report = json.loads((SPLIT.parent / "dataset_report.json").read_text(encoding="utf-8"))
+    if report["split_source"].startswith("bemorlar bo‘yicha"):  # biz ajratgan bo‘lsak — 70/15/15
+        frac = df.groupby("split")["patient_id"].nunique() / df["patient_id"].nunique()
+        assert abs(frac["train"] - 0.70) < 0.02 and abs(frac["val"] - 0.15) < 0.02 and abs(frac["test"] - 0.15) < 0.02
     for s in ("train", "val", "test"):
         assert set(df.loc[df["split"] == s, "kl_grade"].astype(int)) == {0, 1, 2, 3, 4}
 

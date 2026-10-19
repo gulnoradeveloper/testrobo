@@ -1,0 +1,12 @@
+{
+  "model_version": "efficientnet_b0-kl-1.0.0",
+  "training_status": "trained",
+  "device": "cpu",
+  "cpu": "x86_64",
+  "torch_threads": 1,
+  "runs": 20,
+  "median_ms": 193.83305949986607,
+  "p90_ms": 203.02221200017811,
+  "min_ms": 184.74802499986254,
+  "max_ms": 240.529038999739
+}

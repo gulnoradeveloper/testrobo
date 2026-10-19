@@ -1,0 +1,69 @@
+{
+  "validation": {
+    "n_records": 8260,
+    "n_patients": 8260,
+    "invalid_grades": 0,
+    "invalid_sides": 0,
+    "non_frontal": 0,
+    "duplicate_keys": 0,
+    "missing_files": 0,
+    "issues": []
+  },
+  "duplicates": {
+    "ambiguous_knee_visit_records_removed": 0,
+    "identical_images_removed": 0,
+    "identical_images_with_conflicting_labels": 0,
+    "identical_images_across_patients": 0
+  },
+  "split_source": "manifestdagi tayyor split",
+  "patient_ids_verified": false,
+  "patient_ids_note": "Datasetda bemor identifikatorlari yo‘q — bemorlar bo‘yicha ajratishni tekshirib bo‘lmaydi; bitta bemorning tasvirlari turli guruhlarga tushgan bo‘lishi mumkin.",
+  "patient_leakage": {
+    "n_patients_in_multiple_splits": 0
+  },
+  "totals": {
+    "images": 8260,
+    "patients": 8260,
+    "sources": {
+      "Knee Osteoarthritis Severity Grading Dataset (Chen, Mendeley Data 2018; OAI asosida)": 8260
+    }
+  },
+  "splits": {
+    "train": {
+      "images": 5778,
+      "patients": 5778,
+      "patient_fraction": 0.6995157384987893,
+      "classes": {
+        "KL0": 2286,
+        "KL1": 1046,
+        "KL2": 1516,
+        "KL3": 757,
+        "KL4": 173
+      }
+    },
+    "val": {
+      "images": 826,
+      "patients": 826,
+      "patient_fraction": 0.1,
+      "classes": {
+        "KL0": 328,
+        "KL1": 153,
+        "KL2": 212,
+        "KL3": 106,
+        "KL4": 27
+      }
+    },
+    "test": {
+      "images": 1656,
+      "patients": 1656,
+      "patient_fraction": 0.20048426150121065,
+      "classes": {
+        "KL0": 639,
+        "KL1": 296,
+        "KL2": 447,
+        "KL3": 223,
+        "KL4": 51
+      }
+    }
+  }
+}

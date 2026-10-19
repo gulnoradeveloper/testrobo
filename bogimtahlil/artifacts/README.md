@@ -2,8 +2,10 @@
 
 O‘qitilgan model fayllari uchun katalog. Backend standart holatda `artifacts/model.pt` ni yuklaydi.
 
-**Hozirgi holat: o‘qitilgan model mavjud emas.** Shu sababli dastur tahlil funksiyasini bajarmaydi va
-“Sun’iy intellekt modeli hozircha tahlil qilish uchun tayyor emas.” xabarini ko‘rsatadi.
+**Hozirgi holat:** `model.pt` — EfficientNet-B0 (`efficientnet_b0-kl-1.0.0`), Google Colab’da (T4 GPU) Chen 2018 /
+OAI datasetining 5778 ta o‘qitish tasvirida o‘qitilgan, 826 ta tekshiruv tasviri bo‘yicha ResNet-18 bilan taqqoslanib
+tanlangan, 1656 ta test tasvirida bir marta baholangan. Tafsilotlar: `model_card.json`, `../experiments/EXPERIMENT_REPORT.md`.
+Tahlil uchun PyTorch kerak: `AI_ORNATISH.bat` (Windows) yoki `pip install -r backend/requirements-ai.txt`.
 
 O‘qitish natijasida bu yerda paydo bo‘ladi (`ai/scripts/run_experiment.py`):
 

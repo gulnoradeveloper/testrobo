@@ -64,3 +64,19 @@ Sana: 2026-10-15 · Versiya: 1.0
 - **Tekshiruv natijalari:** pytest — 82 o‘tdi, 4 o‘tkazib yuborildi (real dataset/model talab qiladi). OAI formatidagi sintetik ma’lumotda `run_experiment.py` 8 bosqichi to‘liq bajarildi (2 daq 37 s, CPU); eksport qilingan model backendga standart (qat’iy) rejimda yuklandi va `test_real_model.py` o‘tdi. Sintetik natijalar repozitoriyga qo‘shilmagan.
 - **Bajarilmagan:** real OAI ma’lumotlari yo‘q (kirish ruxsati va tarmoq cheklovi), ImageNet vaznlari yuklab olinmadi. Shuning uchun ResNet-18 va EfficientNet-B0 o‘qitilmagan, metrikalar yo‘q, `artifacts/model.pt` yo‘q. `oai_columns.yaml` dagi ustun nomlari OAI data dictionary bilan solishtirilmagan (`verified: false`).
 - **Loyiha holati:** **Model mavjud emas** — o‘qitish uchun barcha kod tayyor va tekshirilgan.
+
+---
+
+## 9-bosqich. Haqiqiy model (Google Colab)
+
+- **Dataset:** Chen P., *Knee Osteoarthritis Severity Grading Dataset*, Mendeley Data 2018 (OAI asosida), 8260 ta tizza
+  rentgeni (kneeKL224): train 5778 / val 826 / test 1656 — datasetning o‘z taqsimoti. Bemor ID yo‘q (cheklov).
+- **O‘qitish:** T4 GPU, transfer learning (ImageNet), AdamW, Weighted CE, early stopping 7.
+  ResNet-18: eng yaxshi epoch 9/16, 6,5 daq; EfficientNet-B0: 10/17, 9,0 daq.
+- **Validation (tanlov):** ResNet-18 macro F1 0,658, QWK 0,783; EfficientNet-B0 macro F1 0,663, QWK 0,803 → **EfficientNet-B0**.
+- **Mustaqil test (bir marta):** Accuracy 0,647, Balanced Accuracy 0,661, Macro F1 0,678, QWK 0,826.
+  Recall: KL0 0,73 · KL1 0,53 · KL2 0,52 · KL3 0,80 · KL4 0,73. KL0–KL2 o‘zaro xato 35,7%.
+- **Tekshiruv:** model.pt SHA-256 `model.pt.sha256` va test qulfi bilan mos; backend yuklovchisi (qat’iy rejim) qabul qildi;
+  `test_real_model.py` o‘tdi; brauzerda demo tasvir → KL4 (98,1%), Grad-CAM, PDF ishladi; 10 ta demo tasvirdan 5 tasi
+  aniq mos (qolganlari qo‘shni darajalar) — test aniqligi bilan mos.
+- **Holat:** Tayyor.

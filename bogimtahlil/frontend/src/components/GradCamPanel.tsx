@@ -24,10 +24,10 @@ export function GradCamPanel({ a }: { a: Analysis }) {
     <div className="space-y-5">
       <div className="grid gap-4 md:grid-cols-3">
         <Frame label="Asl rentgen tasviri">
-          <img src={img} alt="Asl rentgen tasviri" className="max-h-full max-w-full object-contain" />
+          <img src={img} alt="Asl rentgen tasviri" className="h-full w-full object-contain" />
         </Frame>
         <Frame label="Rangli faollik xaritasi">
-          <img src={heat} alt="Grad-CAM faollik xaritasi" className="max-h-full max-w-full object-contain" />
+          <img src={heat} alt="Grad-CAM faollik xaritasi" className="h-full w-full object-contain" />
         </Frame>
         <Frame label="Birlashtirilgan tasvir">
           {/* Ikkala tasvir bir xil o‘lchamda va object-contain bilan joylashadi — piksellar ustma-ust tushadi */}

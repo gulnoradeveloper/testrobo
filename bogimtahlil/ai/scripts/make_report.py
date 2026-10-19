@@ -63,14 +63,23 @@ def main() -> None:
     L += ["## 1–2. Ma’lumotlar to‘plami va taqsimot", ""]
     if ds:
         t = ds["totals"]
-        L += [f"Jami tasvirlar: **{t['images']}**, bemorlar: **{t['patients']}**, manba: {t['sources']}",
-              f"Ajratish: {ds['split_source']}. Guruhlar orasida kesishgan bemorlar: "
-              f"**{ds['patient_leakage']['n_patients_in_multiple_splits']}**", "",
-              "| Guruh | Tasvirlar | Bemorlar | Bemor ulushi | " + " | ".join(KL_CLASSES) + " |",
-              "|---|---|---|---|" + "---|" * len(KL_CLASSES)]
+        verified = ds.get("patient_ids_verified", True)
+        if verified:
+            L += [f"Jami tasvirlar: **{t['images']}**, bemorlar: **{t['patients']}**, manba: {t['sources']}",
+                  f"Ajratish: {ds['split_source']}. Guruhlar orasida kesishgan bemorlar: "
+                  f"**{ds['patient_leakage']['n_patients_in_multiple_splits']}**", "",
+                  "| Guruh | Tasvirlar | Bemorlar | Bemor ulushi | " + " | ".join(KL_CLASSES) + " |",
+                  "|---|---|---|---|" + "---|" * len(KL_CLASSES)]
+        else:
+            L += [f"Jami tasvirlar: **{t['images']}**, bemorlar: **ma’lum emas** (datasetda bemor ID yo‘q), "
+                  f"manba: {', '.join(t['sources'])}",
+                  f"Ajratish: {ds['split_source']} (datasetning o‘z train/val/test taqsimoti).", "",
+                  "| Guruh | Tasvirlar | Ulushi | " + " | ".join(KL_CLASSES) + " |",
+                  "|---|---|---|" + "---|" * len(KL_CLASSES)]
+        total = sum(v["images"] for v in ds["splits"].values()) or 1
         for s, v in ds["splits"].items():
-            L.append(f"| {s} | {v['images']} | {v['patients']} | {v['patient_fraction']:.1%} | "
-                     + " | ".join(str(v["classes"][c]) for c in KL_CLASSES) + " |")
+            mid = f"{v['patients']} | {v['patient_fraction']:.1%}" if verified else f"{v['images'] / total:.1%}"
+            L.append(f"| {s} | {v['images']} | {mid} | " + " | ".join(str(v["classes"][c]) for c in KL_CLASSES) + " |")
         if ds.get("patient_ids_verified") is False:
             L += ["", f"**Cheklov:** {ds['patient_ids_note']}"]
         L += ["", f"Tozalash: {json.dumps(ds['duplicates'], ensure_ascii=False)}", ""]
@@ -97,7 +106,8 @@ def main() -> None:
     lock = read(exp / "test_lock.json")
     test = None
     if cmp:
-        test = read(resolve(cmp["selected"]) / "eval_test.json")
+        # Tanlangan katalog boshqa kompyuterda (masalan, Colab’da) yozilgan bo‘lishi mumkin — nomi bo‘yicha topiladi
+        test = read(exp / Path(str(cmp["selected"])).name / "eval_test.json")
     L += ["## 6. Mustaqil sinov (test) natijalari", ""]
     if lock:
         L += [f"Test to‘plami bir marta, faqat `{lock['checkpoint']}` uchun ishlatilgan ({lock['locked_at']}).", ""]
