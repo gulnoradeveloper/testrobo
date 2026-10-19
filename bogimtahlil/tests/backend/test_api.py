@@ -317,3 +317,27 @@ def test_default_sqlite_url_is_posix():
     from app.config import Settings
 
     assert "\\" not in Settings().database_url and Settings().database_url.startswith("sqlite:///")
+
+
+def test_server_starts_when_torch_dll_fails(tmp_path, fixture_checkpoint, monkeypatch):
+    """Windows: PyTorch o‘rnatilgan, lekin DLL yuklanmaydi (OSError) — server baribir ishlashi shart."""
+    import builtins
+    import sys
+
+    from app.main import create_app
+
+    real_import = builtins.__import__
+
+    def fake_import(name, *a, **k):
+        if name == "torch" or name.startswith("torch."):
+            raise OSError('[WinError 126] Error loading "c10.dll"')
+        return real_import(name, *a, **k)
+
+    for mod in [m for m in sys.modules if m == "torch" or m.startswith("torch.")]:
+        monkeypatch.delitem(sys.modules, mod)
+    monkeypatch.setattr(builtins, "__import__", fake_import)
+    with TestClient(create_app(make_settings(tmp_path, fixture_checkpoint))) as c:
+        h = c.get("/api/v1/health").json()
+        assert h["status"] == "ok" and h["model_loaded"] is False
+        assert "Visual C++" in h["model_status_message"]
+        assert c.get("/api/v1/model/info").json()["status_code"] == "AI_LIBRARIES_BROKEN"

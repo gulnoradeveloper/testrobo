@@ -60,6 +60,8 @@ def _model_status_message(m: ModelService) -> str:
         return "Yuklangan checkpoint o‘qitilgan model emas (faqat test rejimi) — natijalar ma’noga ega emas."
     if m.error_code == "MODEL_NOT_FOUND":
         return "Model hali o‘qitilmagan: artifacts/model.pt mavjud emas."
+    if m.error_code in ("AI_LIBRARIES_MISSING", "AI_LIBRARIES_BROKEN", "MODEL_LOAD_FAILED") and m.error_message:
+        return m.error_message
     return MODEL_NOT_READY_UI
 
 

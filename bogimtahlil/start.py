@@ -139,9 +139,14 @@ def main() -> int:
     try:
         import torch  # noqa: F401
 
-        say("PyTorch: o‘rnatilgan")
-    except Exception:
+        say(f"PyTorch: o‘rnatilgan va ishlayapti ({torch.__version__})")
+    except ImportError:
         say("PyTorch: o‘rnatilmagan — interfeys ishlaydi, sun’iy intellekt tahlili o‘chirilgan")
+    except Exception as exc:
+        say(f"\nDIQQAT: PyTorch o‘rnatilgan, lekin ishga tushmadi: {type(exc).__name__}: {exc}")
+        say("Windows’da bu odatda “Microsoft Visual C++ Redistributable” yo‘qligidan bo‘ladi. O‘rnating:")
+        say("   https://aka.ms/vs/17/release/vc_redist.x64.exe   (so‘ng kompyuterni qayta ishga tushiring)")
+        say("Hozircha dastur sun’iy intellekt tahlilisiz ishga tushadi.\n")
 
     restarts, opened = 0, False
     proc = start_server(port)

@@ -63,6 +63,13 @@ class ModelService:
                                   "O‘rnatish: pip install -r backend/requirements-ai.txt")
             log.warning("Model yuklanmadi: %s", self.error_message)
             return
+        except Exception as exc:  # Windows: DLL yuklanmadi (OSError/WinError 126) — server baribir ishlashi kerak
+            self.error_code = "AI_LIBRARIES_BROKEN"
+            self.error_message = (f"PyTorch o‘rnatilgan, lekin ishga tushmadi ({type(exc).__name__}: {exc}). "
+                                  "Windows’da odatda “Microsoft Visual C++ Redistributable” yetishmaydi: "
+                                  "https://aka.ms/vs/17/release/vc_redist.x64.exe")
+            log.error("Model yuklanmadi: %s", self.error_message)
+            return
         if s.torch_threads > 0:
             torch.set_num_threads(s.torch_threads)
         if s.device == "auto":
@@ -78,6 +85,12 @@ class ModelService:
             self.loaded = None
             self.error_code, self.error_message = exc.code, exc.message
             log.warning("Model yuklanmadi: %s — %s", exc.code, exc.message)
+            return
+        except Exception as exc:  # kutilmagan xato server ishga tushishini to‘xtatmasligi kerak
+            self.loaded = None
+            self.error_code = "MODEL_LOAD_FAILED"
+            self.error_message = f"Modelni yuklashda xatolik: {type(exc).__name__}: {exc}"
+            log.exception("Model yuklanmadi")
             return
         for p in self.loaded.model.parameters():
             p.requires_grad_(True)  # Grad-CAM uchun gradient kerak
