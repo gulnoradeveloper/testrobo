@@ -6,6 +6,7 @@ Faqat standart kutubxona ishlatiladi — kutubxonalar o‘rnatilmagan bo‘lsa h
 from __future__ import annotations
 
 import importlib
+import os
 import platform
 import sys
 import time
@@ -16,6 +17,25 @@ ROOT = Path(__file__).resolve().parent
 LOGS = ROOT / "logs"
 PACKAGES = ["fastapi", "uvicorn", "pydantic_settings", "multipart", "sqlalchemy", "alembic", "numpy", "PIL",
             "reportlab", "yaml", "torch", "torchvision", "cv2"]
+
+
+def vc_runtime_version() -> str:
+    """Windows: o‘rnatilgan Microsoft Visual C++ 2015–2022 x64 runtime versiyasi (reestrdan)."""
+    if sys.platform != "win32":
+        return "(Windows emas)"
+    try:
+        import winreg
+
+        for key in (r"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64",
+                    r"SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\VC\Runtimes\x64"):
+            try:
+                with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, key) as k:
+                    return str(winreg.QueryValueEx(k, "Version")[0])
+            except OSError:
+                continue
+    except Exception:
+        pass
+    return "O‘RNATILMAGAN"
 
 
 def tail(p: Path, n: int = 30) -> str:
@@ -35,6 +55,7 @@ def main() -> None:
     w(f".venv: {'bor' if venv.is_dir() else 'YO‘Q'};  asosiy o‘rnatish belgisi: "
       f"{'bor' if (venv / 'installed-v2.ok').is_file() else 'yo‘q'};  AI o‘rnatish belgisi: "
       f"{'bor' if (venv / 'installed-ai.ok').is_file() else 'yo‘q'}")
+    w(f"Microsoft Visual C++ runtime (x64): {vc_runtime_version()}")
     m = ROOT / "artifacts" / "model.pt"
     w(f"Model: {'bor, %.1f MB' % (m.stat().st_size / 2**20) if m.is_file() else 'YO‘Q'} ({m})")
     w("\nKutubxonalar (shu Python’da):")
@@ -43,7 +64,7 @@ def main() -> None:
             mod = importlib.import_module(pkg)
             w(f"  [OK]   {pkg} {getattr(mod, '__version__', '')}")
         except Exception as exc:
-            w(f"  [YO‘Q] {pkg} — {type(exc).__name__}")
+            w(f"  [YO‘Q] {pkg} — {type(exc).__name__}: {str(exc)[:300]}")
     w("\nServer holati (portlar 8765–8775):")
     found = False
     for port in range(8765, 8776):

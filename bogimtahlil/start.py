@@ -54,6 +54,25 @@ def disable_windows_quickedit() -> None:
         pass
 
 
+def vc_runtime_version() -> str:
+    """Windows: o‘rnatilgan Microsoft Visual C++ 2015–2022 x64 runtime versiyasi (reestrdan)."""
+    if os.name != "nt":
+        return "(Windows emas)"
+    try:
+        import winreg
+
+        for key in (r"SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64",
+                    r"SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\VC\Runtimes\x64"):
+            try:
+                with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, key) as k:
+                    return str(winreg.QueryValueEx(k, "Version")[0])
+            except OSError:
+                continue
+    except Exception:
+        pass
+    return "O‘RNATILMAGAN"
+
+
 def check_python() -> bool:
     if sys.version_info < (3, 10):
         say(f"XATO: Python {sys.version.split()[0]} juda eski. Python 3.11 yoki 3.12 o‘rnating: https://www.python.org/downloads/")
@@ -144,8 +163,9 @@ def main() -> int:
         say("PyTorch: o‘rnatilmagan — interfeys ishlaydi, sun’iy intellekt tahlili o‘chirilgan")
     except Exception as exc:
         say(f"\nDIQQAT: PyTorch o‘rnatilgan, lekin ishga tushmadi: {type(exc).__name__}: {exc}")
-        say("Windows’da bu odatda “Microsoft Visual C++ Redistributable” yo‘qligidan bo‘ladi. O‘rnating:")
-        say("   https://aka.ms/vs/17/release/vc_redist.x64.exe   (so‘ng kompyuterni qayta ishga tushiring)")
+        say(f"Microsoft Visual C++ runtime (x64): {vc_runtime_version()}")
+        say("Yechim: VC_REDIST_ORNATISH.bat ni ishga tushiring (yoki https://aka.ms/vs/17/release/vc_redist.x64.exe),")
+        say("        so‘ng KOMPYUTERNI QAYTA ISHGA TUSHIRING va BOGIMTAHLIL.bat ni oching.")
         say("Hozircha dastur sun’iy intellekt tahlilisiz ishga tushadi.\n")
 
     restarts, opened = 0, False

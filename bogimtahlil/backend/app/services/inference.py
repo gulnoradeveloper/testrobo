@@ -66,8 +66,9 @@ class ModelService:
         except Exception as exc:  # Windows: DLL yuklanmadi (OSError/WinError 126) — server baribir ishlashi kerak
             self.error_code = "AI_LIBRARIES_BROKEN"
             self.error_message = (f"PyTorch o‘rnatilgan, lekin ishga tushmadi ({type(exc).__name__}: {exc}). "
-                                  "Windows’da odatda “Microsoft Visual C++ Redistributable” yetishmaydi: "
-                                  "https://aka.ms/vs/17/release/vc_redist.x64.exe")
+                                  "Windows’da odatda “Microsoft Visual C++ Redistributable” yetishmaydi yoki eski: "
+                                  "VC_REDIST_ORNATISH.bat ni ishga tushiring (https://aka.ms/vs/17/release/vc_redist.x64.exe), "
+                                  "kompyuterni qayta ishga tushiring.")
             log.error("Model yuklanmadi: %s", self.error_message)
             return
         if s.torch_threads > 0:
