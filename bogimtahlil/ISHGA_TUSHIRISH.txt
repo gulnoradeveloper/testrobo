@@ -21,6 +21,7 @@ LINUX / macOS
   ./start.sh
 
 MUAMMO BO'LSA
+  - DIAGNOSTIKA.bat ni ishga tushiring - logs\diagnostika.txt fayli Notepad'da ochiladi. Shu faylni yuboring.
   - Qora oynadagi xabarni yoki logs\start.log, logs\server.log, logs\ai_install.log fayllarini yuboring.
   - "Python topilmadi": Python'ni "Add python.exe to PATH" bilan qayta o'rnating.
   - PyTorch o'rnatilmasa (Python 3.14 bilan bo'lishi mumkin): Python 3.12 ni o'rnating, .venv papkasini o'chiring,
