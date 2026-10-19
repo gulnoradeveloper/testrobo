@@ -123,7 +123,18 @@ def main() -> int:
     say("=" * 64)
     if not (check_python() and check_packages()):
         return 1
-    port = free_port(int(os.environ.get("BT_PORT", "8765")))
+    say(f"Dastur papkasi: {ROOT}")
+    model_path = Path(os.environ.get("BT_MODEL_PATH", ROOT / "artifacts" / "model.pt"))
+    if model_path.is_file():
+        say(f"Model fayli: {model_path} ({model_path.stat().st_size / 2**20:.1f} MB)")
+    else:
+        say(f"Model fayli: YO‘Q ({model_path}) — tahlil cheklangan bo‘ladi")
+    want = int(os.environ.get("BT_PORT", "8765"))
+    if healthy(f"http://127.0.0.1:{want}"):
+        say(f"\nDIQQAT: http://127.0.0.1:{want} da Bo‘g‘imTahlilning BOSHQA (eski) nusxasi ishlayapti.")
+        say("Eski qora oynani yoping — aks holda brauzerda eski versiya ochilishi mumkin.")
+        say("Bu nusxa boshqa portda ishga tushiriladi va brauzer to‘g‘ri manzilni o‘zi ochadi.\n")
+    port = free_port(want)
     url = f"http://127.0.0.1:{port}"
     try:
         import torch  # noqa: F401
@@ -131,8 +142,6 @@ def main() -> int:
         say("PyTorch: o‘rnatilgan")
     except Exception:
         say("PyTorch: o‘rnatilmagan — interfeys ishlaydi, sun’iy intellekt tahlili o‘chirilgan")
-    if not Path(os.environ.get("BT_MODEL_PATH", ROOT / "artifacts" / "model.pt")).is_file():
-        say("Model: artifacts/model.pt yo‘q — “Model hali o‘qitilmagan” holati")
 
     restarts, opened = 0, False
     proc = start_server(port)

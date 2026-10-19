@@ -13,20 +13,31 @@ if not defined PY python --version >nul 2>nul && set "PY=python"
 if not defined PY goto nopython
 
 if not exist ".venv\Scripts\python.exe" (
-    echo [1/3] Virtual muhit yaratilmoqda...
+    echo [1/4] Virtual muhit yaratilmoqda...
     %PY% -m venv .venv
     if errorlevel 1 goto failvenv
 )
 
 if not exist ".venv\installed-v2.ok" (
-    echo [2/3] Kutubxonalar o'rnatilmoqda - birinchi marta 1-5 daqiqa, internet kerak...
+    echo [2/4] Asosiy kutubxonalar o'rnatilmoqda - birinchi marta 1-5 daqiqa, internet kerak...
     ".venv\Scripts\python.exe" -m pip install --upgrade pip > logs\install.log 2>&1
     ".venv\Scripts\python.exe" -m pip install -r backend\requirements.txt >> logs\install.log 2>&1
     if errorlevel 1 goto failinstall
     echo ok> ".venv\installed-v2.ok"
 )
 
-echo [3/3] Server ishga tushmoqda...
+rem --- O'qitilgan model bor bo'lsa, sun'iy intellekt kutubxonalari (PyTorch) avtomatik o'rnatiladi ---
+if exist "artifacts\model.pt" if not exist ".venv\installed-ai.ok" (
+    echo [3/4] Sun'iy intellekt kutubxonalari o'rnatilmoqda - PyTorch, ~250 MB, 3-10 daqiqa...
+    ".venv\Scripts\python.exe" -m pip install -r backend\requirements-ai.txt --extra-index-url https://download.pytorch.org/whl/cpu > logs\ai_install.log 2>&1
+    if errorlevel 1 (
+        echo OGOHLANTIRISH: PyTorch o'rnatilmadi - logs\ai_install.log. Dastur ishlaydi, lekin tahlil o'chiq bo'ladi.
+    ) else (
+        echo ok> ".venv\installed-ai.ok"
+    )
+)
+
+echo [4/4] Server ishga tushmoqda...
 ".venv\Scripts\python.exe" start.py
 echo.
 echo Server to'xtadi. Xato bo'lsa, yuqoridagi xabarni yoki logs\server.log faylini yuboring.
