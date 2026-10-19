@@ -54,7 +54,7 @@ Faqat **Python 3.11/3.12** kerak (Node.js shart emas — interfeys `frontend/dis
 ishga tushirishda yengil kutubxonalar o‘rnatiladi (`backend/requirements.txt`, PyTorch’siz). Batafsil:
 [`ISHGA_TUSHIRISH.txt`](ISHGA_TUSHIRISH.txt).
 
-PyTorch faqat o‘qitilgan model bilan tahlil uchun kerak: `pip install -r backend/requirements-ai.txt`.
+`artifacts/model.pt` mavjud bo‘lgani uchun birinchi ishga tushirishda PyTorch ham avtomatik o‘rnatiladi (`backend/requirements-ai.txt`).
 
 ## Ishlab chiquvchilar uchun
 

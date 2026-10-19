@@ -3,31 +3,31 @@ BO'G'IMTAHLIL 1.0 - ISHGA TUSHIRISH
 
 Talab: Python 3.11 yoki 3.12  (https://www.python.org/downloads/)
        O'rnatishda "Add python.exe to PATH" belgisini albatta qo'ying.
-       Node.js va boshqa dasturlar SHART EMAS.
+       Node.js va boshqa dasturlar SHART EMAS. Birinchi ishga tushirishda internet kerak.
 
 WINDOWS
-  1. ZIP faylni oching (masalan, Ish stoliga). Arxiv ichidan to'g'ridan-to'g'ri ishga tushirmang.
-  2. bogimtahlil papkasidagi  BOGIMTAHLIL.bat  faylini ikki marta bosing.
-     - Birinchi marta kutubxonalar o'rnatiladi (1-5 daqiqa, internet kerak).
-     - So'ng brauzer o'zi ochiladi. Manzil oynada yoziladi, odatda: http://127.0.0.1:8765
-  3. Qora oynani YOPMANG - dastur shu oynada ishlaydi. To'xtatish: Ctrl+C yoki oynani yopish.
+  0. Avvalgi nusxalarning BARCHA qora oynalarini yoping (eski server ishlab tursa, eski versiya ochiladi).
+  1. ZIP faylni YANGI papkaga oching (eski papkaga nusxalash shart emas).
+  2. bogimtahlil papkasidagi  BOGIMTAHLIL.bat  faylini ikki marta bosing. U o'zi:
+       - virtual muhit va asosiy kutubxonalarni o'rnatadi (1-5 daqiqa);
+       - artifacts\model.pt borligi uchun sun'iy intellekt kutubxonasini (PyTorch, ~250 MB, 3-10 daqiqa) o'rnatadi;
+       - serverni ishga tushirib, brauzerni ochadi.
+  3. Oynada "Dastur papkasi" va "Model fayli: ... MB" qatorlarini tekshiring - model fayli BOR bo'lishi kerak.
+  4. Qora oynani YOPMANG - dastur shu oynada ishlaydi.
+  Sinash: "Rentgen tahlili" sahifasida demo_images papkasidagi tasvirlarni yuklang
+  (fayl nomidagi KL - mutaxassis bahosi, model natijasi bilan solishtirish uchun).
 
 LINUX / macOS
   ./start.sh
 
 MUAMMO BO'LSA
-  - Qora oynadagi xabarni yoki logs\server.log, logs\install.log fayllarini yuboring.
+  - Qora oynadagi xabarni yoki logs\start.log, logs\server.log, logs\ai_install.log fayllarini yuboring.
   - "Python topilmadi": Python'ni "Add python.exe to PATH" bilan qayta o'rnating.
-  - Kutubxonalar o'rnatilmasa: .venv papkasini o'chirib, BOGIMTAHLIL.bat ni qayta ishga tushiring.
+  - PyTorch o'rnatilmasa (Python 3.14 bilan bo'lishi mumkin): Python 3.12 ni o'rnating, .venv papkasini o'chiring,
+    BOGIMTAHLIL.bat ni qayta ishga tushiring.
   - Port band bo'lsa, dastur keyingi bo'sh portni o'zi tanlaydi (manzil oynada ko'rsatiladi).
 
-SUN'IY INTELLEKT MODELI
-  O'qitilgan model (artifacts\model.pt) hozircha yo'q. Interfeys to'liq ishlaydi, lekin
-  "Rentgen tahlili" sahifasi "Sun'iy intellekt modeli hozircha tahlil qilish uchun tayyor emas."
-  xabarini ko'rsatadi - dastur soxta natija bermaydi.
-  Modelni o'qitish - Google Colab'da (bepul GPU, kompyuterga yuklab olish shart emas):
-    1) colab.research.google.com ga  ai\colab\BogimTahlil_Colab.ipynb  faylini yuklang va ko'rsatmalarni bajaring.
-    2) Natija (bogimtahlil_model_natijalari.zip) ichidagini shu papkaga ustidan nusxalang.
-    3) AI_ORNATISH.bat  ni bir marta ishga tushiring (PyTorch).
-    4) BOGIMTAHLIL.bat - sinash uchun demo_images papkasidagi 10 ta haqiqiy rentgen tasviridan foydalaning.
-  Batafsil: docs\MODEL_OQITISH.md
+MODEL
+  artifacts\model.pt - EfficientNet-B0, 8260 ta haqiqiy tizza rentgenida o'qitilgan (Chen 2018 / OAI).
+  Mustaqil test: Accuracy 64,7%, Macro F1 0,678, QWK 0,826. Batafsil: experiments\EXPERIMENT_REPORT.md
+  Qayta o'qitish: ai\colab\BogimTahlil_Colab.ipynb (Google Colab, bepul GPU) - docs\MODEL_OQITISH.md
