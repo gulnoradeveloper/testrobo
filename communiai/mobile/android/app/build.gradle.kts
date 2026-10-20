@@ -44,6 +44,14 @@ android {
     }
 
     signingConfigs {
+        // Public TEST key committed to the repo so every CI build can be installed over the previous
+        // one. Not secret, not for Google Play: use your own key via key.properties (docs/BUILD_APK.md).
+        create("test") {
+            storeFile = file("communiai-test.jks")
+            storePassword = "communiai-test"
+            keyAlias = "communiai-test"
+            keyPassword = "communiai-test"
+        }
         create("release") {
             if (keystorePropertiesFile.exists()) {
                 keyAlias = keystoreProperties["keyAlias"] as String
@@ -60,7 +68,7 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             signingConfig = if (keystorePropertiesFile.exists()) signingConfigs.getByName("release")
-                            else signingConfigs.getByName("debug")
+                            else signingConfigs.getByName("test")
         }
     }
 }

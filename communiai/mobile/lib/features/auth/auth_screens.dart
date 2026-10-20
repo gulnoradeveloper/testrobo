@@ -46,59 +46,44 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(gradient: AppColors.splashGradient),
-          width: double.infinity,
-          child: SafeArea(
-            child: Column(children: [
-              const Spacer(flex: 3),
-              Container(
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(36)),
-                child: const AppLogo(size: 140),
-              ),
-              const SizedBox(height: 24),
-              const Text(AppConfig.appName,
-                  style: TextStyle(color: Colors.white, fontSize: 34, fontWeight: FontWeight.w800, letterSpacing: 0.5)),
-              const SizedBox(height: 8),
-              const Text(AppConfig.slogan, style: TextStyle(color: Colors.white70, fontSize: 15)),
-              const Spacer(flex: 2),
-              if (_error == null)
-                const SizedBox(
-                    width: 28, height: 28, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5))
-              else
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
-                  child: Column(children: [
-                    Text(_error is ApiException ? (_error as ApiException).message : '$_error',
-                        textAlign: TextAlign.center, style: const TextStyle(color: Colors.white)),
-                    const SizedBox(height: 12),
-                    Wrap(spacing: 12, children: [
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            side: const BorderSide(color: Colors.white54),
-                            minimumSize: const Size(140, 44)),
-                        onPressed: _check,
-                        child: const Text('Qayta urinish'),
-                      ),
-                      TextButton(
-                        style: TextButton.styleFrom(foregroundColor: Colors.white70),
-                        onPressed: () async {
-                          await showServerDialog(context, ref);
-                          _check();
-                        },
-                        child: const Text('Server manzili'),
-                      ),
-                    ]),
+  Widget build(BuildContext context) {
+    // First screen: only the logo on a plain background (same as the native launch screen).
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      backgroundColor: dark ? AppColors.navy : Colors.white,
+      body: SafeArea(
+        child: Stack(children: [
+          const Center(child: AppLogo(size: 220)),
+          if (_error != null)
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(32, 0, 32, 40),
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  Text(_error is ApiException ? (_error as ApiException).message : '$_error',
+                      textAlign: TextAlign.center),
+                  const SizedBox(height: 12),
+                  Wrap(spacing: 12, alignment: WrapAlignment.center, children: [
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(minimumSize: const Size(140, 44)),
+                      onPressed: _check,
+                      child: const Text('Qayta urinish'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        await showServerDialog(context, ref);
+                        _check();
+                      },
+                      child: const Text('Server manzili'),
+                    ),
                   ]),
-                ),
-              const SizedBox(height: 48),
-            ]),
-          ),
-        ),
-      );
+                ]),
+              ),
+            ),
+        ]),
+      ),
+    );
+  }
 }
 
 // =============================================================== Onboarding
