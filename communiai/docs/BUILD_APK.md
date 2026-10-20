@@ -49,8 +49,15 @@ keyAlias=communiai
 storeFile=/home/USER/communiai-release.jks
 ```
 
-`key.properties` bo'lmasa release APK debug kaliti bilan imzolanadi (sinov uchun o'rnatiladi, lekin
-Play Market uchun yaroqsiz). CI dagi APK'lar ham debug kaliti bilan imzolangan.
+`key.properties` bo'lmasa APK repodagi ochiq **sinov kaliti** (`android/app/communiai-test.jks`) bilan
+imzolanadi: har bir yangi build oldingisining ustiga o'rnatiladi, lekin bu kalit maxfiy emas va Play Market
+uchun yaroqsiz. CI APK'lari ham shu sinov kaliti bilan imzolangan.
+
+## Emulyatorda avtomatik tekshiruv
+
+CI (`android-smoke` job) har bir APK'ni Android 14 emulyatoriga o'rnatadi, ochadi, ilova jarayoni
+tirikligini, tanishtiruv va kirish ekranlari chiqishini tekshiradi; ekran rasmlari, UI dump va logcat
+`communiai-apk` branch'idagi `diagnostics/` papkasiga joylanadi.
 
 ## iOS
 

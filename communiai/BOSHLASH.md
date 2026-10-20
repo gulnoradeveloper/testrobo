@@ -55,7 +55,8 @@ Kalit bo'lmasa ilova ishlaydi (ro'yxatdan o'tish, loyihalar, fayllar), lekin AI 
 3. Faylni oching → **"Noma'lum manbalardan o'rnatish"** ga ruxsat bering → **O'rnatish**.
    Agar **Play Protect** ogohlantirsa: **"Batafsil" → "Baribir o'rnatish"** ni bosing
    (ilova Play Market'dan emas, shuning uchun bu ogohlantirish odatiy).
-4. Agar avval CommuniAI ning eski versiyasi o'rnatilgan bo'lsa — **avval uni o'chiring**, keyin yangisini o'rnating.
+4. Agar avval CommuniAI ning eski versiyasi o'rnatilgan bo'lsa — **avval uni o'chiring**, keyin yangisini o'rnating
+   (eski versiyalar boshqa kalit bilan imzolangan edi; bundan keyingi versiyalar ustiga o'rnatiladi).
 
 > `CommuniAI-1.0.0-release.apk` faqat **HTTPS** (domenli) server uchun. Uyda/kompyuterda sinash uchun
 > **dev-http** versiyasini ishlating.
