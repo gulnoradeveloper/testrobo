@@ -1,0 +1,91 @@
+name: CommuniAI CI
+
+on:
+  push:
+    paths:
+      - "communiai/**"
+      - ".github/workflows/communiai.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backend:
+    name: Backend tests (FastAPI + PostgreSQL)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: communiai
+          POSTGRES_PASSWORD: communiai
+          POSTGRES_DB: communiai_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U communiai" --health-interval 5s --health-timeout 5s --health-retries 10
+    defaults:
+      run:
+        working-directory: communiai/backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: communiai/backend/requirements*.txt
+      - run: pip install -r requirements-dev.txt
+      - name: Migrations apply cleanly
+        env:
+          DATABASE_URL: postgresql+psycopg://communiai:communiai@localhost:5432/communiai_test
+        run: alembic upgrade head && alembic downgrade base
+      - name: Tests
+        env:
+          TEST_DATABASE_URL: postgresql+psycopg://communiai:communiai@localhost:5432/communiai_test
+        run: pytest
+
+  android:
+    name: Flutter tests + Android APK
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: communiai/mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.7"
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+      - name: Build release APK (HTTPS only)
+        run: flutter build apk --release
+      - name: Copy release APK
+        run: mkdir -p ../../dist && cp build/app/outputs/flutter-apk/app-release.apk ../../dist/CommuniAI-1.0.0-release.apk
+      - name: Build dev APK (allows HTTP to a local-network backend)
+        run: flutter build apk --release --android-project-arg=allowCleartext=true
+      - name: Collect APKs
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk ../../dist/CommuniAI-1.0.0-dev-http.apk
+          cd ../../dist && sha256sum *.apk > SHA256SUMS.txt && ls -la
+      - uses: actions/upload-artifact@v4
+        with:
+          name: communiai-apk
+          path: dist/
+      - name: Publish APKs to the communiai-apk branch
+        if: github.event_name != 'pull_request'
+        working-directory: dist
+        run: |
+          git init -q -b communiai-apk
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          printf "# CommuniAI APK builds\n\nBuilt from %s (%s) by GitHub Actions run %s.\n" \
+            "${GITHUB_REF_NAME}" "${GITHUB_SHA}" "${GITHUB_RUN_ID}" > README.md
+          git add -A && git commit -q -m "CommuniAI APK build from ${GITHUB_SHA::8}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" communiai-apk
