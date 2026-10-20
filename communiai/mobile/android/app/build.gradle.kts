@@ -56,8 +56,9 @@ android {
 
     buildTypes {
         release {
-            // See proguard-rules.pro: JNI-based plugins need their classes kept by name.
-            proguardFiles("proguard-rules.pro")
+            // No R8 (gradle.properties: shrink=false): JNI-based plugins look classes up by name.
+            isMinifyEnabled = false
+            isShrinkResources = false
             signingConfig = if (keystorePropertiesFile.exists()) signingConfigs.getByName("release")
                             else signingConfigs.getByName("debug")
         }

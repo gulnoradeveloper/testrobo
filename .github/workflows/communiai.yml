@@ -66,6 +66,14 @@ jobs:
       - run: flutter test
       - name: Build release APK (HTTPS only)
         run: flutter build apk --release
+      - name: Verify APK keeps classes used via JNI (startup regression guard)
+        run: |
+          APK=build/app/outputs/flutter-apk/app-release.apk
+          rm -rf /tmp/apkcheck && mkdir /tmp/apkcheck && unzip -q "$APK" 'classes*.dex' -d /tmp/apkcheck
+          for c in 'Lkotlin/Unit;' 'Lio/flutter/plugins/sharedpreferences/StringListResult;' \
+                   'Lio/flutter/embedding/android/FlutterActivity;' 'Luz/communiai/communiai/MainActivity;'; do
+            if cat /tmp/apkcheck/classes*.dex | grep -a -q "$c"; then echo "OK  $c"; else echo "MISSING $c"; exit 1; fi
+          done
       - name: Copy release APK
         run: mkdir -p ../../dist && cp build/app/outputs/flutter-apk/app-release.apk ../../dist/CommuniAI-1.0.0-release.apk
       - name: Build dev APK (allows HTTP to a local-network backend)
