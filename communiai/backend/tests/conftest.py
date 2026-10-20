@@ -130,8 +130,12 @@ class ScriptedProvider:
 @pytest.fixture(autouse=True)
 def _clean_db():
     with engine.begin() as conn:
-        tables = ", ".join(t.name for t in reversed(Base.metadata.sorted_tables))
-        conn.execute(text(f"TRUNCATE {tables} CASCADE"))
+        if engine.dialect.name == "sqlite":
+            for t in reversed(Base.metadata.sorted_tables):
+                conn.execute(t.delete())
+        else:
+            tables = ", ".join(t.name for t in reversed(Base.metadata.sorted_tables))
+            conn.execute(text(f"TRUNCATE {tables} CASCADE"))
     limiter.reset()
     clear_cache()
     yield

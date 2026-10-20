@@ -56,6 +56,8 @@ android {
 
     buildTypes {
         release {
+            // See proguard-rules.pro: JNI-based plugins need their classes kept by name.
+            proguardFiles("proguard-rules.pro")
             signingConfig = if (keystorePropertiesFile.exists()) signingConfigs.getByName("release")
                             else signingConfigs.getByName("debug")
         }
