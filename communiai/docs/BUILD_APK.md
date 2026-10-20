@@ -29,6 +29,11 @@ flutter build apk --release --dart-define=API_BASE_URL=https://api.example.uz  #
 
 Hajmni kamaytirish: `flutter build apk --release --split-per-abi`.
 
+> **R8 o'chirilgan** (`android/gradle.properties`: `shrink=false`). Ba'zi plaginlar (masalan
+> `shared_preferences_android`) Java/Kotlin sinflarini Dart'dan JNI orqali nomi bo'yicha chaqiradi; R8 ularni
+> o'chirib/qayta nomlab, ilovani ochilmaydigan qilib qo'ygan edi. Uni qayta yoqmang yoki yoqsangiz
+> `app/proguard-rules.pro` dagi keep qoidalarini saqlang va APK'ni qurilmada sinab ko'ring.
+
 ## Imzolash (release)
 
 ```bash

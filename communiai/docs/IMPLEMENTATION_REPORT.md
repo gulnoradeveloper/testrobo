@@ -59,6 +59,15 @@ Holat belgilari: ✅ bajarildi va tekshirildi · 🟡 bajarildi, lekin cheklov y
 
 ## Muhim eslatmalar
 
+- **Release APK ochilmasligi (tuzatildi):** birinchi APK'da R8 kod qisqartirgichi JNI orqali nomi bo'yicha
+  qidiriladigan sinflarni (`kotlin/Unit`, `shared_preferences_android` sinflari) o'chirib yuborgani uchun
+  ilova ishga tushmasdi. Endi release build R8'siz yig'iladi (`android/gradle.properties: shrink=false`),
+  CI esa APK ichida bu sinflar borligini tekshiradi. Ilova xotirani ocholmasa bo'sh ekran o'rniga xato
+  xabarini ko'rsatadi.
+- **Brauzer versiyasi:** backend `backend/web_app` papkasi mavjud bo'lsa ilovaning web versiyasini
+  `http://SERVER:8000/app/` da beradi (ZIP'da tayyor holda). Ro'yxatdan o'tishdan natijalar ekranigacha
+  bo'lgan oqim brauzerda (Playwright, telefon o'lchami) tekshirildi.
+
 - **Logotip** — taqdim etilgan rasm asosida vektor (SVG) qayta chizilgan (`mobile/assets/branding/logo.svg`).
   Asl PNG faylni `mobile/assets/images/logo.png` ga almashtirish bilan butun ilovada yangilanadi
   (ikonkalar uchun `mipmap-*` fayllarni ham yangilang).
