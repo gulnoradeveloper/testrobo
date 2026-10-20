@@ -6,3 +6,4 @@ __pycache__/
 
 communiai_local.db*
 .local_jwt_secret
+web_app/

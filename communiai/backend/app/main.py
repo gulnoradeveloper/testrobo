@@ -2,10 +2,12 @@ import logging
 import time
 import uuid
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import APIRouter, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy import text
 
 from app.api.deps import limiter
@@ -83,6 +85,16 @@ api = APIRouter(prefix="/api/v1")
 for r in (auth.router, projects.router, defenses.router, practice.router, me.router, admin.router):
     api.include_router(r)
 app.include_router(api)
+
+
+# Optional: the Flutter web build of the app served at /app/ (same origin as the API).
+_WEB_DIR = Path(__file__).resolve().parent.parent / "web_app"
+if (_WEB_DIR / "index.html").exists():
+    app.mount("/app", StaticFiles(directory=_WEB_DIR, html=True), name="web_app")
+
+    @app.get("/", include_in_schema=False)
+    def _root():
+        return RedirectResponse("/app/")
 
 
 @app.get("/health/live", tags=["System"])

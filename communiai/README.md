@@ -18,6 +18,10 @@ talaba qayta javob beradi → natijalar solishtiriladi va saqlanadi.
 
 ## Tezkor ishga tushirish
 
+**Eng oson yo'l (Docker va PostgreSQL shart emas):** [`BOSHLASH.md`](BOSHLASH.md) — Windows'da
+`start-backend.bat`, Linux/macOS'da `./start-backend.sh`. Server lokal SQLite bazasi bilan ishga tushadi
+va telefonda kiritiladigan manzilni ko'rsatadi.
+
 ### 1. Backend (Docker bilan)
 
 ```bash

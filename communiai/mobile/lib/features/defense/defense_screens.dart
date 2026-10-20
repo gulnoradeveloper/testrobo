@@ -479,7 +479,9 @@ class _ExpertChatScreenState extends ConsumerState<ExpertChatScreen> {
             ),
         ]),
       ),
-      if (current != null && status == 'IN_PROGRESS')
+      // The input bar stays mounted for the whole defense (no layout jumps, focus is kept);
+      // sending is enabled only while there is a current, unanswered question.
+      if (status == 'IN_PROGRESS' && !allAnswered)
         SafeArea(
           top: false,
           child: Container(
@@ -496,13 +498,17 @@ class _ExpertChatScreenState extends ConsumerState<ExpertChatScreen> {
                   maxLines: 6,
                   maxLength: 6000,
                   textCapitalization: TextCapitalization.sentences,
-                  enabled: !_sending,
-                  decoration: const InputDecoration(hintText: 'Javobingizni yozing...', counterText: ''),
+                  readOnly: _sending,
+                  decoration: InputDecoration(
+                    hintText: current == null ? 'AI keyingi savolni tayyorlamoqda...' : 'Javobingizni yozing...',
+                    counterText: '',
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
               IconButton.filled(
-                onPressed: _sending ? null : _send,
+                tooltip: 'Yuborish',
+                onPressed: _sending || current == null ? null : _send,
                 icon: _sending
                     ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
                     : const Icon(Icons.send_rounded),
