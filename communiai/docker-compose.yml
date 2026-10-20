@@ -1,0 +1,57 @@
+# CommuniAI: PostgreSQL + FastAPI backend (+ optional Caddy for automatic HTTPS).
+#   cp .env.example .env   # fill JWT_SECRET, AI_API_KEY ...
+#   docker compose up -d --build                 # API on http://localhost:8000
+#   docker compose --profile https up -d --build # + HTTPS on https://$DOMAIN
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: communiai
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-communiai}
+      POSTGRES_DB: communiai
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U communiai"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://communiai:${POSTGRES_PASSWORD:-communiai}@db:5432/communiai
+      LOCAL_STORAGE_DIR: /app/storage
+    volumes:
+      - uploads:/app/storage
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/health/ready')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  caddy:
+    image: caddy:2
+    profiles: ["https"]
+    restart: unless-stopped
+    command: caddy reverse-proxy --from ${DOMAIN} --to backend:8000
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  uploads:
+  caddy_data:
