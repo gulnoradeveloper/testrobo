@@ -18,6 +18,64 @@ os.chdir(HERE)
 sys.path.insert(0, str(HERE))
 
 
+def _set_env_value(key: str, value: str) -> None:
+    """Write KEY=value into backend/.env (replacing an existing line)."""
+    env = HERE / ".env"
+    lines = env.read_text(encoding="utf-8").splitlines() if env.exists() else []
+    out, done = [], False
+    for line in lines:
+        if line.strip().startswith(key + "="):
+            out.append(f"{key}={value}")
+            done = True
+        else:
+            out.append(line)
+    if not done:
+        out.append(f"{key}={value}")
+    env.write_text("\n".join(out) + "\n", encoding="utf-8")
+
+
+def _check_ai_key(key: str) -> str:
+    """Return a short human-readable status of the key (one cheap API call)."""
+    try:
+        import anthropic
+        client = anthropic.Anthropic(api_key=key, timeout=20.0, max_retries=0)
+        client.models.list(limit=1)
+        return "OK"
+    except Exception as e:  # noqa: BLE001
+        name = type(e).__name__
+        if name == "AuthenticationError":
+            return "KALIT NOTO'G'RI (Anthropic kalitni qabul qilmadi)"
+        if name == "PermissionDeniedError":
+            return "KALITGA RUXSAT YO'Q (hisobni/balansni tekshiring)"
+        if name in ("APIConnectionError", "APITimeoutError"):
+            return "INTERNETGA ULANIB BO'LMADI (kalit tekshirilmadi)"
+        return f"TEKSHIRIB BO'LMADI ({name})"
+
+
+def _ensure_ai_key() -> None:
+    """Ask for the Anthropic API key on first start (interactive console only) and save it to .env."""
+    if os.environ.get("AI_API_KEY") or _env_file_has("AI_API_KEY"):
+        return
+    if not sys.stdin or not sys.stdin.isatty():
+        return
+    print("\n" + "-" * 64)
+    print(" AI funksiyalari uchun Anthropic API kaliti kerak.")
+    print(" Kalitni olish: https://console.anthropic.com  ->  API Keys  ->  Create Key")
+    print(" Kalit 'sk-ant-' bilan boshlanadi. Hozir kiritmasangiz, Enter bosing (AI o'chiq bo'ladi).")
+    print("-" * 64)
+    try:
+        key = input(" API kalit: ").strip()
+    except (EOFError, KeyboardInterrupt):
+        return
+    if not key:
+        return
+    if not key.startswith("sk-ant-"):
+        print(" Ogohlantirish: kalit odatda 'sk-ant-' bilan boshlanadi. Baribir saqlanmoqda.")
+    _set_env_value("AI_API_KEY", key)
+    os.environ["AI_API_KEY"] = key
+    print(" Kalit backend/.env fayliga saqlandi.")
+
+
 def _env_file_has(key: str) -> bool:
     env = HERE / ".env"
     return env.exists() and any(line.strip().startswith(key + "=") and line.split("=", 1)[1].strip()
@@ -49,10 +107,12 @@ def main() -> None:
     from alembic import command
     from alembic.config import Config
 
+    _ensure_ai_key()
     command.upgrade(Config(str(HERE / "alembic.ini")), "head")
 
     from app.core.config import get_settings
     s = get_settings()
+    ai_status = _check_ai_key(s.AI_API_KEY) if s.ai_configured else None
     ip = lan_ip()
     print("\n" + "=" * 64)
     print(" CommuniAI backend ishga tushdi")
@@ -62,7 +122,11 @@ def main() -> None:
     print(f"   Ma'lumotlar bazasi: {'SQLite (lokal fayl)' if s.DATABASE_URL.startswith('sqlite') else 'PostgreSQL'}")
     if not s.ai_configured:
         print("   DIQQAT: AI_API_KEY sozlanmagan — AI funksiyalar 'sozlanmagan' deb javob beradi.")
-        print("           backend/.env fayliga AI_API_KEY=... yozing va qayta ishga tushiring.")
+        print("           backend/.env fayliga AI_API_KEY=sk-ant-... yozing va qayta ishga tushiring.")
+    else:
+        print(f"   AI kaliti: {ai_status}   (model: {s.AI_MODEL})")
+    print("   Telefon ulanmasa: telefon brauzerida yuqoridagi manzil + /health/ready ni oching.")
+    print("   Windows Firewall so'rasa — 'Ruxsat berish' ni bosing.")
     print("   To'xtatish: Ctrl+C")
     print("=" * 64 + "\n")
 

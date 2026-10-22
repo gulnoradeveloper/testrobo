@@ -33,15 +33,28 @@ cd communiai
 ./start-backend.sh
 ```
 
-### AI ni yoqish (majburiy, aks holda AI funksiyalar ishlamaydi)
+### AI ni yoqish (API kalit)
 
-`communiai/backend/.env` faylini Bloknot bilan oching va quyidagini yozing:
+AI ekspertiza va himoya uchun **Anthropic (Claude) API kaliti** kerak. Kalit telefonga emas, faqat
+**kompyuterdagi serverga** qo'yiladi (xavfsizlik uchun ilova ichida kalit saqlanmaydi).
 
-```
-AI_API_KEY=sizning-anthropic-kalitingiz
-```
+1. https://console.anthropic.com saytida ro'yxatdan o'ting → **Billing** bo'limida balans qo'shing
+   (kalit balanssiz ishlamaydi) → **API Keys → Create Key**. Kalit `sk-ant-...` bilan boshlanadi.
+2. **Eng oson yo'l:** `start-backend.bat` ni ishga tushiring — kalit hali kiritilmagan bo'lsa, oyna uni
+   so'raydi: `API kalit:` deb chiqqanda kalitni joylang (sichqonchaning o'ng tugmasi → Paste) va Enter bosing.
+   Kalit avtomatik `backend/.env` fayliga saqlanadi va darhol tekshiriladi:
+   - `AI kaliti: OK` — hammasi tayyor;
+   - `KALIT NOTO'G'RI` — kalitni qayta nusxalang;
+   - `KALITGA RUXSAT YO'Q` — console.anthropic.com da balans/hisobni tekshiring.
+3. **Qo'lda:** `backend/.env` faylini Bloknot bilan oching va `AI_API_KEY=` qatoriga yozing:
+   ```
+   AI_API_KEY=sk-ant-sizning-kalitingiz
+   ```
+   Saqlang, server oynasini yoping va `start-backend.bat` ni qayta ishga tushiring.
 
-Kalitni https://console.anthropic.com saytidan olasiz. Saqlang va serverni qayta ishga tushiring.
+Kalitni almashtirish uchun `backend/.env` dagi `AI_API_KEY=` qatorini o'zgartiring va serverni qayta
+ishga tushiring. Kalitni hech kimga bermang va internetga joylamang.
+
 Kalit bo'lmasa ilova ishlaydi (ro'yxatdan o'tish, loyihalar, fayllar), lekin AI ekspertiza va himoya
 "AI xizmati serverda sozlanmagan" deb javob beradi — soxta natija ko'rsatilmaydi.
 
@@ -67,8 +80,10 @@ Kalit bo'lmasa ilova ishlaydi (ro'yxatdan o'tish, loyihalar, fayllar), lekin AI 
 
 1. Ilovani oching → tanishtiruv ekranlaridan o'ting.
 2. Kirish ekranining pastidagi **"Server manzili"** tugmasini bosing.
-3. 1-qadamda yozib olgan manzilni kiriting, masalan `http://192.168.1.15:8000` → **Saqlash**.
-4. **"Ro'yxatdan o'tish"** — hisob yarating va ishlashni boshlang.
+3. 1-qadamda yozib olgan manzilni kiriting, masalan `http://192.168.1.15:8000`.
+4. **"Ulanishni tekshirish"** tugmasini bosing: yashil belgi chiqsa — aloqa bor (AI ulangan-ulanmaganini ham
+   ko'rsatadi); qizil bo'lsa — sababi va nima qilish kerakligi yoziladi. So'ng **Saqlash**.
+5. **"Ro'yxatdan o'tish"** — hisob yarating va ishlashni boshlang.
 
 Ulanishni tekshirish: telefon brauzerida `http://192.168.1.15:8000/health/ready` manzilini oching.
 `"status":"ready"` chiqsa — ulanish to'g'ri.

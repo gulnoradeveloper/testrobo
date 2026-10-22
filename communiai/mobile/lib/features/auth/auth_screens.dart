@@ -1,9 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/api/api_client.dart';
-import '../../core/config.dart';
 import '../../core/providers.dart';
 import '../../core/theme/app_theme.dart';
 import '../../shared/widgets/app_logo.dart';
@@ -210,7 +210,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       await ref.read(authProvider.notifier).login(_email.text.trim(), _pw.text);
       if (mounted) context.go('/home');
     } catch (e) {
-      if (mounted) showError(context, e);
+      if (!mounted) return;
+      showError(context, e);
+      if (e is ApiException && e.isNetwork) await showServerDialog(context, ref);
     }
   }
 
@@ -310,7 +312,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       });
       if (mounted) context.go('/home');
     } catch (e) {
-      if (mounted) showError(context, e);
+      if (!mounted) return;
+      showError(context, e);
+      if (e is ApiException && e.isNetwork) await showServerDialog(context, ref);
     }
   }
 
@@ -473,40 +477,139 @@ class _PasswordResetScreenState extends ConsumerState<PasswordResetScreen> {
 }
 
 // =============================================================== Server address dialog
+String? _normalizeServerUrl(String raw) {
+  var v = raw.trim();
+  if (v.isEmpty) return null;
+  if (!v.startsWith('http://') && !v.startsWith('https://')) v = 'http://$v';
+  final uri = Uri.tryParse(v);
+  if (uri == null || uri.host.isEmpty) return null;
+  if (!uri.hasPort && uri.scheme == 'http') v = '${uri.scheme}://${uri.host}:8000';
+  return v.endsWith('/') ? v.substring(0, v.length - 1) : v;
+}
+
+/// Connects to the given server and explains the result in plain words.
+Future<(bool, String)> testServerConnection(String url) async {
+  final dio = Dio(BaseOptions(
+      connectTimeout: const Duration(seconds: 8), receiveTimeout: const Duration(seconds: 8)));
+  try {
+    final res = await dio.get('$url/api/v1/meta');
+    final data = res.data;
+    if (data is! Map || data['version'] == null) {
+      return (false, "Bu manzilda CommuniAI serveri topilmadi. Manzil va portni (:8000) tekshiring.");
+    }
+    final ai = data['ai_configured'] == true
+        ? "AI xizmati ulangan."
+        : "AI xizmati serverda sozlanmagan: kompyuterdagi backend/.env fayliga AI_API_KEY yozing.";
+    return (true, "Server bilan aloqa bor (versiya ${data['version']}). $ai");
+  } on DioException catch (e) {
+    final msg = '${e.message ?? ''} ${e.error ?? ''}'.toLowerCase();
+    if (msg.contains('cleartext')) {
+      return (false,
+          "Bu APK faqat HTTPS manzillar bilan ishlaydi. Kompyuterdagi server uchun 'dev-http' APK ni o'rnating.");
+    }
+    if (e.response?.statusCode == 404) {
+      return (false, "Bu manzilda CommuniAI serveri topilmadi (404). Manzilni tekshiring.");
+    }
+    return (
+      false,
+      "Serverga ulanib bo'lmadi. Tekshiring:\n"
+          "1) kompyuterda server oynasi ochiq va ishlab turibdi;\n"
+          "2) telefon va kompyuter bitta Wi-Fi tarmog'ida;\n"
+          "3) manzil server oynasida ko'rsatilgani bilan bir xil (masalan http://192.168.1.15:8000);\n"
+          "4) Windows Firewall Python'ga ruxsat bergan."
+    );
+  } catch (e) {
+    return (false, "Xatolik: $e");
+  } finally {
+    dio.close();
+  }
+}
+
 Future<void> showServerDialog(BuildContext context, WidgetRef ref) async {
   final prefs = ref.read(prefsProvider);
   final c = TextEditingController(text: prefs.baseUrl);
+  String? status;
+  bool? ok;
+  bool testing = false;
   final result = await showDialog<String>(
     context: context,
-    builder: (ctx) => AlertDialog(
-      title: const Text('Server manzili'),
-      content: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Text("CommuniAI backend manzili. Emulator uchun: http://10.0.2.2:8000",
-            style: TextStyle(fontSize: 13)),
-        const SizedBox(height: 12),
-        TextField(controller: c, keyboardType: TextInputType.url, decoration: const InputDecoration(hintText: 'https://...')),
-      ]),
-      actions: [
-        TextButton(onPressed: () => Navigator.pop(ctx, AppConfig.defaultBaseUrl), child: const Text('Standart')),
-        TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Bekor qilish')),
-        FilledButton(
-          style: FilledButton.styleFrom(minimumSize: const Size(80, 40)),
-          onPressed: () => Navigator.pop(ctx, c.text.trim()),
-          child: const Text('Saqlash'),
+    builder: (ctx) => StatefulBuilder(
+      builder: (ctx, setState) => AlertDialog(
+        title: const Text('Server manzili'),
+        content: SingleChildScrollView(
+          child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const Text(
+                "Kompyuterdagi server oynasida ko'rsatilgan manzilni kiriting, masalan http://192.168.1.15:8000",
+                style: TextStyle(fontSize: 13)),
+            const SizedBox(height: 12),
+            TextField(
+              controller: c,
+              keyboardType: TextInputType.url,
+              autocorrect: false,
+              decoration: const InputDecoration(hintText: 'http://192.168.1.15:8000'),
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton.icon(
+              onPressed: testing
+                  ? null
+                  : () async {
+                      final url = _normalizeServerUrl(c.text);
+                      if (url == null) {
+                        setState(() {
+                          ok = false;
+                          status = "Manzil noto'g'ri";
+                        });
+                        return;
+                      }
+                      c.text = url;
+                      setState(() {
+                        testing = true;
+                        status = null;
+                      });
+                      final r = await testServerConnection(url);
+                      setState(() {
+                        testing = false;
+                        ok = r.$1;
+                        status = r.$2;
+                      });
+                    },
+              icon: testing
+                  ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                  : const Icon(Icons.wifi_tethering),
+              label: Text(testing ? 'Tekshirilmoqda...' : 'Ulanishni tekshirish'),
+            ),
+            if (status != null) ...[
+              const SizedBox(height: 10),
+              Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Icon(ok == true ? Icons.check_circle : Icons.error_outline,
+                    color: ok == true ? AppColors.success : AppColors.error, size: 20),
+                const SizedBox(width: 8),
+                Expanded(child: Text(status!, style: const TextStyle(fontSize: 13))),
+              ]),
+            ],
+          ]),
         ),
-      ],
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Bekor qilish')),
+          FilledButton(
+            style: FilledButton.styleFrom(minimumSize: const Size(80, 40)),
+            onPressed: () => Navigator.pop(ctx, c.text.trim()),
+            child: const Text('Saqlash'),
+          ),
+        ],
+      ),
     ),
   );
   if (result == null || result.isEmpty) return;
-  final uri = Uri.tryParse(result);
-  if (uri == null || !(uri.isScheme('http') || uri.isScheme('https')) || uri.host.isEmpty) {
+  final url = _normalizeServerUrl(result);
+  if (url == null) {
     if (context.mounted) showMessage(context, "Manzil noto'g'ri", error: true);
     return;
   }
-  final url = result.endsWith('/') ? result.substring(0, result.length - 1) : result;
   await prefs.setBaseUrl(url);
   ref.read(apiClientProvider).baseUrl = url;
-  if (context.mounted) showMessage(context, 'Server manzili saqlandi');
+  ref.invalidate(metaProvider);
+  if (context.mounted) showMessage(context, 'Server manzili saqlandi: $url');
 }
 
 /// Asks for explicit consent before any project data is sent to the AI service (TZ 19).
