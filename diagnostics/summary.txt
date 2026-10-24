@@ -1,0 +1,19 @@
+== CommuniAI-1.0.0-dev-http.apk
+RESULT: PASS
+OK   install
+OK   app started, onboarding visible
+OK   login screen
+OK   email/password fields found
+OK   logged in over the network, dashboard visible
+OK   process still running
+OK   no crash / Dart errors in logcat (0 lines)
+
+== CommuniAI-1.0.0-release.apk
+RESULT: PASS
+OK   install
+OK   app started, onboarding visible
+OK   login screen
+OK   email/password fields found
+OK   logged in over the network, dashboard visible
+OK   process still running
+OK   no crash / Dart errors in logcat (0 lines)

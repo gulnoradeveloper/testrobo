@@ -1,0 +1,2 @@
+0ccf94d05bf879a0178f93c8ba78de6bb6b3e22cb5cd7653ff4817c28763ac00  CommuniAI-1.0.0-dev-http.apk
+ba2fe7a5c1e3799fed291e374605802482c6bdba0226c84643ea6d9ae92e8343  CommuniAI-1.0.0-release.apk
