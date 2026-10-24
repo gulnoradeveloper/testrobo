@@ -6,6 +6,6 @@ PY=${PYTHON:-python3}
 [ -d .venv ] || "$PY" -m venv .venv
 . .venv/bin/activate
 pip install -q --upgrade pip
-pip install -q -r requirements.txt
+pip install -q --only-binary=:all: -r requirements.txt
 [ -f .env ] || cp ../.env.example .env
 exec python run_local.py

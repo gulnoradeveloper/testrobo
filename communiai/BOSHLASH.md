@@ -13,7 +13,7 @@ Ilova ikki qismdan iborat:
 
 ### Windows
 
-1. Python o'rnating: https://www.python.org/downloads/ (3.11 yoki yangi).
+1. Python o'rnating: https://www.python.org/downloads/ — **Python 3.13** tavsiya etiladi (3.12–3.15 ham ishlaydi).
    O'rnatishda **"Add python.exe to PATH"** belgisini albatta qo'ying.
 2. ZIP ni oching va `communiai` papkasidagi **`start-backend.bat`** faylini ikki marta bosing.
 3. Birinchi marta kutubxonalar o'rnatiladi (2–5 daqiqa, internet kerak).
@@ -99,6 +99,7 @@ Ulanishni tekshirish: telefon brauzerida `http://192.168.1.15:8000/health/ready`
 | "AI xizmati serverda sozlanmagan" | `backend/.env` ga `AI_API_KEY` yozing va serverni qayta ishga tushiring. |
 | Ilova o'rnatilmaydi | Eski versiyani o'chiring; telefonda kamida 200 MB bo'sh joy bo'lsin; Android 7.0 yoki yangi. |
 | `start-backend.bat` darrov yopiladi | Python o'rnatilmagan yoki PATH ga qo'shilmagan. `cmd` da `python --version` ni tekshiring. |
+| `Failed building wheel for pydantic-core` / `cargo` / `Rust` xatosi | Bu eski versiyadagi muammo edi — yangi ZIP'dagi `start-backend.bat` faqat tayyor paketlarni o'rnatadi va buzilgan `.venv` ni o'zi tozalaydi. Yangi ZIP'ni oching va `start-backend.bat` ni qayta ishga tushiring. |
 
 ## Brauzer versiyasi (ixtiyoriy)
 
