@@ -163,10 +163,11 @@ def render_full(music_src=None):
     silent.unlink()
     # Messenjer/pochta uchun yengil versiya (~1.3 Mbit/s, 30 MB dan kichik, ikki o'tishli)
     web = OUT / "begoyim_taqdimot_web.mp4"
-    common = ["-c:v", "libx264", "-preset", "slow", "-b:v", "1300k", "-maxrate", "1800k", "-bufsize", "4000k", "-pix_fmt", "yuv420p"]
+    vkbps = int(min(1300, 27 * 8192 / duration - 140))  # ~27 MB ga sig'adigan video bitreyti
+    common = ["-c:v", "libx264", "-preset", "slow", "-b:v", f"{vkbps}k", "-maxrate", f"{int(vkbps * 1.4)}k", "-bufsize", "4000k", "-pix_fmt", "yuv420p"]
     subprocess.run([ff, "-y", "-loglevel", "error", "-i", str(final), *common, "-pass", "1", "-passlogfile", str(OUT / "pass"), "-an", "-f", "null", "-"], check=True)
     subprocess.run([ff, "-y", "-loglevel", "error", "-i", str(final), *common, "-pass", "2", "-passlogfile", str(OUT / "pass"),
-                    "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", str(web)], check=True)
+                    "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", str(web)], check=True)
     for f in OUT.glob("pass*"):
         f.unlink()
     print("Tayyor:", final, "|", web)
