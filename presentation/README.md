@@ -1,6 +1,6 @@
 # BEGOYIM — animatsion taqdimot (PPTX)
 
-21 slayd, 16:9, o‘zbek tilida, har bir slaydda ma’ruzachi uchun izoh (Speaker notes).
+26 slayd (vazirlik versiyasi), 16:9, o‘zbek tilida, har bir slaydda ma’ruzachi uchun izoh (Speaker notes).
 Elementlar slayd ochilishi bilan bosqichma-bosqich avtomatik paydo bo‘ladi, slaydlar orasida silliq o‘tish.
 
 ```bash

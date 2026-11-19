@@ -79,14 +79,15 @@ async function icon(Icon, color, size = 256) {
   // ================= 1. TITUL =================
   let s = pres.addSlide({ masterName: "LIGHT" });
   s.addImage({ path: A("logo.png"), x: 0.7, y: 0.9, w: 5.4, h: 4.36, objectName: "a1_zoom_logo" });
-  txt(s, "Ayollar bandligi va farovonligi raqamli ekotizimi", { x: 6.6, y: 1.6, w: 6.1, h: 1.3, fontFace: HEAD, fontSize: 32, bold: true, color: C.ink, objectName: "a2_up_title" });
+  txt(s, "MILLIY RAQAMLI EKOTIZIM", { x: 6.6, y: 1.25, w: 6.1, h: 0.35, fontSize: 13, bold: true, color: C.gold, charSpacing: 3, objectName: "a2_up_kicker" });
+  txt(s, "Ayollar bandligi va farovonligi milliy raqamli ekotizimi", { x: 6.6, y: 1.6, w: 6.1, h: 1.3, fontFace: HEAD, fontSize: 30, bold: true, color: C.ink, objectName: "a2_up_title" });
   txt(s, "Ayoldan ayolga — imkoniyat va ko‘mak.", { x: 6.6, y: 3.05, w: 6.1, h: 0.6, fontFace: HEAD, fontSize: 24, italic: true, color: C.crimson2, objectName: "a3_up_slogan" });
   txt(s, [
     { text: "Loyiha muallifi: ", options: { color: C.muted } },
     { text: AUTHOR, options: { bold: true, color: C.ink } },
   ], { x: 6.6, y: 4.2, w: 6.1, h: 0.45, fontSize: 18, objectName: "a4_fade_author" });
-  txt(s, "Ko‘nikmani — xizmatga, xizmatni — daromadga aylantiramiz", { x: 6.6, y: 4.75, w: 6.1, h: 0.45, fontSize: 16, color: C.muted, objectName: "a4_fade_tagline" });
-  notes(s, "Assalomu alaykum, hurmatli hokimiyat va Oila va xotin-qizlar bo‘limi vakillari! Bugun sizlarga BEGOYIM — ayollar bandligi va farovonligi raqamli ekotizimi loyihasini taqdim etaman. Loyihaning asosiy g‘oyasi: ayollarning mavjud ko‘nikmalarini daromadga aylantirish.");
+  txt(s, "Iqtisodiy mustaqillik · Ijtimoiy himoya · Shaxsiy rivojlanish", { x: 6.6, y: 4.75, w: 6.1, h: 0.45, fontSize: 16, color: C.muted, objectName: "a4_fade_tagline" });
+  notes(s, "Assalomu alaykum, hurmatli vazirlik rahbariyati, hurmatli mutasaddilar va yig‘ilish ishtirokchilari! Bugun e’tiboringizga ayollarning iqtisodiy mustaqilligini mustahkamlash, ularning bandligini ta’minlash va ijtimoiy farovonligini oshirishga qaratilgan BEGOYIM innovatsion raqamli platformasi loyihasini taqdim etmoqchiman.");
 
   // ================= 2. VIDEO =================
   s = pres.addSlide({ masterName: "DARK" });
@@ -111,13 +112,15 @@ async function icon(Icon, color, size = 256) {
   for (const [i, [f, x, y, w, h]] of grid.entries()) await photo(s, V("photos/" + f), x, y, w, h, `a${4 + i}_zoom_photo${i}`);
   notes(s, "Har bir mahallada hunarli ayollar bor: tikuvchi, pazanda, hunarmand, repetitor, masofaviy ishlay oladiganlar. Ularga yangi kasb o‘rgatish shart emas — ularning mavjud mahoratini daromadga aylantirish kerak.");
 
-  // ================= 4. MUAMMO BO'LIMI =================
+  // ================= 4. ASOSIY SAVOL =================
   s = pres.addSlide({ masterName: "DARK" });
-  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 4.4, y: 1.7, w: 4.55, h: 0.6, rectRadius: 0.3, fill: { color: "FFFFFF", transparency: 88 }, line: { color: "F6E7C8", width: 1 }, objectName: "a1_fade_qpill" });
-  txt(s, "① Qanday muammoni hal qiladi?", { x: 4.4, y: 1.7, w: 4.55, h: 0.6, align: "center", valign: "middle", fontSize: 18, bold: true, color: C.goldSoft, objectName: "a1_fade_qtext" });
-  txt(s, [{ text: "Bugun hunarli ayollar oldida", options: { color: C.white, breakLine: true } }, { text: "6 ta to‘siq bor", options: { color: C.goldSoft } }],
-    { x: 0.8, y: 2.7, w: 11.7, h: 2.2, align: "center", valign: "middle", fontFace: HEAD, fontSize: 48, bold: true, objectName: "a2_zoom_big" });
-  notes(s, "Birinchi savol: bu loyiha qanday muammoni hal qiladi? Biz hunarli ayollar oldidagi oltita asosiy to‘siqni aniqladik.");
+  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 4.4, y: 1.3, w: 4.55, h: 0.6, rectRadius: 0.3, fill: { color: "FFFFFF", transparency: 88 }, line: { color: "F6E7C8", width: 1 }, objectName: "a1_fade_qpill" });
+  txt(s, "① Qanday muammoni hal qiladi?", { x: 4.4, y: 1.3, w: 4.55, h: 0.6, align: "center", valign: "middle", fontSize: 18, bold: true, color: C.goldSoft, objectName: "a1_fade_qtext" });
+  txt(s, "Biz o‘z oldimizga muhim savol qo‘ydik:", { x: 0.8, y: 2.25, w: 11.7, h: 0.5, align: "center", fontSize: 20, color: "FFE0C7", objectName: "a2_fade_lead" });
+  txt(s, [{ text: "Ayolning hunari bor, ishlash istagi bor, lekin mijozi bo‘lmasa —", options: { color: C.white, breakLine: true } }, { text: "uning iqtisodiy mustaqilligini qanday ta’minlaymiz?", options: { color: C.goldSoft } }],
+    { x: 0.8, y: 2.9, w: 11.7, h: 2.2, align: "center", valign: "middle", fontFace: HEAD, fontSize: 36, bold: true, objectName: "a3_zoom_big" });
+  txt(s, "Javob — BEGOYIM: ayolning salohiyatini aniqlashdan real daromadgacha bo‘lgan yo‘lni raqamlashtiruvchi yaxlit ekotizim.", { x: 1.4, y: 5.4, w: 10.5, h: 0.8, align: "center", fontSize: 18, color: "FFE0C7", objectName: "a4_up_answer" });
+  notes(s, "Bugungi kunda mamlakatimizda xotin-qizlarni qo‘llab-quvvatlash, ularning bandligini ta’minlash va tadbirkorlik faoliyatini rivojlantirishga katta e’tibor qaratilmoqda. Shunga qaramay, o‘z hunari va salohiyatiga ega, ammo uni barqaror daromadga aylantirishda qiyinchiliklarga duch kelayotgan ayollar mavjud. Biz o‘z oldimizga savol qo‘ydik: ayolning hunari bor, ishlash istagi bor, lekin mijozi bo‘lmasa, uning iqtisodiy mustaqilligini qanday ta’minlaymiz? Ana shu savolga amaliy yechim sifatida BEGOYIM ishlab chiqilmoqda.");
 
   // ================= 5. OLTI MUAMMO =================
   s = pres.addSlide({ masterName: "LIGHT" });
@@ -146,6 +149,30 @@ async function icon(Icon, color, size = 256) {
   txt(s, [{ text: "Ularga yangi kasb emas —", options: { color: C.white, breakLine: true } }, { text: "o‘z mehnatini qadrlaydigan mijoz kerak.", options: { color: C.goldSoft } }],
     { x: 0.8, y: 2.9, w: 11.7, h: 2.2, align: "center", valign: "middle", fontFace: HEAD, fontSize: 42, bold: true, objectName: "a2_zoom_quote" });
   notes(s, "Asosiy xulosa: ayollarga yangi kasb o‘rgatish emas, ularning mehnatini qadrlaydigan mijoz bilan bog‘lash kerak. BEGOYIM aynan shuni qiladi.");
+
+  // ================= UCH USTUVOR YO'NALISH =================
+  s = pres.addSlide({ masterName: "LIGHT" });
+  header(s, "Yaxlit ekotizim", "BEGOYIMning uchta ustuvor yo‘nalishi");
+  const pillars = [
+    ["money", "Iqtisodiy mustaqillik", "Bandlik va daromad", [["Xizmatlar katalogi va buyurtmalar", 1], ["AI asosida mijoz bilan moslashtirish", 1], ["Daromad hisobi va dashboard", 1]]],
+    ["shield", "Ijtimoiy himoya", "Xavfsizlik va murojaatlar", [["Mahalla tasdig‘i va reyting", 1], ["BEGOYIM Safe — ish vaqti qaydi", 1], ["HIMOYA — xavfsiz murojaat", 0]]],
+    ["bulb", "Shaxsiy rivojlanish", "Ta’lim va farovonlik", [["Maxfiy psixologik maslahat", 1], ["BEGOYIM Academy — qisqa kurslar", 0], ["Mikro-tadbirkorlik yordamchisi", 0]]],
+  ];
+  pillars.forEach(([ic, h, sub, items], i) => {
+    const x = 0.6 + i * 4.1, k = 2 + i;
+    card(s, x, 1.9, 3.9, 4.55, `a${k}_up_pc${i}`);
+    iconCircle(s, ic, x + 1.5, 2.1, 0.9, `a${k}_up_pic${i}`, i === 1 ? C.gold : C.crimson2);
+    txt(s, h, { x: x + 0.2, y: 3.1, w: 3.5, h: 0.45, align: "center", fontFace: HEAD, fontSize: 20, bold: true, color: C.crimson2, objectName: `a${k}_up_ph${i}` });
+    txt(s, sub, { x: x + 0.2, y: 3.55, w: 3.5, h: 0.35, align: "center", fontSize: 14, bold: true, color: C.gold, objectName: `a${k}_up_ps${i}` });
+    items.forEach(([t, ready], j) => {
+      const y = 4.05 + j * 0.75;
+      s.addImage({ data: ready ? I.check.c : I.flag.g, x: x + 0.3, y: y + 0.05, w: 0.28, h: 0.28, objectName: `a${k}_up_pi${i}${j}` });
+      txt(s, t, { x: x + 0.7, y, w: 3.0, h: 0.4, fontSize: 14, bold: true, color: C.ink, objectName: `a${k}_up_pt${i}${j}` });
+      txt(s, ready ? "MVP’da ishlaydi" : "Taklif / rivojlantirish", { x: x + 0.7, y: y + 0.36, w: 3.0, h: 0.3, fontSize: 11, color: ready ? C.green : C.muted, objectName: `a${k}_up_pr${i}${j}` });
+    });
+  });
+  txt(s, "Asosiy maqsad — ayolni faqat ish bilan ta’minlash emas, balki uning iqtisodiy mustaqilligi, huquqiy himoyasi va ijtimoiy farovonligiga kompleks yondashish.", { x: 0.6, y: 6.5, w: 12.13, h: 0.4, align: "center", fontSize: 13, italic: true, color: C.muted, objectName: "a5_fade_goal" });
+  notes(s, "BEGOYIM — oddiy e’lonlar platformasi emas. Uchta ustuvor yo‘nalish: iqtisodiy mustaqillik — bandlik va daromad; ijtimoiy himoya — xavfsizlik va murojaatlar; shaxsiy rivojlanish — ta’lim va farovonlik. Yashil belgili imkoniyatlar ishlaydigan MVP’da mavjud; qolganlari loyiha taklifi sifatida bosqichma-bosqich joriy etiladi. Ishlab chiqilmagan funksiyalarni ishlayotgan tizim sifatida ko‘rsatmaymiz.");
 
   // ================= 7. RAQAMLI KO'PRIK =================
   s = pres.addSlide({ masterName: "LIGHT" });
@@ -188,17 +215,6 @@ async function icon(Icon, color, size = 256) {
   });
   notes(s, "Har bir muammoga aniq yechim: mijoz topish — raqamli katalog va AI; uydan chiqa olmaslik — uyda va masofadan xizmat; ishonch — mahalla tasdig‘i, reyting, BEGOYIM Safe; tarqoqlik — yagona platforma; o‘lchash — dashboardlar; ruhiy yuk — maxfiy psixologik yordam.");
 
-  // ================= 9. UYDAN TURIB =================
-  s = pres.addSlide({ masterName: "LIGHT" });
-  header(s, "Ish o‘rni faqat korxonada yaratilmaydi", "Uyidan chiqmagan holda ham — xizmat va daromad");
-  [["house", "O‘z uyidan xizmat ko‘rsatadi"], ["mobile", "Platforma orqali buyurtma oladi"], ["money", "Oilaviy daromadini oshiradi"]].forEach(([ic, t], i) => {
-    iconCircle(s, ic, 0.6, 2.2 + i * 1.25, 0.85, `a${2 + i}_left_r${i}`);
-    txt(s, t, { x: 1.7, y: 2.2 + i * 1.25, w: 4.6, h: 0.85, valign: "middle", fontSize: 21, bold: true, color: C.ink, objectName: `a${2 + i}_left_rt${i}` });
-  });
-  for (const [i, [f, x, y, w, h]] of [["pishiriq_big.jpg", 6.7, 1.9, 3.0, 2.3], ["milliy-kiyim.jpg", 9.85, 1.9, 2.88, 2.3], ["bola_big.jpg", 6.7, 4.35, 2.2, 2.3], ["masofaviy.jpg", 9.05, 4.35, 3.68, 2.3]].entries())
-    await photo(s, V("photos/" + f), x, y, w, h, `a${5 + i}_zoom_ph${i}`);
-  notes(s, "Ish o‘rni faqat korxonada yaratilmaydi. Ayol uyidan chiqmagan holda xizmat ko‘rsatadi, buyurtma oladi va oilaviy daromadini oshiradi — farzandlar va ro‘zg‘or yonida.");
-
   // ================= 10. HIKOYA =================
   s = pres.addSlide({ masterName: "LIGHT" });
   header(s, "Namunaviy hikoya", "Aziza opa: avval va BEGOYIM bilan");
@@ -226,7 +242,7 @@ async function icon(Icon, color, size = 256) {
     txt(s, [{ text: a, options: { color: C.white } }, { text: b, options: { color: C.goldSoft } }], { x: 2.75, y: 2.05 + i * 1.15, w: 9, h: 0.85, valign: "middle", fontSize: 26, bold: true, objectName: `a${2 + i}_left_mt${i}` });
   });
   s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 1.6, y: 5.6, w: 10.1, h: 0.95, rectRadius: 0.12, fill: { color: "FFFFFF", transparency: 90 }, line: { color: C.gold, width: 1 }, objectName: "a5_up_box" });
-  txt(s, "Mahalla imkoniyatga ega ayollarni aniqlaydi, BEGOYIM esa ularni mijozlar bilan bog‘laydi.", { x: 1.9, y: 5.6, w: 9.6, h: 0.95, valign: "middle", fontSize: 18, color: "FFE9CF", objectName: "a5_up_boxt" });
+  txt(s, "Mahalladagi xotin-qizlar faoli ayollarni aniqlaydi, jalb qiladi va tasdiqlashda ishtirok etadi — BEGOYIM ularni mijozlar bilan bog‘laydi.", { x: 1.9, y: 5.6, w: 9.6, h: 0.95, valign: "middle", fontSize: 18, color: "FFE9CF", objectName: "a5_up_boxt" });
   notes(s, "Mahalla — bandlikning eng yaqin hamkori: ishonchni ta’minlaydi. Texnologiya imkoniyatlarni birlashtiradi. Ayol o‘z mehnati bilan daromad topadi.");
 
   // ================= 12. PLATFORMA YO'LI =================
@@ -296,28 +312,80 @@ async function icon(Icon, color, size = 256) {
   txt(s, "“Bandlikni faqat hisobotlarda emas, real buyurtmalar va daromadlarda ko‘raylik.”", { x: 0.85, y: 6.15, w: 11.7, h: 0.65, valign: "middle", fontFace: HEAD, fontSize: 18, italic: true, color: C.crimson2, objectName: "a6_up_quotet" });
   notes(s, "Ikkinchi savol: hududimizga qanday natija beradi? Mahalla va Oila va xotin-qizlar bo‘limi real vaqtda ko‘radi: nechta ayol xizmat taklif qilmoqda, nechta buyurtma bajarildi, nechta ayol daromad ola boshladi. Dashboardda faqat umumiy ko‘rsatkichlar, shaxsiy va psixologik ma’lumotlar yo‘q.");
 
-  // ================= 16. PILOT KO'RSATKICHLAR =================
-  s = pres.addSlide({ masterName: "DARK" });
-  header(s, "Pilot bosqich", "Taklif etilayotgan maqsadli ko‘rsatkichlar", true);
-  [["5", "ta", "pilot mahalla"], ["500", "nafar", "jalb etiladigan ayol"], ["200", "nafar", "xizmat joylashtiruvchi ayol"], ["100", "nafar", "birinchi buyurtmasini olishi maqsad qilingan ayol"]].forEach(([n, u, l], i) => {
-    const x = 0.6 + i * 3.08, k = 2 + i;
-    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y: 2.0, w: 2.88, h: 2.9, rectRadius: 0.15, fill: { color: "FFFFFF", transparency: 90 }, line: { color: C.gold, width: 1 }, objectName: `a${k}_zoom_sbox${i}` });
-    txt(s, n, { x, y: 2.15, w: 2.88, h: 1.15, align: "center", valign: "middle", fontFace: HEAD, fontSize: 60, bold: true, color: C.goldSoft, objectName: `a${k}_zoom_sn${i}` });
-    txt(s, u, { x, y: 3.3, w: 2.88, h: 0.4, align: "center", fontSize: 18, bold: true, color: C.white, objectName: `a${k}_zoom_su${i}` });
-    txt(s, l, { x: x + 0.2, y: 3.75, w: 2.48, h: 1.0, align: "center", fontSize: 14, color: "FFE0C7", objectName: `a${k}_zoom_sl${i}` });
+  // ================= HIMOYA: MAKET VA JARAYON =================
+  s = pres.addSlide({ masterName: "LIGHT" });
+  header(s, "Taklif etilayotgan modul · ayollar murojaatlari yagona raqamli tizimi", "BEGOYIM HIMOYA — xavfsiz murojaat va ko‘mak");
+  card(s, 0.6, 1.9, 5.0, 4.85, "a2_left_mock");
+  s.addShape(pres.shapes.RECTANGLE, { x: 0.6, y: 1.9, w: 5.0, h: 0.75, fill: { color: C.crimson2 }, line: { color: C.crimson2 }, objectName: "a2_left_mockhead" });
+  s.addImage({ data: I.shield.w, x: 0.8, y: 2.03, w: 0.48, h: 0.48, objectName: "a2_left_mockicon" });
+  txt(s, "BEGOYIM HIMOYA", { x: 1.4, y: 1.9, w: 4.0, h: 0.75, valign: "middle", fontFace: HEAD, fontSize: 20, bold: true, color: C.white, objectName: "a2_left_mocktitle" });
+  txt(s, "Sizning xavfsizligingiz va qadr-qimmatingiz muhim", { x: 0.85, y: 2.8, w: 4.5, h: 0.4, fontSize: 14, bold: true, color: C.crimson2, objectName: "a2_left_mocksub" });
+  txt(s, "Tazyiq, zo‘ravonlik, shilqimlik, kamsitish yoki huquqlaringiz buzilishiga duch kelsangiz — mutaxassis va vakolatli tashkilotlarga maxfiy murojaat qiling. Siz yolg‘iz emassiz.", { x: 0.85, y: 3.2, w: 4.5, h: 1.1, fontSize: 12.5, color: C.muted, objectName: "a2_left_mocktext" });
+  [["Murojaat yuborish", C.crimson2, C.white], ["Mutaxassis yordami", C.goldSoft, C.crimson], ["Xavfsizlik bo‘yicha yordam", C.goldSoft, C.crimson], ["Murojaat holati", C.goldSoft, C.crimson]].forEach(([t, f, c], i) => {
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 0.85, y: 4.4 + i * 0.55, w: 4.5, h: 0.45, rectRadius: 0.1, fill: { color: f }, line: { color: f }, objectName: `a2_left_btn${i}` });
+    txt(s, t, { x: 0.85, y: 4.4 + i * 0.55, w: 4.5, h: 0.45, align: "center", valign: "middle", fontSize: 14, bold: true, color: c, objectName: `a2_left_btnt${i}` });
   });
-  txt(s, "ⓘ Bu erishilgan natija emas — dastlabki pilot bosqich uchun maqsad. Yakuniy ko‘rsatkichlar pilot hududlar, byudjet va hamkorlar imkoniyatlari asosida belgilanadi.", { x: 0.6, y: 5.15, w: 12.13, h: 0.65, align: "center", fontSize: 14, color: "FFE0C7", objectName: "a6_fade_note" });
-  txt(s, "“Bir ayol — bir imkoniyat. Bir mahalla — yuzlab yangi istiqbollar.”", { x: 0.6, y: 5.9, w: 12.13, h: 0.6, align: "center", fontFace: HEAD, fontSize: 22, italic: true, color: C.goldSoft, objectName: "a7_fade_quote" });
-  notes(s, "Pilot bosqich uchun taklif etilayotgan maqsadlar: 5 ta pilot mahalla, 500 nafar jalb etiladigan ayol, 200 nafar xizmat joylashtiruvchi va 100 nafar birinchi buyurtmasini olishi maqsad qilingan ayol. Bu erishilgan natija emas — maqsad; yakuniy raqamlar hudud, byudjet va hamkorlar bilan kelishiladi.");
+  const flow = [["mobile", "Ayol murojaat yuboradi", "Himoyalangan shakl orqali"], ["search", "Xavf va murojaat turini aniqlash", "Shoshilinch xavfda — tezkor yordam yo‘riqnomasi"], ["user", "Vakolatli mas’ulga yo‘naltirish", "Hudud, tur va maxfiylik talablariga muvofiq"], ["clipboard", "Ko‘rib chiqish va qayta aloqa", "Murojaat raqami, holati va natijasi"]];
+  flow.forEach(([ic, h, p], i) => {
+    const y = 1.95 + i * 1.18, k = 3 + i;
+    iconCircle(s, ic, 6.05, y, 0.8, `a${k}_left_fl${i}`, i === 1 ? C.gold : C.crimson2);
+    txt(s, `${i + 1}. ${h}`, { x: 7.05, y: y + 0.02, w: 5.7, h: 0.4, fontSize: 17, bold: true, color: C.ink, objectName: `a${k}_left_flh${i}` });
+    txt(s, p, { x: 7.05, y: y + 0.42, w: 5.7, h: 0.4, fontSize: 14, color: C.muted, objectName: `a${k}_left_flp${i}` });
+  });
+  txt(s, "ⓘ Bu taklif etilayotgan interfeys maketi — hozircha ishlaydigan murojaat xizmati emas.", { x: 6.05, y: 6.45, w: 6.7, h: 0.35, fontSize: 12, italic: true, color: C.muted, objectName: "a7_fade_note" });
+  notes(s, "Loyihani yanada rivojlantirib, BEGOYIM HIMOYA modulini kiritishni taklif etamiz. Ayollar tazyiq, zo‘ravonlik, kamsitish, shilqimlik va boshqa muammoli holatlar yuzasidan mahalla hamda vakolatli tashkilotlarga xavfsiz murojaat qila oladi. Murojaatlar tegishli mas’ullarga yo‘naltiriladi, ko‘rib chiqilishi kuzatiladi va murojaatchiga belgilangan tartibda javob qaytariladi. Bu — interfeys maketi, modul hali ishlab chiqilmagan.");
+
+  // ================= HIMOYA: XAVFSIZLIK TAMOYILLARI =================
+  s = pres.addSlide({ masterName: "DARK" });
+  header(s, "BEGOYIM HIMOYA", "Murojaatchi xavfsizligi — birinchi o‘rinda", true);
+  [["lock", "Maxfiylik va rozilik", "Zo‘ravonlik yoki tazyiq haqidagi murojaat mahalla faoli yoki barcha xodimlarga avtomatik yuborilmaydi. Ayolning xavfsizligi, roziligi va ma’lumotlari maxfiyligi ustuvor."],
+   ["user", "Mustaqil yo‘naltirish", "Murojaat mahalla vakilining o‘zi yoki murojaatchining yaqin tanishi bilan bog‘liq bo‘lsa — u mustaqil vakolatli mas’ulga yo‘naltiriladi."],
+   ["shield", "Favqulodda xizmatlar o‘rnini bosmaydi", "Shoshilinch xavf holatida platforma tezkor yordam yo‘riqnomasini beradi va favqulodda xizmatlarga yo‘naltiradi."]].forEach(([ic, h, p], i) => {
+    const y = 1.95 + i * 1.4, k = 2 + i;
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 0.6, y, w: 12.13, h: 1.2, rectRadius: 0.12, fill: { color: "FFFFFF", transparency: 90 }, line: { color: C.gold, width: 1 }, objectName: `a${k}_left_pr${i}` });
+    iconCircle(s, ic, 0.85, y + 0.2, 0.8, `a${k}_left_pri${i}`, C.gold);
+    txt(s, h, { x: 1.9, y: y + 0.12, w: 10.6, h: 0.4, fontSize: 19, bold: true, color: C.goldSoft, objectName: `a${k}_left_prh${i}` });
+    txt(s, p, { x: 1.9, y: y + 0.52, w: 10.6, h: 0.6, fontSize: 14.5, color: "FFE9CF", objectName: `a${k}_left_prp${i}` });
+  });
+  txt(s, "HIMOYA moduli pilotdan oldin: alohida xavfsizlik auditi, vakolatli tashkilotlar bilan kelishuv va shaxsiy ma’lumotlarni himoya qilish tartibi.", { x: 0.6, y: 6.25, w: 12.13, h: 0.55, align: "center", fontSize: 14, bold: true, color: C.goldSoft, objectName: "a5_fade_audit" });
+  notes(s, "Respublika darajasidagi tizimda murojaatni oddiy botda mahalla xodimiga yuborishning o‘zi yetarli emas: ayrim murojaatlar maxfiylikni, ayrimlari zudlik bilan vakolatli xizmatlar aralashuvini talab qiladi. Uchta tamoyil: maxfiylik va rozilik; manfaatlar to‘qnashuvida mustaqil mas’ulga yo‘naltirish; platforma favqulodda xizmatlar o‘rnini bosmaydi. HIMOYA moduli xavfsizlik auditi va vakolatli tashkilotlar bilan kelishuvdan keyin pilotga chiqariladi.");
+
+  // ================= 7 STRATEGIK MODUL =================
+  s = pres.addSlide({ masterName: "LIGHT" });
+  header(s, "Respublika darajasiga olib chiqadigan yo‘nalishlar", "BEGOYIMning 7 ta strategik moduli");
+  const mods = [
+    ["robot", "BEGOYIM AI", "Raqamli kasb maslahatchisi: mos xizmat, rivojlanish yo‘li va buyurtmalar"],
+    ["chart", "BEGOYIM Mahalla", "Hududiy bandlik xaritasi: talabgir kasblar va faol ijrochilar"],
+    ["store", "BEGOYIM Market", "Atlas-adras, kashtachilik, milliy liboslar — respublika bo‘ylab savdo"],
+    ["laptop", "BEGOYIM Academy", "Raqamli savodxonlik, marketing, moliya bo‘yicha qisqa kurslar"],
+    ["shield", "BEGOYIM HIMOYA", "Xavfsiz murojaat, psixologik yordamga yo‘naltirish, qayta aloqa"],
+    ["line", "BEGOYIM Biznes", "Narx, xarajat-foyda, biznes-reja va qo‘llab-quvvatlash dasturlari"],
+    ["bank", "BEGOYIM Hamkor", "Maktab, bog‘cha, korxonalar buyurtmasi — muntazam daromad oqimi"],
+  ];
+  mods.forEach(([ic, h, p], i) => {
+    const row = i < 4 ? 0 : 1, col = row === 0 ? i : i - 4;
+    const x = row === 0 ? 0.6 + col * 3.08 : 2.14 + col * 3.08, y = row === 0 ? 1.9 : 4.3, k = 2 + i;
+    const star = h === "BEGOYIM Hamkor";
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y, w: 2.88, h: 2.2, rectRadius: 0.15, fill: { color: star ? "FFF8EA" : C.white }, line: { color: star ? C.gold : "EFE2E5", width: star ? 2.5 : 0.75 }, shadow: { type: "outer", color: "8E1238", opacity: 0.12, blur: 10, offset: 3, angle: 90 }, objectName: `a${k}_up_md${i}` });
+    iconCircle(s, ic, x + 0.2, y + 0.2, 0.6, `a${k}_up_mi${i}`, star ? C.gold : C.crimson2);
+    txt(s, h, { x: x + 0.9, y: y + 0.2, w: 1.9, h: 0.6, valign: "middle", fontSize: 15, bold: true, color: C.crimson2, objectName: `a${k}_up_mh${i}` });
+    txt(s, p, { x: x + 0.2, y: y + 0.95, w: 2.5, h: 1.15, fontSize: 12.5, color: C.muted, objectName: `a${k}_up_mp${i}` });
+    if (star) {
+      s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: x + 1.65, y: y - 0.18, w: 1.1, h: 0.34, rectRadius: 0.1, fill: { color: C.gold }, line: { color: C.gold }, objectName: `a${k}_up_tag` });
+      txt(s, "Ustuvor", { x: x + 1.65, y: y - 0.18, w: 1.1, h: 0.34, align: "center", valign: "middle", fontSize: 11, bold: true, color: C.white, objectName: `a${k}_up_tagt` });
+    }
+  });
+  txt(s, "Ro‘yxatdan o‘tishning o‘zi bandlikni kafolatlamaydi — ayollar uchun real va takroriy buyurtmalar oqimi kerak (BEGOYIM Hamkor).", { x: 0.6, y: 6.55, w: 12.13, h: 0.35, align: "center", fontSize: 13, italic: true, color: C.muted, objectName: "a9_fade_note" });
+  notes(s, "Respublika darajasiga olib chiqadigan 7 ta yo‘nalish: AI kasb maslahatchisi, hududiy bandlik xaritasi, milliy mahsulotlar bozori, Academy, HIMOYA, mikro-tadbirkorlik yordamchisi va BEGOYIM Hamkor. Hamkor modulini alohida ta’kidlayman: maktablar, bog‘chalar, korxonalar va mehmonxonalar buyurtma joylashtiradi — bu yakka buyurtmalardan tashqari muntazam daromad yaratadi. Bugun barcha modullarni moliyalashtirishni so‘ramaymiz — avval MVP pilotdan o‘tadi.");
 
   // ================= 17. HAMKORLIK MODELI =================
   s = pres.addSlide({ masterName: "LIGHT" });
-  header(s, "③ Nima uchun qo‘llab-quvvatlashimiz kerak?", "Aniq hamkorlik modeli");
+  header(s, "③ Nima uchun qo‘llab-quvvatlashimiz kerak?", "Aniq hamkorlik modeli — yangi tashkilot emas");
   [["people", "Mahalla", "Hunarli va ish izlayotgan ayollarni aniqlash, ularni platformaga jalb etish."],
-   ["bank", "Oila va xotin-qizlar bo‘limi", "Pilot hududni belgilash, tashkiliy ko‘mak va hamkorlarni birlashtirish."],
+   ["bank", "Vazirlik va bo‘limlar", "Pilot hududlarni belgilash, bandlik va ijtimoiy himoya mexanizmlari bilan uyg‘unlashtirish."],
    ["heart", "Xotin-qizlar faollari", "Ayollarga platformadan foydalanishda amaliy yordam berish."],
    ["laptop", "BEGOYIM jamoasi", "Platformani ishlab chiqish, o‘qitish, texnik xizmat va tahlil."],
-   ["store", "Mahalliy tadbirkorlar", "Xizmatlarga buyurtma berish, hamkorlik va mentorlik."]].forEach(([ic, h, p], i) => {
+   ["store", "Tashkilot va tadbirkorlar", "BEGOYIM Hamkor orqali muntazam buyurtmalar, hamkorlik va mentorlik."]].forEach(([ic, h, p], i) => {
     const row = i < 3 ? 0 : 1, col = row === 0 ? i : i - 3;
     const x = row === 0 ? 0.6 + col * 4.1 : 2.65 + col * 4.1, y = row === 0 ? 1.9 : 4.35, k = 2 + i;
     card(s, x, y, 3.9, 2.2, `a${k}_up_p${i}`);
@@ -327,41 +395,69 @@ async function icon(Icon, color, size = 256) {
   });
   notes(s, "Uchinchi savol: nima uchun qo‘llab-quvvatlash kerak? Chunki aniq hamkorlik modeli bor: mahalla ayollarni aniqlaydi, Oila va xotin-qizlar bo‘limi pilot hududni belgilaydi va tashkiliy ko‘mak beradi, faollar ayollarga yordam beradi, BEGOYIM jamoasi texnik tomonni ta’minlaydi, tadbirkorlar buyurtma va mentorlik beradi.");
 
-  // ================= 18. TAKLIF / YO'L XARITASI =================
-  s = pres.addSlide({ masterName: "LIGHT" });
-  header(s, "Taklif", "Pilot bosqichni birgalikda boshlaymiz");
-  [["flag", "Pilot mahallalarni belgilash", "Hudud va mas’ullarni tasdiqlash"],
-   ["people", "Ayollarni aniqlash va o‘qitish", "Mahalla orqali ro‘yxat, platformadan foydalanish bo‘yicha o‘quv"],
-   ["laptop", "Platformani ishga tushirish", "Xizmatlar joylanadi, buyurtmalar qabul qilinadi"],
-   ["line", "Natijani tahlil va kengaytirish", "Dashboard ko‘rsatkichlari asosida keyingi hududlar"]].forEach(([ic, h, p], i) => {
-    const x = 0.6 + i * 3.08, k = 2 + i;
-    iconCircle(s, ic, x + 1.04, 1.95, 0.8, `a${k}_up_ri${i}`, i === 3 ? C.gold : C.crimson2);
-    if (i < 3) s.addImage({ data: I.arrow.g, x: x + 2.55, y: 2.2, w: 0.45, h: 0.32, objectName: `a${k}_up_ra${i}` });
-    txt(s, `${i + 1}-bosqich`, { x, y: 2.85, w: 2.88, h: 0.35, align: "center", fontSize: 12, bold: true, color: C.gold, objectName: `a${k}_up_rs${i}` });
-    txt(s, h, { x, y: 3.2, w: 2.88, h: 0.65, align: "center", fontSize: 16, bold: true, color: C.ink, objectName: `a${k}_up_rh${i}` });
-    txt(s, p, { x: x + 0.1, y: 3.85, w: 2.68, h: 0.85, align: "center", fontSize: 13, color: C.muted, objectName: `a${k}_up_rp${i}` });
-  });
-  card(s, 0.6, 4.95, 12.13, 1.75, "a6_up_ask", C.tint);
-  txt(s, "Sizdan so‘raymiz", { x: 0.9, y: 5.08, w: 11.5, h: 0.4, fontFace: HEAD, fontSize: 18, bold: true, color: C.crimson2, objectName: "a6_up_askh" });
-  txt(s, [
-    { text: "Pilot hudud va mahallalarni ajratish", options: { bullet: true, breakLine: true } },
-    { text: "Mahalla va Oila va xotin-qizlar bo‘limi mas’ullarini biriktirish", options: { bullet: true, breakLine: true } },
-    { text: "Hamkorlar (tadbirkorlar, faollar)ni jalb etishda tashkiliy ko‘mak", options: { bullet: true } },
-  ], { x: 0.9, y: 5.5, w: 11.5, h: 1.1, fontSize: 15, color: C.ink, paraSpaceAfter: 3, objectName: "a7_fade_asklist" });
-  notes(s, "Taklifimiz: pilot bosqichni birgalikda boshlash. To‘rt bosqich: pilot mahallalarni belgilash, ayollarni aniqlash va o‘qitish, platformani ishga tushirish, natijalarni tahlil qilib kengaytirish. Sizdan so‘raymiz: pilot hudud ajratish, mas’ullarni biriktirish va hamkorlarni jalb etishda ko‘mak.");
-
-  // ================= 19. MUROJAAT =================
+  // ================= RESPUBLIKA PILOT DASTURI =================
   s = pres.addSlide({ masterName: "DARK" });
-  txt(s, "Hurmatli mahalla hamda Oila va xotin-qizlar bo‘limi vakillari!", { x: 0.8, y: 0.9, w: 11.7, h: 1.0, align: "center", valign: "middle", fontFace: HEAD, fontSize: 30, bold: true, color: C.goldSoft, objectName: "a1_fade_h" });
-  txt(s, "Keling, har bir mahallada o‘z hunari bilan daromad topishni istagan ayollarni aniqlaylik, ularni yagona raqamli platformada birlashtiraylik va bandlikni real natijaga aylantiraylik.", { x: 1.4, y: 2.1, w: 10.5, h: 1.4, align: "center", fontSize: 20, color: C.white, objectName: "a2_up_p" });
-  txt(s, "“Ayolga imkoniyat yaratsak, bir oilaning iqtisodiy mustaqilligiga yo‘l ochamiz.”", { x: 1.0, y: 3.8, w: 11.3, h: 1.4, align: "center", valign: "middle", fontFace: HEAD, fontSize: 30, italic: true, bold: true, color: C.goldSoft, objectName: "a3_zoom_q" });
-  txt(s, "Bugungi birinchi buyurtma — ertaga oila uchun barqaror daromad manbai.", { x: 1.0, y: 5.5, w: 11.3, h: 0.6, align: "center", fontSize: 18, color: "FFE0C7", objectName: "a4_fade_l" });
-  notes(s, "Hurmatli vakillar! Keling, har bir mahallada hunari bilan daromad topishni istagan ayollarni aniqlaylik, yagona platformada birlashtiraylik va bandlikni real natijaga aylantiraylik. Ayolga imkoniyat yaratsak — bir oilaning iqtisodiy mustaqilligiga yo‘l ochamiz.");
+  header(s, "Respublika pilot dasturi · 6 oylik sinov modeli (taklif)", "Taklif etilayotgan maqsadli ko‘rsatkichlar", true);
+  [["3", "ta", "pilot hudud: Buxoro, Samarqand, Toshkent"], ["15", "ta", "tanlab olinadigan mahalla"], ["1 500", "nafar", "platformaga jalb etish maqsad qilingan ayol"], ["300", "nafar", "kamida bitta yakunlangan buyurtma olishi rejalashtirilgan ayol"]].forEach(([n, u, l], i) => {
+    const x = 0.6 + i * 3.08, k = 2 + i;
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y: 2.0, w: 2.88, h: 2.9, rectRadius: 0.15, fill: { color: "FFFFFF", transparency: 90 }, line: { color: C.gold, width: 1 }, objectName: `a${k}_zoom_sbox${i}` });
+    txt(s, n, { x, y: 2.15, w: 2.88, h: 1.15, align: "center", valign: "middle", fontFace: HEAD, fontSize: 54, bold: true, color: C.goldSoft, objectName: `a${k}_zoom_sn${i}` });
+    txt(s, u, { x, y: 3.3, w: 2.88, h: 0.4, align: "center", fontSize: 18, bold: true, color: C.white, objectName: `a${k}_zoom_su${i}` });
+    txt(s, l, { x: x + 0.2, y: 3.75, w: 2.48, h: 1.0, align: "center", fontSize: 14, color: "FFE0C7", objectName: `a${k}_zoom_sl${i}` });
+  });
+  txt(s, "ⓘ Raqamlar loyiha maqsadlari bo‘lib, tasdiqlangan natijalar emas. Ular hamkorlar va resurslar asosida kelishiladi.", { x: 0.6, y: 5.15, w: 12.13, h: 0.5, align: "center", fontSize: 14, color: "FFE0C7", objectName: "a6_fade_note" });
+  txt(s, "“Bir ayol — bir imkoniyat. Bir mahalla — yuzlab yangi istiqbollar.”", { x: 0.6, y: 5.85, w: 12.13, h: 0.6, align: "center", fontFace: HEAD, fontSize: 22, italic: true, color: C.goldSoft, objectName: "a7_fade_quote" });
+  notes(s, "BEGOYIMni dastlab tanlangan mahallalarda sinovdan o‘tkazishni taklif etamiz: 3 ta pilot hudud — Buxoro, Samarqand, Toshkent; 15 ta mahalla; 1 500 nafar ayolni jalb etish va kamida 300 nafar ayolning yakunlangan buyurtma olishi. Bu raqamlar maqsad, tasdiqlangan natija emas — hamkorlar va resurslar asosida kelishiladi.");
 
-  // ================= 20. FINAL =================
+  // ================= PILOT BOSQICHLARI VA SO'ROV =================
+  s = pres.addSlide({ masterName: "LIGHT" });
+  header(s, "Pilot bosqichlari", "6 oy — uch bosqich");
+  [["flag", "1–2-oy", "Tayyorlash va jalb etish", "Mahallalarni tanlash, xotin-qizlar faollarini o‘qitish, ayollarni ro‘yxatga olish, xizmatlar katalogi"],
+   ["people", "3–4-oy", "Buyurtmalar va bandlik", "Xizmatlarni mijozlar bilan bog‘lash, korxonalar bilan hamkorlik, dastlabki buyurtmalar"],
+   ["line", "5–6-oy", "Baholash va kengaytirish", "Buyurtmalar, daromad, faollik va qoniqishni tahlil qilish; keyingi hududlarni belgilash"]].forEach(([ic, t, h, p], i) => {
+    const x = 0.6 + i * 4.1, k = 2 + i;
+    card(s, x, 1.85, 3.9, 2.75, `a${k}_up_ph${i}`);
+    iconCircle(s, ic, x + 0.25, 2.05, 0.7, `a${k}_up_phi${i}`, i === 2 ? C.gold : C.crimson2);
+    txt(s, t, { x: x + 1.1, y: 2.05, w: 2.6, h: 0.35, fontSize: 14, bold: true, color: C.gold, objectName: `a${k}_up_pht${i}` });
+    txt(s, h, { x: x + 1.1, y: 2.38, w: 2.65, h: 0.4, fontSize: 16, bold: true, color: C.crimson2, objectName: `a${k}_up_phh${i}` });
+    txt(s, p, { x: x + 0.25, y: 3.0, w: 3.45, h: 1.5, fontSize: 13.5, color: C.muted, objectName: `a${k}_up_php${i}` });
+  });
+  card(s, 0.6, 4.8, 12.13, 1.95, "a5_up_ask", C.tint);
+  txt(s, "Vazirlikdan so‘raymiz", { x: 0.9, y: 4.92, w: 11.5, h: 0.4, fontFace: HEAD, fontSize: 18, bold: true, color: C.crimson2, objectName: "a5_up_askh" });
+  txt(s, [
+    { text: "Buxoro, Samarqand va Toshkentda pilot mahallalarni belgilash", options: { bullet: true, breakLine: true } },
+    { text: "Oila va xotin-qizlar bo‘limlari bilan hamkorlik mexanizmini yo‘lga qo‘yish", options: { bullet: true, breakLine: true } },
+    { text: "Mahallalardagi xotin-qizlar faollarini jalb etish", options: { bullet: true, breakLine: true } },
+    { text: "Platforma samaradorligini birgalikda baholashda tashkiliy ko‘mak", options: { bullet: true } },
+  ], { x: 0.9, y: 5.32, w: 11.5, h: 1.35, fontSize: 14.5, color: C.ink, paraSpaceAfter: 2, objectName: "a6_fade_asklist" });
+  notes(s, "Pilot uch bosqichda: 1–2-oy — tayyorlash va jalb etish; 3–4-oy — buyurtmalar va bandlik; 5–6-oy — baholash va kengaytirish. Vazirlikdan so‘raymiz: pilot hududlarni belgilash, Oila va xotin-qizlar bo‘limlari bilan hamkorlik mexanizmi, mahalla xotin-qizlar faollarini jalb etish va samaradorlikni birgalikda baholash. Biz yangi tashkilot yoki murakkab boshqaruv tizimini emas, mavjud mahalla va xotin-qizlarni qo‘llab-quvvatlash tizimining samaradorligini raqamli texnologiyalar bilan oshirishni taklif qilamiz.");
+
+  // ================= MUVAFFAQIYAT KO'RSATKICHLARI =================
+  s = pres.addSlide({ masterName: "LIGHT" });
+  header(s, "Natija qanday o‘lchanadi?", "Muvaffaqiyatning asosiy ko‘rsatkichlari");
+  [["user", "Faol xizmat ko‘rsatuvchilar"], ["flag", "Birinchi buyurtmasini olgan ayollar"], ["line", "Takroriy buyurtmalar"], ["money", "Yakunlangan buyurtmalar qiymati"], ["heart", "Foydalanuvchilar qoniqishi"]].forEach(([ic, t], i) => {
+    const x = 0.6 + i * 2.47, k = 2 + i;
+    card(s, x, 2.0, 2.27, 2.6, `a${k}_up_kc${i}`);
+    iconCircle(s, ic, x + 0.71, 2.3, 0.85, `a${k}_up_ki${i}`, i % 2 ? C.gold : C.crimson2);
+    txt(s, t, { x: x + 0.15, y: 3.35, w: 1.97, h: 1.1, align: "center", fontSize: 15, bold: true, color: C.ink, objectName: `a${k}_up_kt${i}` });
+  });
+  card(s, 0.6, 4.95, 12.13, 1.6, "a7_up_note", C.tint);
+  txt(s, [{ text: "Halol hisob: ", options: { bold: true, color: C.crimson2 } }, { text: "platformadagi buyurtma qiymati tasdiqlangan shaxsiy daromad bilan tenglashtirilmaydi. Bandlik ro‘yxatdagi ko‘rsatkichlar bilan emas, real buyurtmalar va iqtisodiy natijalar asosida baholanadi.", options: { color: C.ink } }],
+    { x: 0.9, y: 4.95, w: 11.5, h: 1.6, valign: "middle", fontSize: 16, objectName: "a7_up_notet" });
+  notes(s, "Loyihaning muvaffaqiyati quyidagicha o‘lchanadi: faol xizmat ko‘rsatuvchilar, birinchi buyurtmasini olgan ayollar, takroriy buyurtmalar, yakunlangan buyurtmalar qiymati va foydalanuvchilar qoniqishi. Muhim: platformadagi buyurtma qiymati tasdiqlangan shaxsiy daromad bilan tenglashtirilmaydi.");
+
+  // ================= MUROJAAT =================
+  s = pres.addSlide({ masterName: "DARK" });
+  txt(s, "Hurmatli rahbarlar!", { x: 0.8, y: 0.9, w: 11.7, h: 0.9, align: "center", valign: "middle", fontFace: HEAD, fontSize: 34, bold: true, color: C.goldSoft, objectName: "a1_fade_h" });
+  txt(s, "BEGOYIMni dastlab Buxoro, Samarqand va Toshkentdagi tanlangan mahallalarda pilot tariqasida joriy etishni taklif qilamiz. Maqsadimiz — yangi hisobot tizimi emas, ayollarning real daromadi, iqtisodiy mustaqilligi va ijtimoiy himoyasiga xizmat qiladigan raqamli yechimni amaliyotga tatbiq etish.", { x: 1.2, y: 1.95, w: 10.9, h: 1.6, align: "center", fontSize: 19, color: C.white, objectName: "a2_up_p" });
+  txt(s, "“Ayolga imkoniyat yaratsak, bir oilaning iqtisodiy mustaqilligiga yo‘l ochamiz.”", { x: 1.0, y: 3.8, w: 11.3, h: 1.3, align: "center", valign: "middle", fontFace: HEAD, fontSize: 28, italic: true, bold: true, color: C.goldSoft, objectName: "a3_zoom_q" });
+  txt(s, "BEGOYIMni birgalikda har bir mahallaga, har bir imkoniyat izlayotgan ayolga yetkazaylik!", { x: 1.0, y: 5.45, w: 11.3, h: 0.6, align: "center", fontSize: 19, bold: true, color: "FFE0C7", objectName: "a4_fade_l" });
+  notes(s, "Hurmatli rahbarlar! BEGOYIMni respublika miqyosida rivojlantirish uchun uni dastlab Buxoro, Samarqand va Toshkent hududlaridagi tanlangan mahallalarda pilot tariqasida joriy etishni taklif qilamiz. Buning uchun Oila va xotin-qizlar bo‘limlari bilan hamkorlik mexanizmini yo‘lga qo‘yish, mahallalardagi xotin-qizlar faollarini jalb etish va platformaning amaliy samaradorligini birgalikda baholashda tashkiliy ko‘mak so‘raymiz. BEGOYIMni birgalikda har bir mahallaga, har bir imkoniyat izlayotgan ayolga yetkazaylik!");
+
+  // ================= FINAL =================
   s = pres.addSlide({ masterName: "LIGHT" });
   s.addImage({ path: A("logo.png"), x: 5.08, y: 0.55, w: 3.17, h: 2.56, objectName: "a1_zoom_logo" });
-  txt(s, "Har bir mahallada imkoniyat, har bir ayolga daromad sari yo‘l!", { x: 0.8, y: 3.25, w: 11.7, h: 0.7, align: "center", fontFace: HEAD, fontSize: 28, bold: true, color: C.crimson2, objectName: "a2_up_h" });
+  txt(s, "BEGOYIM — har bir ayolga imkoniyat, har bir oilaga farovonlik sari qadam!", { x: 0.6, y: 3.25, w: 12.13, h: 0.7, align: "center", fontFace: HEAD, fontSize: 23, bold: true, color: C.crimson2, objectName: "a2_up_h" });
   const eq = [["Mahalla", 1.0, 1.9], ["+", 2.95, 0.4], ["Oila va xotin-qizlar bo‘limi", 3.4, 3.6], ["+", 7.05, 0.4], ["Raqamli texnologiya", 7.5, 2.8], ["=", 10.35, 0.4]];
   eq.forEach(([t, x, w], i) => {
     if (t.length > 1) s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y: 4.25, w, h: 0.6, rectRadius: 0.12, fill: { color: C.white }, line: { color: C.gold, width: 1.5 }, objectName: `a${3 + i}_zoom_eqb${i}` });
@@ -369,9 +465,9 @@ async function icon(Icon, color, size = 256) {
   });
   s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: 10.8, y: 4.15, w: 1.9, h: 0.8, rectRadius: 0.12, fill: { color: C.crimson2 }, line: { color: C.crimson2 }, objectName: "a9_zoom_res" });
   txt(s, "Ayollar bandligi va farovonligi", { x: 10.8, y: 4.15, w: 1.9, h: 0.8, align: "center", valign: "middle", fontSize: 13, bold: true, color: C.white, objectName: "a9_zoom_rest" });
-  txt(s, "BEGOYIM — har bir mahalladan boshlanadigan imkoniyat!", { x: 0.8, y: 5.25, w: 11.7, h: 0.55, align: "center", fontFace: HEAD, fontSize: 22, bold: true, color: C.ink, objectName: "a10_up_b" });
-  txt(s, "Ayoldan ayolga — imkoniyat va ko‘mak!", { x: 0.8, y: 5.9, w: 11.7, h: 0.55, align: "center", fontFace: HEAD, fontSize: 22, italic: true, color: C.crimson2, objectName: "a11_up_s" });
-  notes(s, "Xulosa: Mahalla + Oila va xotin-qizlar bo‘limi + raqamli texnologiya = ayollar bandligi va farovonligi. BEGOYIM — har bir mahalladan boshlanadigan imkoniyat.");
+  txt(s, "Mahalla tizimini kuchaytiruvchi, natijasi o‘lchanadigan, respublika bo‘ylab kengaytiriladigan ijtimoiy innovatsiya", { x: 0.6, y: 5.2, w: 12.13, h: 0.55, align: "center", fontSize: 16, bold: true, color: C.ink, objectName: "a10_up_b" });
+  txt(s, "Ayoldan ayolga — imkoniyat va ko‘mak!", { x: 0.8, y: 5.95, w: 11.7, h: 0.55, align: "center", fontFace: HEAD, fontSize: 22, italic: true, color: C.crimson2, objectName: "a11_up_s" });
+  notes(s, "Ishonamizki, BEGOYIM kelajakda minglab ayollarning o‘z hunari va salohiyati orqali iqtisodiy mustaqillikka erishishiga xizmat qiladigan milliy platformaga aylanishi mumkin. BEGOYIM — har bir ayolga imkoniyat, har bir oilaga farovonlik sari qadam! E’tiboringiz uchun rahmat!");
 
   // ================= 21. MUALLIF / RAHMAT =================
   s = pres.addSlide({ masterName: "LIGHT" });
@@ -384,6 +480,25 @@ async function icon(Icon, color, size = 256) {
     { text: "BEGOYIM nomi, logotipi, konsepsiyasi va platformasi muallifning intellektual mulki hisoblanadi.", options: { color: C.muted } }],
     { x: 6.3, y: 5.3, w: 6.4, h: 1.1, fontSize: 12, objectName: "a5_fade_c" });
   notes(s, "E’tiboringiz uchun rahmat! Savollaringizga javob berishga tayyorman. Kerak bo‘lsa, platformani jonli namoyish qilaman.");
+
+  // ================= ILOVA: SAVOLLARGA JAVOBLAR =================
+  s = pres.addSlide({ masterName: "LIGHT" });
+  header(s, "Ilova · ehtimoliy savollar", "Savollarga tayyor javoblar");
+  const qa = [
+    ["Mavjud bandlik tizimlaridan farqi?", "E’lon emas, to‘liq jarayon: mahalla tasdig‘i, AI moslashtirish, buyurtmadan baho va daromad hisobigacha; bo‘lim uchun real ko‘rsatkichlar."],
+    ["Buyurtmalar qayerdan keladi?", "Mahalla va hudud aholisi, mahalliy tadbirkorlar hamda BEGOYIM Hamkor orqali tashkilotlar (maktab, bog‘cha, korxona, mehmonxona)."],
+    ["Respublika bo‘ylab ishlay oladimi?", "Ha: viloyat–tuman–mahalla tuzilmasi va 14 hudud ma’lumotnomasi tayyor; pilot natijalariga qarab bosqichma-bosqich kengaytiriladi."],
+    ["Maxfiylik qanday ta’minlanadi?", "Psixologik murojaat mazmuni faqat mutaxassisga ko‘rinadi (MVP’da ishlaydi); HIMOYA uchun alohida audit, rozilik va mustaqil mas’ul."],
+    ["Muvaffaqiyat qanday o‘lchanadi?", "Faol ijrochilar, birinchi va takroriy buyurtmalar, yakunlangan buyurtmalar qiymati, qoniqish. Buyurtma qiymati ≠ tasdiqlangan daromad."],
+  ];
+  qa.forEach(([q, a], i) => {
+    const col = i < 3 ? 0 : 1, row = col === 0 ? i : i - 3;
+    const x = 0.6 + col * 6.17, y = 1.85 + row * 1.6, k = 2 + i;
+    card(s, x, y, 5.96, 1.45, `a${k}_up_qa${i}`);
+    txt(s, q, { x: x + 0.25, y: y + 0.12, w: 5.5, h: 0.4, fontSize: 15, bold: true, color: C.crimson2, objectName: `a${k}_up_q${i}` });
+    txt(s, a, { x: x + 0.25, y: y + 0.52, w: 5.5, h: 0.85, fontSize: 12.5, color: C.ink, objectName: `a${k}_up_a${i}` });
+  });
+  notes(s, "Zaxira slayd — savol-javob vaqtida kerak bo‘lsa oching. Muhim tavsiya: bugun barcha modullarni moliyalashtirishni so‘ramang; avval bandlik, buyurtmalar, mahalla hamkorligi va natijalarni baholashga qaratilgan MVP pilotiga kelishuvga erishing. HIMOYA — ikkinchi yo‘nalish, puxta huquqiy va xavfsizlik tayyorgarligi bilan.");
 
   fs.mkdirSync(path.dirname(OUT), { recursive: true });
   await pres.writeFile({ fileName: OUT });
