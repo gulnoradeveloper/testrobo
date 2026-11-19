@@ -8,3 +8,4 @@ venv/
 .venv/
 *.zip
 video/out/
+presentation/out/

@@ -124,25 +124,29 @@ MEL_C = [(84, 1), (81, 1), (77, 1), (81, 1),
 MEL_END = [(81, 1), (79, .5), (77, .5), (76, 1), (73, 1),
            (74, 4)]
 
-# Bo'limlar (taktlarda): (taktlar soni, progressiya, kuy, zichlik)
-#   zichlik: 0 — faqat fon+dutor, 1 — yengil doira, 2 — to'liq
-FORM = [
-    (4, ANDALUS, None, 0),          # 0–10 s   kirish
-    (4, ANDALUS, MEL_A, 1),         # 10–20 s
-    (4, ANDALUS, MEL_A2, 1),        # 20–30 s
-    (4, ANDALUS, MEL_B, 1),         # 30–40 s
-    (4, ANDALUS, MEL_A2, 2),        # 40–50 s
-    (4, ANDALUS, MEL_B, 2),         # 50–60 s
-    (4, ANDALUS, MEL_A, 2),         # 60–70 s
-    (4, ANDALUS, MEL_A2, 2),        # 70–80 s
-    (4, ANDALUS, MEL_B, 2),         # 80–90 s
-    (4, ANDALUS, MEL_A2, 2),        # 90–100 s
-    (4, LIFT, MEL_C, 2),            # 100–110 s  yorug' ko'tarilish
-    (4, LIFT, MEL_C, 2),            # 110–120 s
-    (4, LIFT, MEL_B, 2),            # 120–130 s
-    (4, ANDALUS, MEL_A2, 1),        # 130–140 s  final
-    (4, ["Dm", "Bb", "Gm", "Dm"], MEL_END, 0),  # 140–150 s  muallif sahnasi, sokin yakun
-]
+def build_form(duration):
+    """Bo'limlar ro'yxati (har biri 4 takt = 10 s), video uzunligiga moslab.
+
+    Kirish sokin, o'rtasi to'liq, 140–170 s oralig'ida yorug' ko'tarilish (pilot, hamkorlik,
+    murojaat sahnalari), oxirgi 10 s — muallif sahnasi uchun sokin yakun.
+    """
+    blocks = int(np.ceil(duration / (4 * BAR)))
+    melodies = [MEL_A, MEL_A2, MEL_B, MEL_A2]
+    form = []
+    for i in range(blocks):
+        start = i * 4 * BAR
+        if i == 0:
+            form.append((4, ANDALUS, None, 0))
+        elif i == blocks - 1:
+            form.append((4, ["Dm", "Bb", "Gm", "Dm"], MEL_END, 0))
+        elif i == blocks - 2:
+            form.append((4, ANDALUS, MEL_A2, 1))
+        elif 140 <= start < 170:
+            form.append((4, LIFT, MEL_C if start < 160 else MEL_B, 2))
+        else:
+            form.append((4, ANDALUS, melodies[(i - 1) % 4], 1 if i <= 3 else 2))
+    return form
+
 
 DOIRA = ["D", None, "t", "t", "D", "t", None, "t"]  # 8-taliklar, bir takt
 
@@ -159,7 +163,7 @@ def compose(duration=150.0):
         bus[track][i:i + len(sig)] += sig * gain
 
     t0 = 0.0
-    for bars, prog, mel, dens in FORM:
+    for bars, prog, mel, dens in build_form(duration):
         for b in range(bars):
             name = prog[b % len(prog)]
             ch = CH[name]

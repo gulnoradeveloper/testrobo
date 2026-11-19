@@ -11,7 +11,7 @@ from playwright.sync_api import sync_playwright
 B = "http://127.0.0.1:8765"
 OUT = Path(__file__).parent / "assets" / "shots"
 PASS = "Begoyim2026!"
-CHROME = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
+CHROME = "/opt/pw-browsers/chromium"  # Playwright Chromium (symlink)
 
 # (fayl, telefon yoki None, yo'l, scroll qilinadigan selektor)
 DESKTOP = [

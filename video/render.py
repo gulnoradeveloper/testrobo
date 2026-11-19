@@ -21,7 +21,7 @@ HERE = Path(__file__).resolve().parent
 OUT = HERE / "out"
 FPS = 30
 W, H = 1920, 1080
-CHROME = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
+CHROME = "/opt/pw-browsers/chromium"  # Playwright Chromium (symlink)
 
 
 def ffmpeg_bin():
